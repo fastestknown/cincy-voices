@@ -1,0 +1,81 @@
+export interface Leader {
+  id: string;
+  name: string;
+  slug: string;
+  role: string | null;
+  company: string | null;
+  headshot_url: string | null;
+  hero_quote: string | null;
+  hero_segment_id: string | null;
+  micro_clip_url: string | null;
+  website_url: string | null;
+  linkedin_url: string | null;
+  created_at: string;
+}
+
+export interface Topic {
+  id: string;
+  slug: string;
+  name: string;
+  color: string;
+  description: string | null;
+  sort_order: number;
+}
+
+export interface Segment {
+  id: string;
+  source_id: string;
+  leader_id: string;
+  text: string;
+  start_time_ms: number;
+  end_time_ms: number;
+  mux_playback_id: string | null;
+  topic_thread_id: string | null;
+  clip_quality_score: number | null;
+  words: WordTimestamp[] | null;
+  created_at: string;
+}
+
+export interface WordTimestamp {
+  text: string;
+  start: number;
+  end: number;
+  confidence: number;
+}
+
+export interface Quote {
+  id: string;
+  leader_id: string;
+  text: string;
+  source_segment_id: string | null;
+  suggested_uses: string[] | null;
+  created_at: string;
+}
+
+export interface ThreadItem {
+  id: string;
+  topic_id: string;
+  segment_id: string | null;
+  quote_id: string | null;
+  content_type: 'video_clip' | 'quote';
+  sort_order: number;
+  leader_id: string;
+  created_at: string;
+}
+
+// Joined types for page queries
+export interface LeaderWithTopics extends Leader {
+  topic_tags: { slug: string; name: string; color: string }[];
+}
+
+export interface ThreadItemWithContent extends ThreadItem {
+  segment: Segment | null;
+  quote: Quote | null;
+  leader: Leader;
+}
+
+export interface TopicWithStats extends Topic {
+  leader_count: number;
+  item_count: number;
+  lead_quote: string | null;
+}
