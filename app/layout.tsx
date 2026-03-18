@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Playfair_Display, Inter } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/react';
 import { SiteHeader } from '@/components/layout/site-header';
 import { SiteFooter } from '@/components/layout/site-footer';
 import { TransitionProvider } from '@/components/motion/transition-provider';
@@ -33,6 +34,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className="flex-1 pt-16">{children}</main>
         </TransitionProvider>
         <SiteFooter />
+        <Analytics />
+        {/* eslint-disable-next-line @next/next/no-before-interactive-script-outside-document */}
+        <script
+          defer
+          data-domain="voices.workwithmeaning.com"
+          src="https://plausible.io/js/script.js"
+        />
       </body>
     </html>
   );
