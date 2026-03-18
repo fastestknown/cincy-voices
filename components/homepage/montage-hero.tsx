@@ -4,6 +4,8 @@ import { useRef, useEffect, useState, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import MuxPlayer from '@mux/mux-player-react';
+import { trackEvent } from '@/lib/analytics';
+import { ANALYTICS_EVENTS } from '@/lib/constants';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -79,6 +81,7 @@ export function MontageHero({ montagePlaybackId }: MontageHeroProps) {
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const handleReplay = useCallback(() => {
+    trackEvent(ANALYTICS_EVENTS.MONTAGE_REPLAY);
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setMontageComplete(false);
     setShowReplay(false);
@@ -104,7 +107,8 @@ export function MontageHero({ montagePlaybackId }: MontageHeroProps) {
           muted
           loop={false}
           preload="auto"
-          onEnded={() => { setMontageComplete(true); setShowReplay(true); }}
+          onPlay={() => trackEvent(ANALYTICS_EVENTS.MONTAGE_START)}
+          onEnded={() => { setMontageComplete(true); setShowReplay(true); trackEvent(ANALYTICS_EVENTS.MONTAGE_COMPLETE); }}
           style={{
             position: 'absolute' as const,
             inset: 0,

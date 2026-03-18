@@ -1,4 +1,8 @@
+'use client';
+
 import { SITE } from '@/lib/constants';
+import { trackEvent } from '@/lib/analytics';
+import { ANALYTICS_EVENTS } from '@/lib/constants';
 
 export function SiteFooter() {
   return (
@@ -8,7 +12,11 @@ export function SiteFooter() {
         <p className="text-sm">{SITE.tagline}</p>
         <p className="text-sm mt-6">
           Cincy Voices is a{' '}
-          <a href="https://workwithmeaning.com" className="text-cv-light-text/80 hover:text-cv-light-text transition-colors underline underline-offset-2">
+          <a
+            href="https://workwithmeaning.com"
+            onClick={() => trackEvent(ANALYTICS_EVENTS.OUTBOUND_CLICK, { destination: 'https://workwithmeaning.com' })}
+            className="text-cv-light-text/80 hover:text-cv-light-text transition-colors underline underline-offset-2"
+          >
             Work With Meaning
           </a>
           {' '}project. Learn more &rarr;

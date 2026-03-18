@@ -4,6 +4,8 @@ import { useState, useCallback } from 'react';
 import { CinematicPlayer } from '@/components/video/cinematic-player';
 import { ScrollReveal } from '@/components/shared/scroll-reveal';
 import { FocusedOverlay } from './focused-overlay';
+import { trackEvent } from '@/lib/analytics';
+import { ANALYTICS_EVENTS } from '@/lib/constants';
 import type { Segment } from '@/lib/types';
 
 interface ClipSequenceProps {
@@ -19,9 +21,11 @@ export function ClipSequence({ segments, leaderName }: ClipSequenceProps) {
     setScrollPosition(window.scrollY);
     setFocusedSegment(segment);
     document.body.style.overflow = 'hidden';
+    trackEvent(ANALYTICS_EVENTS.CLIP_FOCUS_OPEN, { segment_id: segment.id });
   }, []);
 
   const closeFocus = useCallback(() => {
+    trackEvent(ANALYTICS_EVENTS.CLIP_FOCUS_CLOSE);
     setFocusedSegment(null);
     document.body.style.overflow = '';
     window.scrollTo(0, scrollPosition);

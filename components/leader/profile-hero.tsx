@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { CinematicPlayer } from '@/components/video/cinematic-player';
+import { trackEvent } from '@/lib/analytics';
+import { ANALYTICS_EVENTS } from '@/lib/constants';
 import type { Leader, Segment } from '@/lib/types';
 
 interface ProfileHeroProps {
@@ -62,7 +64,7 @@ export function ProfileHero({ leader, heroSegment }: ProfileHeroProps) {
         {/* Unmute button — pulses once per spec §3.3 */}
         {heroSegment?.mux_playback_id && !unmuted && (
           <button
-            onClick={() => setUnmuted(true)}
+            onClick={() => { setUnmuted(true); trackEvent(ANALYTICS_EVENTS.HERO_UNMUTE, { leader_slug: leader.slug }); }}
             className="mt-6 flex items-center gap-2 text-cv-light-text/50 hover:text-cv-light-text text-sm transition-colors animate-pulse-once"
           >
             <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current">

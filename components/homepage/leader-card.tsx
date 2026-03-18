@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { trackEvent } from '@/lib/analytics';
+import { ANALYTICS_EVENTS } from '@/lib/constants';
 import type { LeaderWithTopics } from '@/lib/types';
 
 interface LeaderCardProps {
@@ -13,7 +15,10 @@ export function LeaderCard({ leader }: LeaderCardProps) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <Link href={`/leaders/${leader.slug}`}>
+    <Link
+      href={`/leaders/${leader.slug}`}
+      onClick={() => trackEvent(ANALYTICS_EVENTS.LEADER_CARD_OPEN, { leader_slug: leader.slug, source_page: 'homepage' })}
+    >
       <motion.article
         layoutId={`avatar-${leader.slug}`}
         onMouseEnter={() => setIsHovered(true)}

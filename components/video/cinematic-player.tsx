@@ -2,6 +2,8 @@
 
 import { useRef, useEffect, useState } from 'react';
 import MuxPlayer from '@mux/mux-player-react';
+import { trackEvent } from '@/lib/analytics';
+import { ANALYTICS_EVENTS } from '@/lib/constants';
 import type { WordTimestamp } from '@/lib/types';
 import { generateVttUrl } from '@/lib/captions';
 
@@ -74,8 +76,8 @@ export function CinematicPlayer({
         muted={muted}
         loop={loop}
         preload="metadata"
-        onPlay={() => { setIsPlaying(true); onPlay?.(); }}
-        onEnded={() => { setIsPlaying(false); onComplete?.(); }}
+        onPlay={() => { setIsPlaying(true); onPlay?.(); trackEvent(ANALYTICS_EVENTS.VIDEO_PLAY); }}
+        onEnded={() => { setIsPlaying(false); onComplete?.(); trackEvent(ANALYTICS_EVENTS.VIDEO_COMPLETE); }}
         style={{
           aspectRatio: '16/9',
           '--controls': 'none',

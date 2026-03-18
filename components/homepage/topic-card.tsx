@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { trackEvent } from '@/lib/analytics';
+import { ANALYTICS_EVENTS } from '@/lib/constants';
 import type { TopicWithStats } from '@/lib/types';
 
 interface TopicCardProps {
@@ -10,7 +12,10 @@ interface TopicCardProps {
 
 export function TopicCard({ topic }: TopicCardProps) {
   return (
-    <Link href={`/topics/${topic.slug}`}>
+    <Link
+      href={`/topics/${topic.slug}`}
+      onClick={() => trackEvent(ANALYTICS_EVENTS.TOPIC_CARD_OPEN, { topic_slug: topic.slug, source_page: 'homepage' })}
+    >
       <motion.article
         layoutId={`topic-${topic.slug}`}
         className="min-w-[280px] md:min-w-[320px] bg-white rounded-2xl overflow-hidden border border-cv-border/50 hover:shadow-lg transition-shadow flex-shrink-0"
