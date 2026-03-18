@@ -34,7 +34,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
           </div>
         )}
         <div style={{ fontSize: 14, color: '#d4a843', marginTop: 40 }}>
-          Cincy Voices — voices.workwithmeaning.com
+          Cincy Voices — voices.workwithmean.ing
         </div>
       </div>
     ),

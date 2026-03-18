@@ -13,7 +13,7 @@ export const TOPIC_COLORS: Record<string, { hex: string; name: string }> = {
 export const SITE = {
   name: 'Cincy Voices',
   tagline: 'Real conversations from Cincinnati\'s fractional leaders',
-  url: 'https://voices.workwithmeaning.com',
+  url: 'https://voices.workwithmean.ing',
 } as const;
 
 // Analytics event names — canonical contract

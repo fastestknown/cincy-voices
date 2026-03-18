@@ -21,7 +21,7 @@ export default async function Image() {
           10 Leaders. Real Conversations. Cincinnati.
         </div>
         <div style={{ fontSize: 16, color: '#d4a843', marginTop: 40 }}>
-          voices.workwithmeaning.com
+          voices.workwithmean.ing
         </div>
       </div>
     ),

@@ -38,7 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* eslint-disable-next-line @next/next/no-before-interactive-script-outside-document */}
         <script
           defer
-          data-domain="voices.workwithmeaning.com"
+          data-domain="voices.workwithmean.ing"
           src="https://plausible.io/js/script.js"
         />
       </body>
