@@ -63,7 +63,7 @@ export function ThreadScroll({ items, topic }: ThreadScrollProps) {
                   style={{ borderColor: topic.color }}
                 >
                   <p className="font-display text-fluid-quote font-bold text-cv-charcoal leading-relaxed">
-                    &ldquo;{item.quote.text}&rdquo;
+                    &ldquo;{item.quote.quote_text}&rdquo;
                   </p>
                   <cite className="block mt-3 text-cv-muted text-sm not-italic font-body">
                     — {item.leader.name}{item.leader.role ? `, ${item.leader.role}` : ''}

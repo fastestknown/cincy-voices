@@ -50,9 +50,9 @@ export async function getTopicsWithStats(): Promise<TopicWithStats[]> {
 
   const { data: quotes } = await supabase
     .from('cincy_voices_quotes')
-    .select('id, text');
+    .select('id, quote_text');
 
-  const quoteMap = new Map(quotes?.map(q => [q.id, q.text]) ?? []);
+  const quoteMap = new Map(quotes?.map(q => [q.id, q.quote_text]) ?? []);
 
   return topics.map(topic => {
     const items = threadItems?.filter(ti => ti.topic_id === topic.id) ?? [];
@@ -198,7 +198,7 @@ export async function getThreadItems(topicId: string): Promise<ThreadItemWithCon
   ]);
 
   const segMap = new Map((segments as Segment[]).map(s => [s.id, s]));
-  const quoteMap = new Map((quotes as { id: string; text: string }[]).map(q => [q.id, q]));
+  const quoteMap = new Map((quotes as { id: string; quote_text: string }[]).map(q => [q.id, q]));
   const leaderMap = new Map((leaders as Leader[]).map(l => [l.id, l]));
 
   return items.map(item => ({

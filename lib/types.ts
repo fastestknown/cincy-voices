@@ -46,7 +46,7 @@ export interface WordTimestamp {
 export interface Quote {
   id: string;
   leader_id: string;
-  text: string;
+  quote_text: string;
   source_segment_id: string | null;
   suggested_uses: string[] | null;
   created_at: string;
