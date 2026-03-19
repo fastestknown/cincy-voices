@@ -41,12 +41,8 @@ export function ProfileHero({ leader, heroSegment }: ProfileHeroProps) {
             layoutId={`avatar-${leader.slug}`}
             className="w-20 h-20 rounded-full overflow-hidden border-2 border-cv-light-text/20 flex-shrink-0"
           >
-            {leader.headshot_url ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={leader.headshot_url} alt={leader.name} className="w-full h-full object-cover" />
-            ) : (
-              <div className="w-full h-full bg-gradient-to-br from-cv-gold/30 to-cv-sage/30" />
-            )}
+            {/* Headshots pending — placeholder gradient */}
+            <div className="w-full h-full bg-gradient-to-br from-cv-gold/30 to-cv-sage/30" />
           </motion.div>
 
           <div>

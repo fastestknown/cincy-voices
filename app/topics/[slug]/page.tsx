@@ -102,12 +102,7 @@ export default async function TopicThreadPage({ params }: { params: Promise<{ sl
             {leaders.map(leader => (
               <Link key={leader.id} href={`/leaders/${leader.slug}`} className="group text-center">
                 <div className="w-16 h-16 mx-auto rounded-full overflow-hidden border-2 border-cv-border group-hover:border-cv-gold transition-colors">
-                  {leader.headshot_url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={leader.headshot_url} alt={leader.name} className="w-full h-full object-cover" />
-                  ) : (
-                    <div className="w-full h-full bg-cv-navy/10" />
-                  )}
+                  <div className="w-full h-full bg-cv-navy/10" />
                 </div>
                 <p className="font-display text-sm font-bold text-cv-charcoal mt-2 group-hover:text-cv-navy transition-colors">
                   {leader.name}

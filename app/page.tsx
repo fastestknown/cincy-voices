@@ -13,9 +13,8 @@ export default async function HomePage() {
     getTopicsWithStats(),
   ]);
 
-  // Footer quote: pick the topic with the strongest lead quote
+  // Footer quote: first topic's lead quote (derived from thread_items quotes)
   const footerTopic = topics.find(t => t.lead_quote);
-  // TODO: Replace with a dedicated "best quote" from the data
   const footerQuote = footerTopic?.lead_quote ?? 'Real conversations. Real leaders. Real Cincinnati.';
 
   return (

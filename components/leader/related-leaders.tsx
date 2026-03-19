@@ -20,12 +20,7 @@ export function RelatedLeaders({ leaders }: RelatedLeadersProps) {
               className="flex items-center gap-4 p-4 rounded-xl bg-white border border-cv-border/50 hover:shadow-md transition-shadow"
             >
               <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
-                {leader.headshot_url ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={leader.headshot_url} alt={leader.name} className="w-full h-full object-cover" />
-                ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-cv-navy/20 to-cv-gold/20" />
-                )}
+                <div className="w-full h-full bg-gradient-to-br from-cv-navy/20 to-cv-gold/20" />
               </div>
               <div>
                 <p className="font-display font-bold text-cv-charcoal text-sm group-hover:text-cv-navy transition-colors">

@@ -27,16 +27,8 @@ export function LeaderCard({ leader }: LeaderCardProps) {
       >
         {/* Avatar / Micro-clip area */}
         <div className="relative aspect-[4/3] bg-gradient-to-br from-cv-navy/10 to-cv-sage/20 overflow-hidden">
-          {leader.headshot_url ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={leader.headshot_url}
-              alt={leader.name}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-          ) : (
-            <div className="w-full h-full bg-gradient-to-br from-cv-navy/20 to-cv-gold/20" />
-          )}
+          {/* Headshots pending */}
+          <div className="w-full h-full bg-gradient-to-br from-cv-navy/20 to-cv-gold/20" />
 
           {/* Micro-clip hover (desktop only) */}
           {isHovered && leader.micro_clip_url && (

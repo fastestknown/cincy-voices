@@ -42,12 +42,7 @@ export function ThreadScroll({ items, topic }: ThreadScrollProps) {
               {isNewLeader && i > 0 && (
                 <div className="flex items-center gap-3 mb-8">
                   <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
-                    {item.leader.headshot_url ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={item.leader.headshot_url} alt={item.leader.name} className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full bg-cv-navy/10 rounded-full" />
-                    )}
+                    <div className="w-full h-full bg-cv-navy/10 rounded-full" />
                   </div>
                   <span className="text-cv-muted text-sm font-body">
                     {item.leader.name} responds

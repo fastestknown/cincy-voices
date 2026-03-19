@@ -34,12 +34,7 @@ export function ThreadHero({ topic, leaders }: ThreadHeroProps) {
                 layoutId={`avatar-${leader.slug}`}
                 className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/30 hover:border-white/60 transition-colors"
               >
-                {leader.headshot_url ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={leader.headshot_url} alt={leader.name} className="w-full h-full object-cover" />
-                ) : (
-                  <div className="w-full h-full bg-white/20" />
-                )}
+                <div className="w-full h-full bg-white/20" />
               </motion.div>
             </Link>
           ))}

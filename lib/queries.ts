@@ -1,5 +1,5 @@
 import { supabase } from './supabase';
-import type { Leader, Topic, Segment, LeaderWithTopics, ThreadItemWithContent, TopicWithStats } from './types';
+import type { Leader, Topic, Segment, Quote, LeaderWithTopics, ThreadItemWithContent, TopicWithStats } from './types';
 
 // ── Homepage ──────────────────────────────────────────
 
@@ -164,6 +164,16 @@ export async function getLeaderTopicCounts(leaderId: string): Promise<{ topic: T
     topic,
     count: counts.get(topic.id) ?? 0,
   }));
+}
+
+export async function getLeaderQuotes(leaderId: string): Promise<Quote[]> {
+  const { data } = await supabase
+    .from('cincy_voices_quotes')
+    .select('*')
+    .eq('leader_id', leaderId)
+    .limit(8);
+
+  return data ?? [];
 }
 
 // ── Topic Thread ──────────────────────────────────────

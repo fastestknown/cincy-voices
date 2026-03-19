@@ -22,12 +22,7 @@ export function ThreadSideRail({ leaders, activeLeaderId }: ThreadSideRailProps)
               : 'border-cv-border/50 opacity-40 hover:opacity-70'
           }`}
         >
-          {leader.headshot_url ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={leader.headshot_url} alt={leader.name} className="w-full h-full object-cover" />
-          ) : (
-            <div className="w-full h-full bg-cv-navy/10" />
-          )}
+          <div className="w-full h-full bg-cv-navy/10" />
         </Link>
       ))}
     </aside>

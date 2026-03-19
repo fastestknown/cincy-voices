@@ -4,7 +4,9 @@ export interface Leader {
   slug: string;
   role: string | null;
   company: string | null;
-  headshot_url: string | null;
+  headshot_drive_folder_id: string | null;
+  bio_summary: string | null;
+  expertise_tags: string[] | null;
   hero_quote: string | null;
   hero_segment_id: string | null;
   micro_clip_url: string | null;
