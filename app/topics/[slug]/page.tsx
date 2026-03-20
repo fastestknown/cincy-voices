@@ -13,6 +13,7 @@ import { SITE } from '@/lib/constants';
 import { ThreadHero } from '@/components/thread/thread-hero';
 import { ThreadScroll } from '@/components/thread/thread-scroll';
 import { ThreadSideRail } from '@/components/thread/thread-side-rail';
+import { headshotPosition } from '@/lib/headshot-position';
 import { TopicCard } from '@/components/homepage/topic-card';
 import { ScrollReveal } from '@/components/shared/scroll-reveal';
 
@@ -109,6 +110,7 @@ export default async function TopicThreadPage({ params }: { params: Promise<{ sl
                     fill
                     sizes="64px"
                     className="object-cover"
+                    style={{ objectPosition: headshotPosition(leader.slug) }}
                   />
                 </div>
                 <p className="font-display text-sm font-bold text-cv-charcoal mt-2 group-hover:text-cv-navy transition-colors">

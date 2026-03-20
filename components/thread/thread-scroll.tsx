@@ -6,6 +6,7 @@ import { CinematicPlayer } from '@/components/video/cinematic-player';
 import { ScrollReveal } from '@/components/shared/scroll-reveal';
 import { FocusedOverlay } from '@/components/leader/focused-overlay';
 import { extractPullQuote } from '@/lib/pull-quote';
+import { headshotPosition } from '@/lib/headshot-position';
 import type { ThreadItemWithContent, Topic } from '@/lib/types';
 
 interface ThreadScrollProps {
@@ -50,6 +51,7 @@ export function ThreadScroll({ items, topic }: ThreadScrollProps) {
                       fill
                       sizes="32px"
                       className="object-cover"
+                      style={{ objectPosition: headshotPosition(item.leader.slug) }}
                     />
                   </div>
                   <span className="text-cv-muted text-sm font-body">

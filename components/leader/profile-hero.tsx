@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { headshotPosition } from '@/lib/headshot-position';
 import type { Leader } from '@/lib/types';
 
 interface ProfileHeroProps {
@@ -19,7 +20,8 @@ export function ProfileHero({ leader }: ProfileHeroProps) {
               alt={leader.name}
               fill
               sizes="(max-width: 768px) 144px, 192px"
-              className="object-cover object-top"
+              className="object-cover"
+              style={{ objectPosition: headshotPosition(leader.slug) }}
               priority
             />
           </div>

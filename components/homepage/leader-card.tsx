@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { trackEvent } from '@/lib/analytics';
 import { ANALYTICS_EVENTS } from '@/lib/constants';
+import { headshotPosition } from '@/lib/headshot-position';
 import type { LeaderWithTopics } from '@/lib/types';
 
 interface LeaderCardProps {
@@ -33,7 +34,8 @@ export function LeaderCard({ leader }: LeaderCardProps) {
             alt={leader.name}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-cover object-top"
+            className="object-cover"
+            style={{ objectPosition: headshotPosition(leader.slug) }}
           />
 
           {/* Micro-clip hover (desktop only) */}

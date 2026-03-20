@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { headshotPosition } from '@/lib/headshot-position';
 import type { Leader } from '@/lib/types';
 
 interface ThreadSideRailProps {
@@ -29,6 +30,7 @@ export function ThreadSideRail({ leaders, activeLeaderId }: ThreadSideRailProps)
             fill
             sizes="40px"
             className="object-cover"
+            style={{ objectPosition: headshotPosition(leader.slug) }}
           />
         </Link>
       ))}

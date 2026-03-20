@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { headshotPosition } from '@/lib/headshot-position';
 import type { Topic, Leader } from '@/lib/types';
 
 interface ThreadHeroProps {
@@ -41,6 +42,7 @@ export function ThreadHero({ topic, leaders }: ThreadHeroProps) {
                   fill
                   sizes="40px"
                   className="object-cover"
+                  style={{ objectPosition: headshotPosition(leader.slug) }}
                 />
               </motion.div>
             </Link>
