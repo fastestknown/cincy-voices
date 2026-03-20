@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cincy Voices — Adam Reynolds (Concept B: Immersive Scroll)</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cv-cream: #f5f0e8;
+    --cv-navy: #1a1f2e;
+    --cv-gold: #c9a84c;
+    --cv-charcoal: #2d2d2d;
+    --cv-muted: #8a8a8a;
+    --cv-light: #f5f0e8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--cv-navy);
+    color: var(--cv-charcoal);
+    overflow-x: hidden;
+  }
+
+  /* ─── STICKY NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 16px 32px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: transparent;
+    transition: all 0.5s ease;
+  }
+  nav.scrolled {
+    background: rgba(26, 31, 46, 0.95);
+    backdrop-filter: blur(20px);
+    padding: 12px 32px;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+  }
+  nav .logo {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700; font-size: 16px;
+    color: var(--cv-gold);
+    letter-spacing: 3px;
+  }
+  nav .back {
+    color: var(--cv-light); opacity: 0.5;
+    text-decoration: none; font-size: 13px;
+    transition: opacity 0.3s;
+  }
+  nav .back:hover { opacity: 1; }
+
+  /* ─── HERO: FULL-SCREEN PORTRAIT ─── */
+  .hero {
+    height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    z-index: 0;
+  }
+  .hero-bg img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    filter: brightness(0.6) contrast(1.1);
+    transform: scale(1.05);
+    animation: heroZoom 20s ease-in-out infinite alternate;
+  }
+  @keyframes heroZoom {
+    from { transform: scale(1.05); }
+    to { transform: scale(1.12); }
+  }
+
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      to top,
+      var(--cv-navy) 0%,
+      rgba(26,31,46,0.6) 40%,
+      rgba(26,31,46,0.2) 70%,
+      rgba(26,31,46,0.4) 100%
+    );
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 48px 80px;
+    width: 100%;
+    max-width: 800px;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--cv-gold);
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.4s;
+  }
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(48px, 8vw, 96px);
+    font-weight: 900;
+    color: white;
+    line-height: 0.95;
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.6s;
+  }
+  .hero-title {
+    font-size: 18px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 300;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.8s;
+  }
+  .hero-divider {
+    width: 60px; height: 2px;
+    background: var(--cv-gold);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 1s;
+  }
+  .hero-pullquote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(18px, 2.5vw, 28px);
+    font-weight: 600;
+    color: var(--cv-gold);
+    line-height: 1.4;
+    max-width: 600px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 1.2s;
+  }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 1.6s;
+  }
+  .scroll-indicator span {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+  }
+  .scroll-line {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, rgba(201,168,76,0.6), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+    50% { opacity: 1; transform: scaleY(1); }
+  }
+
+  /* ─── PROFILE CARD (overlapping hero) ─── */
+  .profile-card {
+    max-width: 900px;
+    margin: -60px auto 0;
+    padding: 48px;
+    background: var(--cv-cream);
+    border-radius: 24px;
+    position: relative;
+    z-index: 3;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.3);
+  }
+
+  .profile-top {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 32px;
+  }
+
+  .profile-bio h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--cv-charcoal);
+  }
+  .profile-bio p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--cv-charcoal);
+    opacity: 0.7;
+  }
+
+  .profile-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .stat-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cv-muted);
+    width: 100px;
+    flex-shrink: 0;
+  }
+  .stat-value {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--cv-charcoal);
+  }
+
+  .profile-tags {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(0,0,0,0.08);
+  }
+  .profile-tag {
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 12px; font-weight: 500;
+    background: var(--cv-navy);
+    color: var(--cv-gold);
+    transition: all 0.3s ease;
+  }
+  .profile-tag:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(26,31,46,0.3);
+  }
+
+  .profile-links {
+    display: flex; gap: 16px;
+    margin-top: 20px;
+  }
+  .profile-links a {
+    font-size: 13px;
+    color: var(--cv-navy);
+    text-decoration: none;
+    font-weight: 500;
+    opacity: 0.5;
+    transition: all 0.3s;
+  }
+  .profile-links a:hover { opacity: 1; color: var(--cv-gold); }
+
+  /* ─── STORYTELLING SECTIONS ─── */
+  .story-bg {
+    background: var(--cv-cream);
+    padding-bottom: 1px;
+  }
+
+  .story-section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 80px 48px;
+    position: relative;
+  }
+
+  .section-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 120px;
+    font-weight: 900;
+    color: rgba(0,0,0,0.03);
+    position: absolute;
+    top: 40px; left: 24px;
+    line-height: 1;
+    user-select: none;
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--cv-gold);
+    margin-bottom: 12px;
+  }
+  .section-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px; font-weight: 700;
+    color: var(--cv-charcoal);
+    margin-bottom: 40px;
+  }
+
+  /* ─── VIDEO THEATER ─── */
+  .video-theater {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .theater-item {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 32px;
+    align-items: center;
+    padding: 24px;
+    border-radius: 20px;
+    background: white;
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+  }
+  .theater-item:nth-child(even) {
+    grid-template-columns: 1fr 1.5fr;
+  }
+  .theater-item:nth-child(even) .theater-video {
+    order: 2;
+  }
+  .theater-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+  }
+
+  .theater-video {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 16/9;
+  }
+  .theater-video img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s ease;
+  }
+  .theater-item:hover .theater-video img {
+    transform: scale(1.06);
+  }
+  .theater-video::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(26,31,46,0.2);
+    transition: background 0.3s;
+  }
+  .theater-item:hover .theater-video::after {
+    background: rgba(26,31,46,0.1);
+  }
+
+  .theater-play {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: var(--cv-gold);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 2;
+    opacity: 0.8;
+    transition: all 0.3s;
+    box-shadow: 0 4px 20px rgba(201,168,76,0.4);
+  }
+  .theater-play::after {
+    content: '';
+    width: 0; height: 0;
+    border-left: 14px solid var(--cv-navy);
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    margin-left: 2px;
+  }
+  .theater-item:hover .theater-play {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+
+  .theater-text {
+    padding: 8px 0;
+  }
+  .theater-text .clip-number {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cv-muted);
+    margin-bottom: 12px;
+  }
+  .theater-text blockquote {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--cv-charcoal);
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+  .theater-text blockquote::before { content: '\201C'; color: var(--cv-gold); }
+  .theater-text blockquote::after { content: '\201D'; color: var(--cv-gold); }
+  .theater-text .clip-topic {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 500;
+    border: 1px solid rgba(0,0,0,0.1);
+    color: var(--cv-muted);
+  }
+
+  /* ─── QUOTE WALL ─── */
+  .quote-wall-section {
+    background: var(--cv-navy);
+    padding: 80px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .quote-wall-section::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 100px;
+    background: linear-gradient(to bottom, var(--cv-cream), var(--cv-navy));
+  }
+
+  .quote-wall-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 48px 0;
+  }
+
+  .quote-wall-header {
+    margin-bottom: 48px;
+  }
+  .quote-wall-header .section-label { color: var(--cv-gold); }
+  .quote-wall-header .section-heading { color: var(--cv-light); }
+
+  .quote-wall {
+    columns: 2;
+    column-gap: 24px;
+  }
+
+  .wall-quote {
+    break-inside: avoid;
+    margin-bottom: 24px;
+    padding: 28px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: all 0.4s ease;
+    position: relative;
+  }
+  .wall-quote:hover {
+    background: rgba(255,255,255,0.08);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+  }
+  .wall-quote p {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--cv-light);
+    line-height: 1.6;
+    opacity: 0.9;
+  }
+  .wall-quote .wall-topic {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 100px;
+  }
+  .wall-quote.highlight {
+    background: rgba(201, 168, 76, 0.12);
+    border-color: rgba(201, 168, 76, 0.25);
+  }
+  .wall-quote.highlight p {
+    font-size: 20px;
+    color: var(--cv-gold);
+  }
+
+  /* ─── CONVERSATION MAP ─── */
+  .map-section {
+    background: var(--cv-cream);
+    padding: 80px 48px;
+  }
+  .map-inner {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .map-topics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 40px;
+  }
+
+  .map-topic-card {
+    padding: 24px;
+    border-radius: 16px;
+    background: white;
+    border-left: 4px solid;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    overflow: hidden;
+  }
+  .map-topic-card::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 40px;
+    background: linear-gradient(to left, rgba(0,0,0,0.02), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .map-topic-card:hover {
+    transform: translateY(-4px) translateX(4px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+  }
+  .map-topic-card:hover::after { opacity: 1; }
+
+  .map-topic-name {
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+  .map-topic-count {
+    font-size: 12px;
+    color: var(--cv-muted);
+  }
+  .map-topic-arrow {
+    position: absolute;
+    right: 20px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: var(--cv-muted);
+    transition: all 0.3s;
+  }
+  .map-topic-card:hover .map-topic-arrow {
+    transform: translateY(-50%) translateX(6px);
+    color: var(--cv-charcoal);
+  }
+
+  /* ─── RELATED VOICES ─── */
+  .related-section {
+    background: var(--cv-cream);
+    padding: 0 48px 80px;
+  }
+  .related-inner {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .related-strip {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 8px;
+  }
+  .related-strip::-webkit-scrollbar { display: none; }
+
+  .related-voice {
+    flex: 0 0 220px;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.3s;
+  }
+  .related-voice:hover {
+    transform: translateY(-6px);
+  }
+
+  .related-avatar {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 16px;
+    border: 3px solid white;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    transition: all 0.4s ease;
+  }
+  .related-voice:hover .related-avatar {
+    border-color: var(--cv-gold);
+    box-shadow: 0 12px 32px rgba(201,168,76,0.2);
+  }
+  .related-avatar img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: top;
+    transition: transform 0.4s ease;
+  }
+  .related-voice:hover .related-avatar img {
+    transform: scale(1.1);
+  }
+  .related-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px; font-weight: 700;
+  }
+  .related-role {
+    font-size: 12px;
+    color: var(--cv-muted);
+    margin-top: 4px;
+  }
+  .related-shared {
+    font-size: 11px;
+    color: var(--cv-gold);
+    margin-top: 8px;
+    font-weight: 500;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--cv-navy);
+    padding: 60px 40px;
+    text-align: center;
+  }
+  footer .logo {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700; font-size: 18px;
+    color: var(--cv-gold);
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+  footer p {
+    color: rgba(255,255,255,0.25);
+    font-size: 13px;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-stagger > * {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .reveal-stagger.visible > *:nth-child(1) { transition-delay: 0s; }
+  .reveal-stagger.visible > *:nth-child(2) { transition-delay: 0.1s; }
+  .reveal-stagger.visible > *:nth-child(3) { transition-delay: 0.2s; }
+  .reveal-stagger.visible > *:nth-child(4) { transition-delay: 0.3s; }
+  .reveal-stagger.visible > *:nth-child(5) { transition-delay: 0.4s; }
+  .reveal-stagger.visible > *:nth-child(6) { transition-delay: 0.5s; }
+  .reveal-stagger.visible > * {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    .hero-content { padding: 0 24px 60px; }
+    .profile-card { margin: -40px 16px 0; padding: 32px 24px; border-radius: 20px; }
+    .profile-top { grid-template-columns: 1fr; gap: 32px; }
+    .story-section { padding: 60px 24px; }
+    .theater-item { grid-template-columns: 1fr; }
+    .theater-item:nth-child(even) { grid-template-columns: 1fr; }
+    .theater-item:nth-child(even) .theater-video { order: 0; }
+    .quote-wall { columns: 1; }
+    .quote-wall-inner { padding: 40px 24px 0; }
+    .map-section { padding: 60px 24px; }
+    .related-section { padding: 0 24px 60px; }
+    .section-number { font-size: 80px; }
+    .map-topics { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <div class="logo">CINCY VOICES</div>
+  <a href="#" class="back">&larr; All Leaders</a>
+</nav>
+
+<!-- HERO: FULL-SCREEN PORTRAIT -->
+<section class="hero">
+  <div class="hero-bg">
+    <img src="http://localhost:3001/headshots/adam-reynolds.jpg" alt="Adam Reynolds" />
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Cincy Voices</div>
+    <h1 class="hero-name">Adam Reynolds</h1>
+    <p class="hero-title">Founder & CEO, Thrive CFO</p>
+    <div class="hero-divider"></div>
+    <p class="hero-pullquote">Your financials are telling you a story. The question is whether you're listening.</p>
+  </div>
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- PROFILE CARD -->
+<div class="story-bg">
+  <div class="profile-card reveal">
+    <div class="profile-top">
+      <div class="profile-bio">
+        <h2>About Adam</h2>
+        <p>Adam Reynolds is a fractional CFO and turnaround specialist who helps companies translate financial data into strategic clarity. Through Thrive CFO, he's developed a proprietary planning process that distills 100-150 growth ideas down to the 1-3 that move the needle.</p>
+      </div>
+      <div class="profile-stats">
+        <div class="stat-row">
+          <span class="stat-label">Focus</span>
+          <span class="stat-value">Fractional CFO</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Company</span>
+          <span class="stat-value">Thrive CFO</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Specialty</span>
+          <span class="stat-value">Turnarounds & Exit Planning</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Clips</span>
+          <span class="stat-value">6 video segments</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Topics</span>
+          <span class="stat-value">5 conversation threads</span>
+        </div>
+      </div>
+    </div>
+    <div class="profile-tags">
+      <span class="profile-tag">Turnarounds</span>
+      <span class="profile-tag">Exit Planning</span>
+      <span class="profile-tag">Financial Strategy</span>
+      <span class="profile-tag">Gross Profit Optimization</span>
+      <span class="profile-tag">Growth Planning</span>
+    </div>
+    <div class="profile-links">
+      <a href="#">LinkedIn &rarr;</a>
+      <a href="#">Website &rarr;</a>
+    </div>
+  </div>
+
+  <!-- IN HIS OWN WORDS -->
+  <section class="story-section reveal">
+    <span class="section-number">01</span>
+    <div class="section-label">In His Own Words</div>
+    <h2 class="section-heading">Hear Adam's Perspective</h2>
+
+    <div class="video-theater reveal-stagger">
+      <div class="theater-item">
+        <div class="theater-video">
+          <img src="https://image.mux.com/eRe6wN5wPmvakxYFQgXe4VpjYKPmemXiDrNfCCb8028/thumbnail.jpg?time=2&width=640" alt="Clip" />
+          <div class="theater-play"></div>
+        </div>
+        <div class="theater-text">
+          <div class="clip-number">Clip 01</div>
+          <blockquote>Your financials are telling you a story. The question is whether you're listening.</blockquote>
+          <span class="clip-topic" style="border-color: #d4a843; color: #d4a843;">Financial Strategy</span>
+        </div>
+      </div>
+
+      <div class="theater-item">
+        <div class="theater-text">
+          <div class="clip-number">Clip 02</div>
+          <blockquote>The biggest risk isn't spending money. It's spending it without knowing your numbers.</blockquote>
+          <span class="clip-topic" style="border-color: #6b4c6e; color: #6b4c6e;">Growth & Change</span>
+        </div>
+        <div class="theater-video">
+          <img src="https://image.mux.com/aNLGM78zH3wEFqxCfcfH26VipfW02Qz5Rl9TG8KaG9tY/thumbnail.jpg?time=2&width=640" alt="Clip" />
+          <div class="theater-play"></div>
+        </div>
+      </div>
+
+      <div class="theater-item">
+        <div class="theater-video">
+          <img src="https://image.mux.com/PJuqKfkKCpTu01JnV00kXQhMxlhUFBv6WWsG3SHdVlHSY/thumbnail.jpg?time=2&width=640" alt="Clip" />
+          <div class="theater-play"></div>
+        </div>
+        <div class="theater-text">
+          <div class="clip-number">Clip 03</div>
+          <blockquote>I grew up in a family where money was tight. That shaped everything about how I approach finance.</blockquote>
+          <span class="clip-topic" style="border-color: #c4724e; color: #c4724e;">Origin Stories</span>
+        </div>
+      </div>
+
+      <div class="theater-item">
+        <div class="theater-text">
+          <div class="clip-number">Clip 04</div>
+          <blockquote>Companies just need good financial discipline. It's not about complexity, it's about clarity.</blockquote>
+          <span class="clip-topic" style="border-color: #7a9e7e; color: #7a9e7e;">Trust & Relationships</span>
+        </div>
+        <div class="theater-video">
+          <img src="https://image.mux.com/XNz2lt00aqaG7oLVNR5fXXsP7Mg1BxWGSG00h02pPJMSM/thumbnail.jpg?time=2&width=640" alt="Clip" />
+          <div class="theater-play"></div>
+        </div>
+      </div>
+
+      <div class="theater-item">
+        <div class="theater-video">
+          <img src="https://image.mux.com/d00RQFX4Zk3NNVY5JwVPKt4DQYM8SObDFYNW02WBxWF4/thumbnail.jpg?time=2&width=640" alt="Clip" />
+          <div class="theater-play"></div>
+        </div>
+        <div class="theater-text">
+          <div class="clip-number">Clip 05</div>
+          <blockquote>We take 100 to 150 ideas and narrow it down to the 1 to 3 that will change everything.</blockquote>
+          <span class="clip-topic" style="border-color: #c94c60; color: #c94c60;">The Fractional Model</span>
+        </div>
+      </div>
+
+      <div class="theater-item">
+        <div class="theater-text">
+          <div class="clip-number">Clip 06</div>
+          <blockquote>The moment you understand your gross profit, everything else becomes clear.</blockquote>
+          <span class="clip-topic" style="border-color: #d4a843; color: #d4a843;">Client Impact</span>
+        </div>
+        <div class="theater-video">
+          <img src="https://image.mux.com/MZ8qGNaQxh4002gEg37t801kCDFYUJRipIJxGd1kBLmPc/thumbnail.jpg?time=2&width=640" alt="Clip" />
+          <div class="theater-play"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- QUOTE WALL -->
+<section class="quote-wall-section">
+  <div class="quote-wall-inner">
+    <div class="quote-wall-header reveal">
+      <div class="section-label">Perspectives</div>
+      <h2 class="section-heading">Words That Stay With You</h2>
+    </div>
+    <div class="quote-wall reveal-stagger">
+      <div class="wall-quote highlight">
+        <p>"Your financials are telling you a story. The question is whether you're listening."</p>
+        <span class="wall-topic" style="background: rgba(212,168,67,0.2); color: #d4a843;">Financial Strategy</span>
+      </div>
+      <div class="wall-quote">
+        <p>"The biggest risk isn't spending money. It's spending it without knowing your numbers."</p>
+        <span class="wall-topic" style="background: rgba(107,76,110,0.2); color: #9b7c9e;">Growth & Change</span>
+      </div>
+      <div class="wall-quote">
+        <p>"I grew up in a family where money was tight. That shaped everything about how I approach finance today."</p>
+        <span class="wall-topic" style="background: rgba(196,114,78,0.2); color: #c4724e;">Origin Stories</span>
+      </div>
+      <div class="wall-quote highlight">
+        <p>"What I've found is companies just need good financial discipline. It's not about complexity, it's about clarity."</p>
+        <span class="wall-topic" style="background: rgba(201,168,76,0.2); color: var(--cv-gold);">Turnarounds</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONVERSATION MAP -->
+<section class="map-section">
+  <div class="map-inner reveal">
+    <span class="section-number">02</span>
+    <div class="section-label">Conversation Map</div>
+    <h2 class="section-heading">Topics Adam Explores</h2>
+
+    <div class="map-topics reveal-stagger">
+      <a href="#" class="map-topic-card" style="border-color: #c4724e;">
+        <div class="map-topic-name">Origin Stories</div>
+        <div class="map-topic-count">3 contributions</div>
+        <span class="map-topic-arrow">&rarr;</span>
+      </a>
+      <a href="#" class="map-topic-card" style="border-color: #7a9e7e;">
+        <div class="map-topic-name">Trust & Relationships</div>
+        <div class="map-topic-count">2 contributions</div>
+        <span class="map-topic-arrow">&rarr;</span>
+      </a>
+      <a href="#" class="map-topic-card" style="border-color: #d4a843;">
+        <div class="map-topic-name">Client Impact</div>
+        <div class="map-topic-count">4 contributions</div>
+        <span class="map-topic-arrow">&rarr;</span>
+      </a>
+      <a href="#" class="map-topic-card" style="border-color: #c94c60;">
+        <div class="map-topic-name">The Fractional Model</div>
+        <div class="map-topic-count">2 contributions</div>
+        <span class="map-topic-arrow">&rarr;</span>
+      </a>
+      <a href="#" class="map-topic-card" style="border-color: #6b4c6e;">
+        <div class="map-topic-name">Growth & Change</div>
+        <div class="map-topic-count">3 contributions</div>
+        <span class="map-topic-arrow">&rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- RELATED VOICES -->
+<section class="related-section">
+  <div class="related-inner reveal">
+    <div class="section-label">Connected Voices</div>
+    <h2 class="section-heading" style="margin-bottom: 32px;">Leaders Who Shared the Room</h2>
+
+    <div class="related-strip">
+      <a href="#" class="related-voice">
+        <div class="related-avatar">
+          <img src="http://localhost:3001/headshots/carter-varn.jpg" alt="Carter Varn" />
+        </div>
+        <div class="related-name">Carter Varn</div>
+        <div class="related-role">Founder, Strategic CFO</div>
+        <div class="related-shared">Finance Panel</div>
+      </a>
+      <a href="#" class="related-voice">
+        <div class="related-avatar">
+          <img src="http://localhost:3001/headshots/mike-deignan.jpg" alt="Mike Deignan" />
+        </div>
+        <div class="related-name">Mike Deignan</div>
+        <div class="related-role">CEO, Deignan Enterprises</div>
+        <div class="related-shared">Growth Roundtable</div>
+      </a>
+      <a href="#" class="related-voice">
+        <div class="related-avatar">
+          <img src="http://localhost:3001/headshots/dan-sweet.jpg" alt="Dan Sweet" />
+        </div>
+        <div class="related-name">Dan Sweet</div>
+        <div class="related-role">President, Sweet Consulting</div>
+        <div class="related-shared">Fractional Leaders</div>
+      </a>
+      <a href="#" class="related-voice">
+        <div class="related-avatar">
+          <img src="http://localhost:3001/headshots/anand-khanse.jpg" alt="Anand Khanse" />
+        </div>
+        <div class="related-name">Anand Khanse</div>
+        <div class="related-role">CEO, Alchemy Worx</div>
+        <div class="related-shared">Leadership Forum</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">CINCY VOICES</div>
+  <p>Cincinnati's leaders, in their own words.</p>
+</footer>
+
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => observer.observe(el));
+
+// Nav scroll effect
+const nav = document.getElementById('mainNav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 80);
+});
+
+// Parallax on hero image
+window.addEventListener('scroll', () => {
+  const hero = document.querySelector('.hero-bg img');
+  const scrolled = window.scrollY;
+  if (scrolled < window.innerHeight) {
+    hero.style.transform = `scale(${1.05 + scrolled * 0.0003}) translateY(${scrolled * 0.15}px)`;
+  }
+});
+</script>
+
+</body>
+</html>

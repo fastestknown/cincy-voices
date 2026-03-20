@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cincy Voices — Concept Gallery</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cv-cream: #f5f0e8;
+    --cv-navy: #1a1f2e;
+    --cv-gold: #c9a84c;
+    --cv-charcoal: #2d2d2d;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--cv-navy);
+    color: white;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    padding: 60px 60px 0;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .header-eyebrow {
+    font-size: 11px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--cv-gold);
+    margin-bottom: 16px;
+  }
+  .header-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .header-subtitle {
+    font-size: 17px;
+    color: rgba(255,255,255,0.5);
+    max-width: 600px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+  }
+  .header-stats {
+    display: flex;
+    gap: 40px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    color: var(--cv-gold);
+  }
+  .stat-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 64px 60px 0;
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+  }
+  .section-count {
+    font-size: 13px;
+    color: rgba(255,255,255,0.3);
+  }
+  .section-description {
+    font-size: 14px;
+    color: rgba(255,255,255,0.4);
+    margin-top: -20px;
+    margin-bottom: 32px;
+    max-width: 600px;
+    line-height: 1.6;
+  }
+
+  /* ── CONCEPT CARDS ── */
+  .concepts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+  .concept-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+    display: block;
+  }
+  .concept-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(255,255,255,0.15);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+  .concept-preview {
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+  }
+  .concept-preview-inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    opacity: 0.06;
+  }
+  .concept-preview-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: rgba(0,0,0,0.5);
+    padding: 4px 10px;
+    border-radius: 4px;
+    color: rgba(255,255,255,0.7);
+  }
+  .concept-info {
+    padding: 24px;
+  }
+  .concept-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    color: var(--cv-gold);
+    margin-bottom: 8px;
+  }
+  .concept-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+  .concept-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.6;
+  }
+  .concept-tags {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  .concept-tag {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* Preview backgrounds */
+  .preview-billboard { background: linear-gradient(135deg, var(--cv-navy), #2a3040); }
+  .preview-editorial { background: linear-gradient(135deg, var(--cv-cream), #e8e0d0); }
+  .preview-cinematic { background: linear-gradient(135deg, #1a2030, #2d3548); }
+  .preview-immersive { background: linear-gradient(135deg, #111820, #1a2535); }
+  .preview-manifesto { background: linear-gradient(135deg, #0a0a0a, #1a1a1a); }
+  .preview-documentary { background: linear-gradient(135deg, var(--cv-cream), #e0d8cc); }
+  .preview-interactive { background: linear-gradient(135deg, #0f1218, #1a1f2e); }
+  .preview-vertical { background: linear-gradient(135deg, #7a9e7e, #5a7e5e); }
+  .preview-magazine { background: linear-gradient(135deg, #c4724e, #a45a3a); }
+  .preview-mosaic { background: linear-gradient(135deg, #111, #1a1a1a); }
+  .preview-podcast { background: linear-gradient(135deg, var(--cv-cream), #e8e0d0); }
+  .preview-scroll { background: linear-gradient(135deg, #0a0a0a, #1a0a10); }
+  .preview-kinetic { background: linear-gradient(135deg, #0a0a0a, #1a1a0a); }
+  .preview-broll { background: linear-gradient(180deg, #0d0d0d, #1a1f2e, #0d0d0d); }
+  .preview-horizontal { background: linear-gradient(135deg, #1a1f2e, #0a0f18); }
+  .preview-dossier { background: linear-gradient(135deg, var(--cv-navy), #2a3040); }
+  .preview-timeline { background: linear-gradient(135deg, var(--cv-cream), #d8d0c4); }
+
+  /* ── FOOTER ── */
+  .footer {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 60px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    margin-top: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-text {
+    font-size: 13px;
+    color: rgba(255,255,255,0.3);
+  }
+  .footer-back {
+    font-size: 13px;
+    color: var(--cv-gold);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: opacity 0.2s;
+  }
+  .footer-back:hover { opacity: 0.7; }
+
+  @media (max-width: 768px) {
+    .header { padding: 40px 24px 0; }
+    .section { padding: 48px 24px 0; }
+    .concepts-grid { grid-template-columns: 1fr; }
+    .header-stats { gap: 24px; }
+    .footer { padding: 48px 24px; flex-direction: column; gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-eyebrow">Design Exploration</div>
+  <h1 class="header-title">Concept Gallery</h1>
+  <p class="header-subtitle">Design explorations for the Cincy Voices microsite. Each concept takes a fundamentally different approach to layout, motion, and storytelling.</p>
+  <div class="header-stats">
+    <div>
+      <div class="stat-num">17</div>
+      <div class="stat-label">Concepts</div>
+    </div>
+    <div>
+      <div class="stat-num">4</div>
+      <div class="stat-label">Page Types</div>
+    </div>
+    <div>
+      <div class="stat-num">5</div>
+      <div class="stat-label">Topic Variants</div>
+    </div>
+  </div>
+</header>
+
+<!-- HOMEPAGE CONCEPTS -->
+<section class="section">
+  <div class="section-header">
+    <h2 class="section-title">Homepage</h2>
+    <span class="section-count">5 concepts</span>
+  </div>
+  <p class="section-description">The front door. How do we introduce 17 leaders, 7 topics, and 182 clips in a single scroll?</p>
+  <div class="concepts-grid">
+    <a class="concept-card" href="homepage-a-billboard.html">
+      <div class="concept-preview preview-billboard">
+        <div class="concept-preview-inner">A</div>
+        <div class="concept-preview-badge">Dark</div>
+      </div>
+      <div class="concept-info">
+        <div class="concept-letter">Concept A</div>
+        <div class="concept-name">The Living Billboard</div>
+        <div class="concept-desc">Hero video moment, rotating leader spotlights, topic color blocks. Bold, cinematic, NYC-editorial energy.</div>
+        <div class="concept-tags">
+          <span class="concept-tag">Video Hero</span>
+          <span class="concept-tag">Dark Theme</span>
+          <span class="concept-tag">Motion-heavy</span>
+        </div>
+      </div>
+    </a>
+    <a class="concept-card" href="homepage-b-editorial.html">
+      <div class="concept-preview preview-editorial">
+        <div class="concept-preview-inner" style="color: var(--cv-charcoal);">B</div>
+        <div class="concept-preview-badge">Light</div>
+      </div>
+      <div class="concept-info">
+        <div class="concept-letter">Concept B</div>
+        <div class="concept-name">The Editorial</div>
+        <div class="concept-desc">Magazine-style layout with whitespace, typographic hierarchy, and curated quote pulls. Refined, warm, premium.</div>
+        <div class="concept-tags">
+          <span class="concept-tag">Cream Background</span>
+          <span class="concept-tag">Typography-led</span>
+          <span class="concept-tag">Editorial</span>
+        </div>
+      </div>
+    </a>
+    <a class="concept-card" href="homepage-c-kinetic.html">
+      <div class="concept-preview preview-kinetic">
+        <div class="concept-preview-inner">C</div>
+        <div class="concept-preview-badge">Dark</div>
+      </div>
+      <div class="concept-info">
+        <div class="concept-letter">Concept C</div>
+        <div class="concept-name">The Kinetic Grid</div>
+        <div class="concept-desc">Particle field hero, staggered text reveals, full face grid with hover overlays, infinite quote ticker, color-reactive topic blocks.</div>
+        <div class="concept-tags">
+          <span class="concept-tag">Particle Field</span>
+          <span class="concept-tag">Infinite Ticker</span>
+          <span class="concept-tag">CSS Animation</span>
+        </div>
+      </div>
+    </a>
+    <a class="concept-card" href="homepage-d-horizontal.html">
+      <div class="concept-preview preview-horizontal">
+        <div class="concept-preview-inner">D</div>
+        <div class="concept-preview-badge">Horizontal</div>
+      </div>
+      <div class="concept-info">
+        <div class="concept-letter">Concept D</div>
+        <div class="concept-name">The Horizontal Experience</div>
+        <div class="concept-desc">Vertical scroll converted to horizontal. Full-bleed leader slides, staggered quote wall, topic cards, panel counter. Cinematic panning.</div>
+        <div class="concept-tags">
+          <span class="concept-tag">Horizontal Scroll</span>
+          <span class="concept-tag">Full-bleed</span>
+          <span class="concept-tag">Panel Counter</span>
+        </div>
+      </div>
+    </a>
+    <a class="concept-card" href="homepage-e-broll.html">
+      <div class="concept-preview preview-broll">
+        <div class="concept-preview-inner">E</div>
+        <div class="concept-preview-badge">Video Billboard</div>
+      </div>
+      <div class="concept-info">
+        <div class="concept-letter">Concept E</div>
+        <div class="concept-name">The B-Roll Billboard</div>
+        <div class="concept-desc">Full-screen looping B-roll hero, scroll narrative explaining the event, leader grid, featured shareable clips and quotes with LinkedIn/X share buttons.</div>
+        <div class="concept-tags">
+          <span class="concept-tag">Video Background</span>
+          <span class="concept-tag">Social Sharing</span>
+          <span class="concept-tag">Narrative Scroll</span>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- LEADER PROFILE CONCEPTS -->
+<section class="section">
+  <div class="section-header">
+    <h2 class="section-title">Leader Profile</h2>
+    <span class="section-count">4 concepts</span>
+  </div>
+  <p class="section-description">Individual leader pages. Portrait, clips, quotes, topics, related voices. How do you make someone feel like you're in the room with them?</p>
+  <div class="concepts-grid">
+    <a class="concept-card" href="profile-a-cinematic.html">
+      <div class="concept-preview preview-cinematic">
+        <div class="concept-preview-inner">A</div>
+        <div class="concept-preview-badge">Split Layout</div>
+      </div>
+      <div class="concept-info">
+        <div class="concept-letter">Concept A</div>
+        <div class="concept-name">The Cinematic Split</div>
+        <div class="concept-desc">Side-by-side hero with portrait and info. Horizontal video reel, quote mosaic, topic bars. Clean and structured.</div>
+        <div class="concept-tags">
+          <span class="concept-tag">Split Hero</span>
+          <span class="concept-tag">Horizontal Scroll</span>
+          <span class="concept-tag">Grid Mosaic</span>
+        </div>
+      </div>
+    </a>
+    <a class="concept-card" href="profile-b-immersive.html">
+      <div class="concept-preview preview-immersive">
+        <div class="concept-preview-inner">B</div>
+        <div class="concept-preview-badge">Full-bleed</div>
+      </div>
+      <div class="concept-info">
+        <div class="concept-letter">Concept B</div>
+        <div class="concept-name">The Immersive Scroll</div>
+        <div class="concept-desc">Full-screen parallax portrait, floating profile card, alternating video theater, dark quote wall. Cinematic depth.</div>
+        <div class="concept-tags">
+          <span class="concept-tag">Parallax</span>
+          <span class="concept-tag">Full-bleed</span>
+          <span class="concept-tag">Immersive</span>
+        </div>
+      </div>
+    </a>
+    <a class="concept-card" href="profile-c-dossier.html">
+      <div class="concept-preview preview-dossier">
+        <div class="concept-preview-inner">C</div>
+        <div class="concept-preview-badge">Sticky Sidebar</div>
+      </div>
+      <div class="concept-info">
+        <div class="concept-letter">Concept C</div>
+        <div class="concept-name">The Dossier</div>
+        <div class="concept-desc">Sticky sidebar with portrait, stats, and tags. Scrolling main content with sequential sections. JetBrains Mono section labels. Structured, information-dense.</div>
+        <div class="concept-tags">
+          <span class="concept-tag">Sticky Sidebar</span>
+          <span class="concept-tag">Monospace Accents</span>
+          <span class="concept-tag">Info-dense</span>
+        </div>
+      </div>
+    </a>
+    <a class="concept-card" href="profile-d-timeline.html">
+      <div class="concept-preview preview-timeline">
+        <div class="concept-preview-inner" style="color: var(--cv-charcoal);">D</div>
+        <div class="concept-preview-badge">Light</div>
+      </div>
+      <div class="concept-info">
+        <div class="concept-letter">Concept D</div>
+        <div class="concept-name">The Timeline</div>
+        <div class="concept-desc">Split-screen hero, then a vertical timeline threading clips and quotes in conversation order. Alternating sides, scroll-triggered reveals, gold center dots.</div>
+        <div class="concept-tags">
+          <span class="concept-tag">Split Hero</span>
+          <span class="concept-tag">Center Timeline</span>
+          <span class="concept-tag">Scroll Reveals</span>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ABOUT PAGE CONCEPTS -->
+<section class="section">
+  <div class="section-header">
+    <h2 class="section-title">About Page</h2>
+    <span class="section-count">3 concepts</span>
+  </div>
+  <p class="section-description">The story behind the project. What is Cincy Voices, why does it exist, who made it, and what happens next?</p>
+  <div class="concepts-grid">
+    <a class="concept-card" href="about-a-manifesto.html">
+      <div class="concept-preview preview-manifesto">
+        <div class="concept-preview-inner">A</div>
+        <div class="concept-preview-badge">Dark</div>
+      </div>
+      <div class="concept-info">
+        <div class="concept-letter">Concept A</div>
+        <div class="concept-name">The Manifesto</div>
+        <div class="concept-desc">Dark, bold, chapter-based storytelling. Giant typography, marquee leader faces, stats grid. Feels like a movement.</div>
+        <div class="concept-tags">
+          <span class="concept-tag">Dark Theme</span>
+          <span class="concept-tag">Giant Type</span>
+          <span class="concept-tag">Chapters</span>
+        </div>
+      </div>
+    </a>
+    <a class="concept-card" href="about-b-documentary.html">
+      <div class="concept-preview preview-documentary">
+        <div class="concept-preview-inner" style="color: var(--cv-charcoal);">B</div>
+        <div class="concept-preview-badge">Light</div>
+      </div>
+      <div class="concept-info">
+        <div class="concept-letter">Concept B</div>
+        <div class="concept-name">The Documentary</div>
+        <div class="concept-desc">Cream editorial with photo mosaic, horizontal timeline, behind-the-scenes grid, interactive topic spectrum. Warm storytelling.</div>
+        <div class="concept-tags">
+          <span class="concept-tag">Timeline</span>
+          <span class="concept-tag">Photo Mosaic</span>
+          <span class="concept-tag">Interactive</span>
+        </div>
+      </div>
+    </a>
+    <a class="concept-card" href="about-c-interactive.html">
+      <div class="concept-preview preview-interactive">
+        <div class="concept-preview-inner">C</div>
+        <div class="concept-preview-badge">Full-screen Panels</div>
+      </div>
+      <div class="concept-info">
+        <div class="concept-letter">Concept C</div>
+        <div class="concept-name">The Interactive Scroll</div>
+        <div class="concept-desc">Full-viewport panels, 3D method cards, animated counters, orbiting topic visualization, scroll progress bar. Experiential.</div>
+        <div class="concept-tags">
+          <span class="concept-tag">Panel Sections</span>
+          <span class="concept-tag">3D Cards</span>
+          <span class="concept-tag">Orbit Animation</span>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- TOPIC THREAD CONCEPTS -->
+<section class="section">
+  <div class="section-header">
+    <h2 class="section-title">Topic Thread</h2>
+    <span class="section-count">5 concepts</span>
+  </div>
+  <p class="section-description">Topic pages weave clips and quotes from multiple leaders into a single conversation thread. Five radically different approaches to the same content structure.</p>
+  <div class="concepts-grid">
+    <a class="concept-card" href="topic-a-vertical-scroll.html">
+      <div class="concept-preview preview-vertical">
+        <div class="concept-preview-inner">A</div>
+        <div class="concept-preview-badge">Trust & Relationships</div>
+      </div>
+      <div class="concept-info">
+        <div class="concept-letter">Concept A</div>
+        <div class="concept-name">Vertical Conversation Flow</div>
+        <div class="concept-desc">Messaging-app inspired timeline. Vertical line connecting alternating quote and video cards. Feels like eavesdropping on a great conversation.</div>
+        <div class="concept-tags">
+          <span class="concept-tag">Timeline</span>
+          <span class="concept-tag">Chat-inspired</span>
+          <span class="concept-tag">Scroll Reveals</span>
+        </div>
+      </div>
+    </a>
+    <a class="concept-card" href="topic-b-magazine.html">
+      <div class="concept-preview preview-magazine">
+        <div class="concept-preview-inner">B</div>
+        <div class="concept-preview-badge">Origin Stories</div>
+      </div>
+      <div class="concept-info">
+        <div class="concept-letter">Concept B</div>
+        <div class="concept-name">The Magazine Spread</div>
+        <div class="concept-desc">Editorial two-column spreads. Full-bleed video left, pull quote right, alternating. Drop cap intro, topic-colored pull quote dividers.</div>
+        <div class="concept-tags">
+          <span class="concept-tag">Split Spreads</span>
+          <span class="concept-tag">Editorial</span>
+          <span class="concept-tag">Drop Cap</span>
+        </div>
+      </div>
+    </a>
+    <a class="concept-card" href="topic-c-mosaic.html">
+      <div class="concept-preview preview-mosaic">
+        <div class="concept-preview-inner">C</div>
+        <div class="concept-preview-badge">Client Impact</div>
+      </div>
+      <div class="concept-info">
+        <div class="concept-letter">Concept C</div>
+        <div class="concept-name">The Mosaic Wall</div>
+        <div class="concept-desc">Dense, Pinterest-style grid mixing video thumbnails and quote cards. Staggered reveal animation. Dark, immersive, exploratory.</div>
+        <div class="concept-tags">
+          <span class="concept-tag">Mosaic Grid</span>
+          <span class="concept-tag">Dark Theme</span>
+          <span class="concept-tag">Staggered Reveal</span>
+        </div>
+      </div>
+    </a>
+    <a class="concept-card" href="topic-d-podcast.html">
+      <div class="concept-preview preview-podcast">
+        <div class="concept-preview-inner" style="color: var(--cv-charcoal);">D</div>
+        <div class="concept-preview-badge">Culture & People</div>
+      </div>
+      <div class="concept-info">
+        <div class="concept-letter">Concept D</div>
+        <div class="concept-name">The Podcast Studio</div>
+        <div class="concept-desc">Episode-list format with thumbnails, speakers, and durations. Waveform hero, now-playing bar, quote cards. Audio-first feel on a video platform.</div>
+        <div class="concept-tags">
+          <span class="concept-tag">Episode List</span>
+          <span class="concept-tag">Now Playing</span>
+          <span class="concept-tag">Light Theme</span>
+        </div>
+      </div>
+    </a>
+    <a class="concept-card" href="topic-e-immersive.html">
+      <div class="concept-preview preview-scroll">
+        <div class="concept-preview-inner">E</div>
+        <div class="concept-preview-badge">Fractional Model</div>
+      </div>
+      <div class="concept-info">
+        <div class="concept-letter">Concept E</div>
+        <div class="concept-name">The Immersive Scroll</div>
+        <div class="concept-desc">Full-viewport panels, one clip per screen. Side nav dots, scroll progress, horizontal quote carousel. Cinematic, focused, high-impact.</div>
+        <div class="concept-tags">
+          <span class="concept-tag">Full-screen Panels</span>
+          <span class="concept-tag">Nav Dots</span>
+          <span class="concept-tag">Quote Carousel</span>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-text">Cincy Voices — Design Exploration Phase &middot; Work With Meaning</div>
+  <a class="footer-back" href="/">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Back to site
+  </a>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cincy Voices — Homepage Concept A: The Living Billboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --navy: #1a2635;
+    --cream: #f5f1eb;
+    --charcoal: #2c3e50;
+    --gold: #c4a962;
+    --muted: #7a8fa3;
+    --sage: #9db4a1;
+  }
+  body { font-family: 'Inter', sans-serif; background: var(--navy); color: var(--charcoal); overflow-x: hidden; }
+  .font-display { font-family: 'Playfair Display', serif; }
+
+  /* ─── HERO: Full-bleed video billboard ─── */
+  .hero {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .hero-video-grid {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 2px;
+    opacity: 0.35;
+  }
+  .hero-video-cell {
+    overflow: hidden;
+    position: relative;
+  }
+  .hero-video-cell img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: slowZoom 20s ease-in-out infinite alternate;
+  }
+  .hero-video-cell:nth-child(2) img { animation-delay: -3s; }
+  .hero-video-cell:nth-child(3) img { animation-delay: -6s; }
+  .hero-video-cell:nth-child(4) img { animation-delay: -9s; }
+  .hero-video-cell:nth-child(5) img { animation-delay: -12s; }
+  .hero-video-cell:nth-child(6) img { animation-delay: -15s; }
+  @keyframes slowZoom {
+    from { transform: scale(1); }
+    to { transform: scale(1.15); }
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(26,38,53,0.92) 0%, rgba(30,58,95,0.85) 50%, rgba(26,38,53,0.92) 100%);
+  }
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 0 2rem;
+  }
+  .hero-badge {
+    display: inline-block;
+    padding: 0.4rem 1.2rem;
+    border: 1px solid rgba(196,169,98,0.4);
+    border-radius: 100px;
+    color: var(--gold);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease-out 0.3s forwards;
+  }
+  .hero-title {
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    font-weight: 900;
+    color: #f0ede5;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    opacity: 0;
+    animation: fadeUp 1s ease-out 0.6s forwards;
+  }
+  .hero-title .accent {
+    display: block;
+    background: linear-gradient(135deg, var(--gold) 0%, #e8d5a0 50%, var(--gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-subtitle {
+    margin-top: 1.5rem;
+    font-size: 1.15rem;
+    color: rgba(240,237,229,0.5);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    opacity: 0;
+    animation: fadeUp 0.8s ease-out 1s forwards;
+  }
+  .hero-cta {
+    margin-top: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease-out 1.3s forwards;
+  }
+  .hero-cta a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.9rem 2rem;
+    background: var(--gold);
+    color: var(--navy);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-radius: 100px;
+    transition: all 0.3s ease;
+  }
+  .hero-cta a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(196,169,98,0.3);
+  }
+  .scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(240,237,229,0.3);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    animation: bounce 2s ease-in-out infinite;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(196,169,98,0.5), transparent);
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  /* ─── QUOTE TICKER ─── */
+  .ticker-section {
+    background: var(--navy);
+    border-top: 1px solid rgba(196,169,98,0.15);
+    border-bottom: 1px solid rgba(196,169,98,0.15);
+    overflow: hidden;
+    padding: 1.2rem 0;
+  }
+  .ticker-track {
+    display: flex;
+    gap: 4rem;
+    animation: scroll 40s linear infinite;
+    white-space: nowrap;
+  }
+  .ticker-item {
+    flex-shrink: 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: rgba(240,237,229,0.4);
+    font-style: italic;
+  }
+  .ticker-item .dash { color: var(--gold); margin: 0 0.75rem; }
+  @keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ─── LEADERS SECTION ─── */
+  .leaders-section {
+    background: var(--cream);
+    padding: 6rem 2rem;
+    position: relative;
+  }
+  .leaders-section::before {
+    content: '';
+    position: absolute;
+    top: -80px;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(to bottom, var(--navy), var(--cream));
+  }
+  .section-header {
+    max-width: 1200px;
+    margin: 0 auto 4rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    color: var(--charcoal);
+    line-height: 1.1;
+  }
+  .section-count {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .leader-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .leader-card {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    background: white;
+    border: 1px solid rgba(229,221,210,0.8);
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  .leader-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .leader-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(26,38,53,0.12);
+    border-color: var(--gold);
+  }
+  .leader-card-image {
+    position: relative;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+  }
+  .leader-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    transition: transform 0.6s ease;
+  }
+  .leader-card:hover .leader-card-image img {
+    transform: scale(1.05);
+  }
+  .leader-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(26,38,53,0.7) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .leader-card:hover .leader-card-overlay { opacity: 1; }
+  .leader-card-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    width: 48px;
+    height: 48px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.4s ease;
+  }
+  .leader-card:hover .leader-card-play {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  .leader-card-play svg { width: 18px; height: 18px; fill: var(--navy); margin-left: 2px; }
+  .leader-card-info {
+    padding: 1.25rem 1.5rem;
+  }
+  .leader-card-name {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--charcoal);
+  }
+  .leader-card-role {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 0.25rem;
+    line-height: 1.4;
+  }
+  .leader-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.75rem;
+  }
+  .leader-card-tag {
+    padding: 0.2rem 0.6rem;
+    border-radius: 100px;
+    font-size: 0.65rem;
+    font-weight: 500;
+    background: rgba(157,180,161,0.12);
+    color: var(--sage);
+  }
+
+  /* ─── TOPICS SECTION ─── */
+  .topics-section {
+    background: var(--cream);
+    padding: 2rem 2rem 6rem;
+  }
+  .topics-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.25rem;
+  }
+  .topic-card {
+    position: relative;
+    padding: 2rem;
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  .topic-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .topic-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.08;
+    background: currentColor;
+    transition: opacity 0.3s ease;
+  }
+  .topic-card:hover::before { opacity: 0.14; }
+  .topic-card-border {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    border-radius: 4px 0 0 4px;
+  }
+  .topic-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.06);
+  }
+  .topic-card-name {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    position: relative;
+  }
+  .topic-card-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+    line-height: 1.6;
+    position: relative;
+  }
+  .topic-card-meta {
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    color: var(--muted);
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .topic-card-arrow {
+    margin-left: auto;
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: all 0.3s ease;
+    font-size: 1rem;
+  }
+  .topic-card:hover .topic-card-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* ─── FEATURED QUOTE ─── */
+  .featured-quote-section {
+    background: var(--navy);
+    padding: 8rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .featured-quote-bg {
+    position: absolute;
+    inset: 0;
+    opacity: 0.1;
+  }
+  .featured-quote-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(20px);
+  }
+  .featured-quote {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+  .featured-quote-mark {
+    font-family: 'Playfair Display', serif;
+    font-size: 6rem;
+    color: var(--gold);
+    line-height: 0.5;
+    opacity: 0.4;
+  }
+  .featured-quote-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+    font-weight: 700;
+    color: rgba(240,237,229,0.9);
+    line-height: 1.4;
+    margin-top: 1.5rem;
+  }
+  .featured-quote-author {
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .featured-quote-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top;
+    border: 2px solid rgba(196,169,98,0.3);
+  }
+  .featured-quote-name {
+    color: var(--gold);
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+  .featured-quote-role {
+    color: rgba(240,237,229,0.4);
+    font-size: 0.8rem;
+    margin-top: 0.15rem;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--navy);
+    border-top: 1px solid rgba(196,169,98,0.1);
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+  footer p {
+    color: rgba(240,237,229,0.3);
+    font-size: 0.8rem;
+  }
+  footer a { color: var(--gold); text-decoration: none; }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    .hero-video-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr;
+    }
+    .hero-title { font-size: 3.5rem; }
+    .section-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+    .leader-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .topics-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    .leader-grid { grid-template-columns: 1fr; }
+    .hero-video-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav style="position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(26,38,53,0.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(196,169,98,0.1);">
+  <a href="#" class="font-display" style="color:#f0ede5;font-size:1.1rem;font-weight:700;text-decoration:none;">Cincy Voices</a>
+  <div style="display:flex;gap:2rem;">
+    <a href="#leaders" style="color:rgba(240,237,229,0.5);text-decoration:none;font-size:0.85rem;font-weight:500;transition:color 0.3s;" onmouseover="this.style.color='#c4a962'" onmouseout="this.style.color='rgba(240,237,229,0.5)'">Leaders</a>
+    <a href="#topics" style="color:rgba(240,237,229,0.5);text-decoration:none;font-size:0.85rem;font-weight:500;transition:color 0.3s;" onmouseover="this.style.color='#c4a962'" onmouseout="this.style.color='rgba(240,237,229,0.5)'">Topics</a>
+    <a href="#" style="color:rgba(240,237,229,0.5);text-decoration:none;font-size:0.85rem;font-weight:500;transition:color 0.3s;" onmouseover="this.style.color='#c4a962'" onmouseout="this.style.color='rgba(240,237,229,0.5)'">About</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-video-grid">
+    <div class="hero-video-cell"><img src="https://image.mux.com/Nsvlsygof2COq01S1Px2yYQi7owUIKtkbPyqL8bdRRqE/thumbnail.jpg?time=4&width=640" alt=""></div>
+    <div class="hero-video-cell"><img src="https://image.mux.com/oavX1ZVEaK4ykO2m7R2IfiWiuvMB4MUQZzfC02zrzc14/thumbnail.jpg?time=3&width=640" alt=""></div>
+    <div class="hero-video-cell"><img src="https://image.mux.com/2NZdo5edrrUTGNJt2IIKcs4HLGZPAB228kVeePWUwkY/thumbnail.jpg?time=5&width=640" alt=""></div>
+    <div class="hero-video-cell"><img src="https://image.mux.com/SVKO2g5Xv00bzqieuukjPsEKCxqLH5VUp1OM8vEZt55s/thumbnail.jpg?time=2&width=640" alt=""></div>
+    <div class="hero-video-cell"><img src="https://image.mux.com/sqoFuhsu6qqpdXEIhdZc00yTXSauTouY6JNmOsWsvzO8/thumbnail.jpg?time=2&width=640" alt=""></div>
+    <div class="hero-video-cell"><img src="https://image.mux.com/vYNyD3hv02MADAnMA2hk02eALAAwWRhM43lYtdcJ8JXTI/thumbnail.jpg?time=3&width=640" alt=""></div>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Cincinnati's Fractional Leaders</div>
+    <h1 class="hero-title font-display">
+      CINCY<br><span class="accent">VOICES</span>
+    </h1>
+    <p class="hero-subtitle">17 leaders. Real conversations. Stories that hit different.</p>
+    <div class="hero-cta">
+      <a href="#leaders">Meet the Leaders <span>&darr;</span></a>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- ═══ QUOTE TICKER ═══ -->
+<section class="ticker-section">
+  <div class="ticker-track">
+    <span class="ticker-item">"We don't trade dollars for hours, we trade dollars for impact."<span class="dash">&mdash;</span>Kevin Lawson</span>
+    <span class="ticker-item">"Trust is the operating system for fractional work."<span class="dash">&mdash;</span>Ford Knowlton</span>
+    <span class="ticker-item">"We grew 54% in 4 years. We doubled the size of our company."<span class="dash">&mdash;</span>Christine Bell</span>
+    <span class="ticker-item">"Design is not the person who makes things pretty. We understand how to problem solve visually."<span class="dash">&mdash;</span>Susannah Strydom</span>
+    <span class="ticker-item">"A brand is not just for recruiting new customers. It's about building a culture."<span class="dash">&mdash;</span>Tobias Brauer</span>
+    <span class="ticker-item">"The number one reason people aren't thriving is they're not in an environment that supports them."<span class="dash">&mdash;</span>Will Phillips</span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item">"We don't trade dollars for hours, we trade dollars for impact."<span class="dash">&mdash;</span>Kevin Lawson</span>
+    <span class="ticker-item">"Trust is the operating system for fractional work."<span class="dash">&mdash;</span>Ford Knowlton</span>
+    <span class="ticker-item">"We grew 54% in 4 years. We doubled the size of our company."<span class="dash">&mdash;</span>Christine Bell</span>
+    <span class="ticker-item">"Design is not the person who makes things pretty. We understand how to problem solve visually."<span class="dash">&mdash;</span>Susannah Strydom</span>
+    <span class="ticker-item">"A brand is not just for recruiting new customers. It's about building a culture."<span class="dash">&mdash;</span>Tobias Brauer</span>
+    <span class="ticker-item">"The number one reason people aren't thriving is they're not in an environment that supports them."<span class="dash">&mdash;</span>Will Phillips</span>
+  </div>
+</section>
+
+<!-- ═══ LEADERS ═══ -->
+<section class="leaders-section" id="leaders">
+  <div class="section-header">
+    <div>
+      <div class="section-label">The Voices</div>
+      <h2 class="section-title font-display">Meet the Leaders</h2>
+    </div>
+    <div class="section-count">17 fractional leaders from Cincinnati</div>
+  </div>
+  <div class="leader-grid" id="leaderGrid">
+    <!-- Leaders injected by JS -->
+  </div>
+</section>
+
+<!-- ═══ FEATURED QUOTE ═══ -->
+<section class="featured-quote-section">
+  <div class="featured-quote-bg">
+    <img src="https://image.mux.com/Nsvlsygof2COq01S1Px2yYQi7owUIKtkbPyqL8bdRRqE/thumbnail.jpg?time=8&width=1920" alt="">
+  </div>
+  <div class="featured-quote">
+    <div class="featured-quote-mark font-display">&ldquo;</div>
+    <p class="featured-quote-text">At the end of our days, nobody's really going to care how many consulting hours or how many engagements we sold. They're going to care about the impact we made and the ripple that we made when those waves hit the shore.</p>
+    <div class="featured-quote-author">
+      <img class="featured-quote-avatar" src="http://localhost:3001/headshots/adam-reynolds.jpg" alt="Adam Reynolds">
+      <div>
+        <div class="featured-quote-name">Adam Reynolds</div>
+        <div class="featured-quote-role">Founder & CEO, Thrive CFO</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TOPICS ═══ -->
+<section class="topics-section" id="topics">
+  <div class="section-header">
+    <div>
+      <div class="section-label">The Conversations</div>
+      <h2 class="section-title font-display">Explore by Topic</h2>
+    </div>
+  </div>
+  <div class="topics-grid" id="topicsGrid">
+    <!-- Topics injected by JS -->
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <p>Cincy Voices is a <a href="https://workwithmean.ing" target="_blank">Work With Meaning</a> production</p>
+</footer>
+
+<script>
+const leaders = [
+  { slug: "adam-reynolds", name: "Adam Reynolds", role: "Founder & CEO, Thrive CFO", tags: ["Turnarounds","Financial Strategy","Growth Planning"] },
+  { slug: "amy-connor", name: "Amy Connor", role: "Founder, CMO on Loan", tags: ["Marketing Strategy","Brand Building","Mid-Market Growth"] },
+  { slug: "amy-sheehy", name: "Amy Sheehy", role: "Founder, Seed Consulting", tags: [] },
+  { slug: "brennan-sweeney", name: "Brennan Sweeney", role: "Founder, Sweeney Consulting", tags: [] },
+  { slug: "carter-varn", name: "Carter Varn", role: "Fractional CIO, Advanced Caliber", tags: [] },
+  { slug: "christine-bell", name: "Christine Bell", role: "Fractional EOS Integrator", tags: [] },
+  { slug: "dan-keck", name: "Dan Keck", role: "Area President, FocusCFO", tags: [] },
+  { slug: "emily-siegel", name: "Emily Siegel", role: "Fractional Chief of Design & Strategy", tags: [] },
+  { slug: "ford-knowlton", name: "Ford Knowlton", role: "Host / Moderator, Work With Meaning", tags: [] },
+  { slug: "kevin-lawson", name: "Kevin Lawson", role: "Fractional VP of Sales", tags: ["Sales Systemization","B2B Sales Strategy"] },
+  { slug: "mary-kay-laird", name: "Mary Kay Laird", role: "Business Development Director", tags: ["Outsourced Accounting","PE Readiness"] },
+  { slug: "meredith-arlinghaus", name: "Meredith Arlinghaus", role: "Founder & CEO, EmpowerAP", tags: [] },
+  { slug: "susannah-strydom", name: "Susannah Strydom", role: "Fractional Creative & Brand Strategy", tags: [] },
+  { slug: "tim-waymire", name: "Tim Waymire", role: "Chief Development Officer", tags: ["M&A Advisory","Exit Planning"] },
+  { slug: "tobias-brauer", name: "Tobias Brauer", role: "Founder, SolvStat", tags: [] },
+  { slug: "todd-wilkowski", name: "Todd Wilkowski", role: "Fractional General Counsel", tags: ["Exit Strategy","Business Law"] },
+  { slug: "will-phillips", name: "Will Phillips", role: "Fractional People & Operations", tags: [] },
+];
+
+const topics = [
+  { name: "Trust & Relationships", color: "#7a9e7e", desc: "How fractional leaders build trust fast and create lasting partnerships" },
+  { name: "Origin Stories", color: "#c4724e", desc: "The moments that pulled leaders into the fractional world" },
+  { name: "Client Impact", color: "#d4a843", desc: "Real transformation stories from the trenches" },
+  { name: "Culture & People", color: "#5b8ba0", desc: "Building teams and shaping organizations from the outside" },
+  { name: "The Fractional Model", color: "#c94c60", desc: "What makes fractional leadership work and why it's growing" },
+  { name: "Growth & Change", color: "#6b4c6e", desc: "Driving scale, navigating pivots, and embracing evolution" },
+  { name: "Collaboration", color: "#b0884c", desc: "How fractionals work together to multiply impact" },
+];
+
+// Render leaders
+const grid = document.getElementById('leaderGrid');
+leaders.forEach((l, i) => {
+  const card = document.createElement('div');
+  card.className = 'leader-card';
+  card.style.transitionDelay = `${i * 0.05}s`;
+  card.innerHTML = `
+    <div class="leader-card-image">
+      <img src="http://localhost:3001/headshots/${l.slug}.jpg" alt="${l.name}">
+      <div class="leader-card-overlay"></div>
+      <div class="leader-card-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    </div>
+    <div class="leader-card-info">
+      <div class="leader-card-name font-display">${l.name}</div>
+      <div class="leader-card-role">${l.role}</div>
+      ${l.tags.length ? `<div class="leader-card-tags">${l.tags.slice(0,3).map(t => `<span class="leader-card-tag">${t}</span>`).join('')}</div>` : ''}
+    </div>
+  `;
+  grid.appendChild(card);
+});
+
+// Render topics
+const tGrid = document.getElementById('topicsGrid');
+topics.forEach((t, i) => {
+  const card = document.createElement('div');
+  card.className = 'topic-card';
+  card.style.color = t.color;
+  card.style.transitionDelay = `${i * 0.06}s`;
+  card.innerHTML = `
+    <div class="topic-card-border" style="background:${t.color}"></div>
+    <div class="topic-card-name font-display" style="color:${t.color}">${t.name}</div>
+    <div class="topic-card-desc">${t.desc}</div>
+    <div class="topic-card-meta">
+      <span>Explore thread</span>
+      <span class="topic-card-arrow" style="color:${t.color}">&rarr;</span>
+    </div>
+  `;
+  tGrid.appendChild(card);
+});
+
+// Intersection Observer for scroll reveals
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.leader-card, .topic-card').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

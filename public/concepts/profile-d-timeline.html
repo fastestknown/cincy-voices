@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile D — The Timeline | Cincy Voices</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --cream: #f5f0e8;
+  --navy: #1a1f2e;
+  --gold: #c9a84c;
+  --charcoal: #2d2d2d;
+  --line: #d4cfc4;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--cream);
+  color: var(--charcoal);
+  overflow-x: hidden;
+}
+
+/* ── BACK NAV ── */
+.back {
+  position: fixed;
+  top: 2rem;
+  left: 2rem;
+  z-index: 100;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--charcoal);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  mix-blend-mode: difference;
+}
+.back::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.3s;
+}
+.back:hover::before { width: 40px; }
+
+/* ── HERO: SPLIT SCREEN ── */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+
+.hero-photo {
+  position: relative;
+  overflow: hidden;
+}
+.hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.8);
+  transition: filter 1s ease;
+}
+.hero-photo:hover img { filter: saturate(1); }
+.hero-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(26,31,46,0.3));
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6rem 5rem;
+  position: relative;
+}
+.hero-content::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 15%;
+  bottom: 15%;
+  width: 1px;
+  background: var(--line);
+}
+
+.hero-eyebrow {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  margin-bottom: 2rem;
+  font-weight: 500;
+}
+
+.hero-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 5vw, 4.5rem);
+  line-height: 1.1;
+  margin-bottom: 1rem;
+  color: var(--navy);
+}
+
+.hero-role {
+  font-size: 1.1rem;
+  color: #888;
+  margin-bottom: 3rem;
+  font-weight: 300;
+}
+
+.hero-quote {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.5rem;
+  line-height: 1.6;
+  color: var(--navy);
+  border-left: 3px solid var(--gold);
+  padding-left: 1.5rem;
+  margin-bottom: 3rem;
+  max-width: 480px;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 3rem;
+}
+.stat-item {
+  text-align: left;
+}
+.stat-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  color: var(--navy);
+  line-height: 1;
+}
+.stat-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #999;
+  margin-top: 0.3rem;
+}
+
+/* ── TIMELINE ── */
+.timeline-section {
+  padding: 8rem 0;
+  position: relative;
+}
+
+.timeline-header {
+  text-align: center;
+  margin-bottom: 6rem;
+}
+.timeline-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  color: var(--navy);
+  margin-bottom: 0.5rem;
+}
+.timeline-header p {
+  color: #999;
+  font-size: 0.9rem;
+}
+
+/* The central line */
+.timeline {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--line);
+  transform: translateX(-50%);
+}
+
+.timeline-node {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  margin-bottom: 6rem;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.timeline-node.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Center dot */
+.timeline-node::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 1.5rem;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--gold);
+  transform: translateX(-50%);
+  z-index: 2;
+  box-shadow: 0 0 0 4px var(--cream);
+}
+
+/* Alternating layout */
+.timeline-node:nth-child(even) .node-content { order: 2; text-align: left; }
+.timeline-node:nth-child(even) .node-media { order: 1; }
+.timeline-node:nth-child(odd) .node-content { text-align: right; }
+
+.node-content {
+  padding-top: 0.5rem;
+}
+
+.node-type {
+  display: inline-block;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 0.3rem 0.8rem;
+  border-radius: 2px;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+.node-type.clip {
+  background: var(--navy);
+  color: white;
+}
+.node-type.quote {
+  background: var(--gold);
+  color: white;
+}
+
+.node-topic {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+}
+
+.node-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  line-height: 1.4;
+  color: var(--navy);
+  margin-bottom: 0.75rem;
+}
+
+.node-excerpt {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: #666;
+}
+
+.node-duration {
+  font-size: 0.75rem;
+  color: #aaa;
+  margin-top: 0.75rem;
+}
+
+/* Media cards */
+.node-media {
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  aspect-ratio: 16/10;
+  cursor: pointer;
+}
+.node-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.node-media:hover img { transform: scale(1.04); }
+.node-media .play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 56px;
+  height: 56px;
+  background: rgba(255,255,255,0.95);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.node-media:hover .play-btn { opacity: 1; }
+.play-btn::after {
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 14px solid var(--navy);
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  margin-left: 3px;
+}
+
+/* Quote-only nodes */
+.node-quote-card {
+  background: var(--navy);
+  color: white;
+  padding: 2.5rem;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.node-quote-card .big-mark {
+  font-family: 'Playfair Display', serif;
+  font-size: 5rem;
+  color: var(--gold);
+  line-height: 0.5;
+  margin-bottom: 1rem;
+}
+.node-quote-card .quote-text {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.3rem;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.9);
+}
+
+/* ── TOPIC THREADS ── */
+.topics-section {
+  padding: 6rem 4rem;
+  background: var(--navy);
+  color: white;
+}
+
+.topics-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+.topics-subtitle {
+  color: rgba(255,255,255,0.4);
+  font-size: 0.85rem;
+  margin-bottom: 3rem;
+}
+
+.topics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.topic-cell {
+  padding: 2rem;
+  background: var(--navy);
+  cursor: pointer;
+  transition: background 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.topic-cell:hover {
+  background: rgba(255,255,255,0.05);
+}
+.topic-cell::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 0;
+  transition: height 0.4s ease;
+}
+.topic-cell:hover::before { height: 100%; }
+
+.topic-cell[data-color="trust"]::before { background: #7a9e7e; }
+.topic-cell[data-color="origin"]::before { background: #c4724e; }
+.topic-cell[data-color="client"]::before { background: #d4a843; }
+.topic-cell[data-color="culture"]::before { background: #5b8ba0; }
+.topic-cell[data-color="fractional"]::before { background: #c94c60; }
+.topic-cell[data-color="growth"]::before { background: #6b4c6e; }
+.topic-cell[data-color="collaboration"]::before { background: #b0884c; }
+
+.topic-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+.topic-count {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ── RELATED VOICES ── */
+.related-section {
+  padding: 6rem 4rem;
+}
+
+.related-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  color: var(--navy);
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.related-row {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.related-voice {
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+.related-voice:hover { transform: translateY(-4px); }
+
+.related-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  filter: grayscale(1);
+  transition: filter 0.4s;
+  margin-bottom: 0.75rem;
+}
+.related-voice:hover .related-avatar { filter: grayscale(0); }
+
+.related-name {
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: var(--navy);
+}
+.related-role-text {
+  font-size: 0.75rem;
+  color: #999;
+}
+
+/* ── FOOTER ── */
+.profile-footer {
+  text-align: center;
+  padding: 4rem;
+  border-top: 1px solid var(--line);
+}
+.footer-link {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+  .hero-photo { height: 50vh; }
+  .hero-content {
+    padding: 3rem 2rem;
+  }
+  .hero-content::before { display: none; }
+  .hero-quote { font-size: 1.2rem; }
+  .hero-stats { gap: 2rem; }
+
+  .timeline::before { left: 1.5rem; }
+  .timeline-node {
+    grid-template-columns: 1fr;
+    padding-left: 3.5rem;
+    gap: 1.5rem;
+  }
+  .timeline-node::before {
+    left: 1.5rem;
+  }
+  .timeline-node:nth-child(odd) .node-content,
+  .timeline-node:nth-child(even) .node-content {
+    text-align: left;
+    order: 1;
+  }
+  .timeline-node:nth-child(even) .node-media { order: 2; }
+
+  .topics-section { padding: 4rem 1.5rem; }
+  .topics-grid { grid-template-columns: 1fr; }
+  .related-row { gap: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<a href="/concepts/" class="back">All Voices</a>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-photo">
+    <img src="/headshots/molly-duffee.jpg" alt="Molly Duffee">
+  </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Cincy Voices — Leader Profile</div>
+    <h1 class="hero-name">Molly<br>Duffee</h1>
+    <div class="hero-role">Fractional CMO &amp; Brand Strategist</div>
+    <blockquote class="hero-quote">
+      "I think the best brands are built by people who are willing to be uncomfortably honest about who they are."
+    </blockquote>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-number">14</div>
+        <div class="stat-label">Clips</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">5</div>
+        <div class="stat-label">Quotes</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">4</div>
+        <div class="stat-label">Topics</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TIMELINE ── -->
+<section class="timeline-section">
+  <div class="timeline-header">
+    <h2>The Conversation</h2>
+    <p>Clips and quotes from Molly's interview, in the order they surfaced</p>
+  </div>
+
+  <div class="timeline">
+
+    <!-- Node 1: Clip -->
+    <div class="timeline-node">
+      <div class="node-content">
+        <span class="node-type clip">Clip</span>
+        <div class="node-topic" style="color: #c4724e;">Origin Stories</div>
+        <div class="node-title">How I Fell Into Fractional Work</div>
+        <div class="node-excerpt">The transition wasn't planned — it was a series of doors opening at the right time, and having the nerve to walk through them.</div>
+        <div class="node-duration">2:34</div>
+      </div>
+      <div class="node-media">
+        <img src="https://image.mux.com/sample/thumbnail.jpg?time=2&width=640" alt="Clip thumbnail"
+             onerror="this.style.background='linear-gradient(135deg, #c4724e 0%, #1a1f2e 100%)'; this.style.minHeight='200px'; this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'">
+        <div class="play-btn"></div>
+      </div>
+    </div>
+
+    <!-- Node 2: Quote -->
+    <div class="timeline-node">
+      <div class="node-quote-card">
+        <div class="big-mark">&ldquo;</div>
+        <div class="quote-text">Cincinnati has this quiet confidence — people here don't need to shout about what they're building. They just build it.</div>
+      </div>
+      <div class="node-content">
+        <span class="node-type quote">Quote</span>
+        <div class="node-topic" style="color: #7a9e7e;">Trust &amp; Relationships</div>
+        <div class="node-title">On Cincinnati's Character</div>
+        <div class="node-excerpt">Molly reflects on why Cincinnati's business culture rewards substance over flash.</div>
+      </div>
+    </div>
+
+    <!-- Node 3: Clip -->
+    <div class="timeline-node">
+      <div class="node-content">
+        <span class="node-type clip">Clip</span>
+        <div class="node-topic" style="color: #d4a843;">Client Impact</div>
+        <div class="node-title">The Rebrand That Changed Everything</div>
+        <div class="node-excerpt">A local nonprofit was hemorrhaging donors. We stripped the brand back to what actually mattered and rebuilt from the mission outward.</div>
+        <div class="node-duration">3:12</div>
+      </div>
+      <div class="node-media">
+        <img src="https://image.mux.com/sample2/thumbnail.jpg?time=5&width=640" alt="Clip thumbnail"
+             onerror="this.style.background='linear-gradient(135deg, #d4a843 0%, #1a1f2e 100%)'; this.style.minHeight='200px'; this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'">
+        <div class="play-btn"></div>
+      </div>
+    </div>
+
+    <!-- Node 4: Clip -->
+    <div class="timeline-node">
+      <div class="node-content">
+        <span class="node-type clip">Clip</span>
+        <div class="node-topic" style="color: #5b8ba0;">Culture &amp; People</div>
+        <div class="node-title">Building Teams That Stay</div>
+        <div class="node-excerpt">The retention problem isn't compensation — it's meaning. People leave when they can't connect their daily work to something larger.</div>
+        <div class="node-duration">1:58</div>
+      </div>
+      <div class="node-media">
+        <img src="https://image.mux.com/sample3/thumbnail.jpg?time=3&width=640" alt="Clip thumbnail"
+             onerror="this.style.background='linear-gradient(135deg, #5b8ba0 0%, #1a1f2e 100%)'; this.style.minHeight='200px'; this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'">
+        <div class="play-btn"></div>
+      </div>
+    </div>
+
+    <!-- Node 5: Quote -->
+    <div class="timeline-node">
+      <div class="node-quote-card">
+        <div class="big-mark">&ldquo;</div>
+        <div class="quote-text">Every great brand is really just a promise that got kept enough times that people started believing it without checking.</div>
+      </div>
+      <div class="node-content">
+        <span class="node-type quote">Quote</span>
+        <div class="node-topic" style="color: #c94c60;">The Fractional Model</div>
+        <div class="node-title">On Brand as Promise</div>
+        <div class="node-excerpt">Molly's philosophy on what separates lasting brands from temporary campaigns.</div>
+      </div>
+    </div>
+
+    <!-- Node 6: Clip -->
+    <div class="timeline-node">
+      <div class="node-content">
+        <span class="node-type clip">Clip</span>
+        <div class="node-topic" style="color: #6b4c6e;">Growth &amp; Change</div>
+        <div class="node-title">When You Have to Fire Yourself</div>
+        <div class="node-excerpt">The hardest part of fractional work is knowing when your job is done — when the client doesn't need you anymore and you have to be the one to say it.</div>
+        <div class="node-duration">2:47</div>
+      </div>
+      <div class="node-media">
+        <img src="https://image.mux.com/sample4/thumbnail.jpg?time=8&width=640" alt="Clip thumbnail"
+             onerror="this.style.background='linear-gradient(135deg, #6b4c6e 0%, #1a1f2e 100%)'; this.style.minHeight='200px'; this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'">
+        <div class="play-btn"></div>
+      </div>
+    </div>
+
+    <!-- Node 7: Quote -->
+    <div class="timeline-node">
+      <div class="node-quote-card">
+        <div class="big-mark">&ldquo;</div>
+        <div class="quote-text">I don't network. I just keep showing up in the same rooms as interesting people and eventually we make something together.</div>
+      </div>
+      <div class="node-content">
+        <span class="node-type quote">Quote</span>
+        <div class="node-topic" style="color: #b0884c;">Collaboration</div>
+        <div class="node-title">On Organic Connection</div>
+        <div class="node-excerpt">Why Molly believes the best partnerships form without strategy — just proximity and shared curiosity.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── TOPICS ── -->
+<section class="topics-section">
+  <h2 class="topics-title">Topics Molly Explores</h2>
+  <p class="topics-subtitle">The threads that run through her conversation</p>
+  <div class="topics-grid">
+    <div class="topic-cell" data-color="origin">
+      <div class="topic-name">Origin Stories</div>
+      <div class="topic-count">4 clips in this thread</div>
+    </div>
+    <div class="topic-cell" data-color="trust">
+      <div class="topic-name">Trust &amp; Relationships</div>
+      <div class="topic-count">3 clips in this thread</div>
+    </div>
+    <div class="topic-cell" data-color="client">
+      <div class="topic-name">Client Impact</div>
+      <div class="topic-count">4 clips in this thread</div>
+    </div>
+    <div class="topic-cell" data-color="culture">
+      <div class="topic-name">Culture &amp; People</div>
+      <div class="topic-count">3 clips in this thread</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RELATED VOICES ── -->
+<section class="related-section">
+  <h2 class="related-title">More Voices</h2>
+  <div class="related-row">
+    <a class="related-voice" href="#">
+      <img src="/headshots/adam-dooley.jpg" class="related-avatar" alt="Adam Dooley"
+           onerror="this.style.background='#ccc'">
+      <div class="related-name">Adam Dooley</div>
+      <div class="related-role-text">Fractional COO</div>
+    </a>
+    <a class="related-voice" href="#">
+      <img src="/headshots/katie-dill.jpg" class="related-avatar" alt="Katie Dill"
+           onerror="this.style.background='#ccc'">
+      <div class="related-name">Katie Dill</div>
+      <div class="related-role-text">Brand Consultant</div>
+    </a>
+    <a class="related-voice" href="#">
+      <img src="/headshots/ryan-mooney.jpg" class="related-avatar" alt="Ryan Mooney"
+           onerror="this.style.background='#ccc'">
+      <div class="related-name">Ryan Mooney</div>
+      <div class="related-role-text">Marketing Leader</div>
+    </a>
+    <a class="related-voice" href="#">
+      <img src="/headshots/sarah-dusing.jpg" class="related-avatar" alt="Sarah Dusing"
+           onerror="this.style.background='#ccc'">
+      <div class="related-name">Sarah Dusing</div>
+      <div class="related-role-text">Creative Director</div>
+    </a>
+    <a class="related-voice" href="#">
+      <img src="/headshots/larry-kaczynski.jpg" class="related-avatar" alt="Larry Kaczynski"
+           onerror="this.style.background='#ccc'">
+      <div class="related-name">Larry Kaczynski</div>
+      <div class="related-role-text">Business Strategist</div>
+    </a>
+  </div>
+</section>
+
+<footer class="profile-footer">
+  <a href="/concepts/" class="footer-link">Back to Concepts</a>
+</footer>
+
+<script>
+// Scroll-triggered timeline nodes
+const nodes = document.querySelectorAll('.timeline-node');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.2 });
+
+nodes.forEach(node => observer.observe(node));
+</script>
+</body>
+</html>

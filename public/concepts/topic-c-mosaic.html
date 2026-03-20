@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic Concept C — The Mosaic Wall | Cincy Voices</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cv-cream: #f5f0e8;
+    --cv-navy: #1a1f2e;
+    --cv-gold: #c9a84c;
+    --cv-charcoal: #2d2d2d;
+    --topic-color: #d4a843; /* Client Impact */
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #111; color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+  /* ── HERO: Cinematic text-only ── */
+  .hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px;
+    position: relative;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(212,168,67,0.08) 0%, transparent 70%);
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--topic-color);
+    margin-bottom: 40px;
+    position: relative;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(56px, 8vw, 140px);
+    line-height: 0.95;
+    font-weight: 900;
+    margin-bottom: 32px;
+    position: relative;
+  }
+  .hero-title .outline {
+    -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+    color: transparent;
+  }
+  .hero-title .filled {
+    color: var(--topic-color);
+  }
+  .hero-count {
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 3px;
+    margin-top: 24px;
+    position: relative;
+  }
+  .hero-scroll-cue {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,0.3);
+    font-size: 11px;
+    letter-spacing: 2px;
+    animation: float 2s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  /* ── MOSAIC WALL ── */
+  .mosaic-section {
+    padding: 0 20px 20px;
+  }
+  .mosaic-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: 120px;
+    gap: 4px;
+  }
+  .mosaic-item {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 2px;
+  }
+  .mosaic-item.quote-card {
+    background: rgba(255,255,255,0.04);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: background 0.4s;
+  }
+  .mosaic-item.quote-card:hover {
+    background: rgba(255,255,255,0.08);
+  }
+  .mosaic-item.video-card {
+    background: #1a1a1a;
+  }
+  .mosaic-item.video-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.7;
+    transition: opacity 0.4s, transform 0.6s;
+  }
+  .mosaic-item.video-card:hover img {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  .mosaic-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px;
+    height: 48px;
+    border: 2px solid rgba(255,255,255,0.8);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .mosaic-item.video-card:hover .mosaic-play { opacity: 1; }
+  .mosaic-play svg { fill: white; width: 16px; height: 16px; margin-left: 2px; }
+
+  .mosaic-quote-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.85);
+    font-style: italic;
+  }
+  .mosaic-quote-attr {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .mosaic-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .mosaic-attr-name {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+  }
+  .mosaic-video-name {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+  }
+
+  /* Grid placement - creating varied mosaic */
+  .m1 { grid-column: 1 / 5; grid-row: 1 / 4; }
+  .m2 { grid-column: 5 / 9; grid-row: 1 / 3; }
+  .m3 { grid-column: 9 / 13; grid-row: 1 / 3; }
+  .m4 { grid-column: 5 / 7; grid-row: 3 / 5; }
+  .m5 { grid-column: 7 / 10; grid-row: 3 / 6; }
+  .m6 { grid-column: 10 / 13; grid-row: 3 / 5; }
+  .m7 { grid-column: 1 / 4; grid-row: 4 / 6; }
+  .m8 { grid-column: 4 / 7; grid-row: 5 / 8; }
+  .m9 { grid-column: 10 / 13; grid-row: 5 / 7; }
+  .m10 { grid-column: 1 / 4; grid-row: 6 / 8; }
+  .m11 { grid-column: 7 / 10; grid-row: 6 / 9; }
+  .m12 { grid-column: 10 / 13; grid-row: 7 / 9; }
+
+  /* ── FEATURED QUOTE ── */
+  .featured-quote {
+    padding: 120px 40px;
+    text-align: center;
+    position: relative;
+  }
+  .featured-quote::before {
+    content: '"';
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Playfair Display', serif;
+    font-size: 200px;
+    color: var(--topic-color);
+    opacity: 0.15;
+    line-height: 1;
+  }
+  .featured-quote-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 48px);
+    line-height: 1.4;
+    max-width: 800px;
+    margin: 0 auto 40px;
+    position: relative;
+  }
+  .featured-quote-speaker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
+  .featured-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--topic-color);
+  }
+  .featured-name {
+    font-weight: 600;
+    font-size: 15px;
+  }
+  .featured-role {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* ── VOICES STRIP ── */
+  .voices-strip {
+    padding: 80px 40px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .voices-strip-title {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--topic-color);
+    margin-bottom: 40px;
+  }
+  .voices-row {
+    display: flex;
+    gap: 48px;
+    overflow-x: auto;
+    padding-bottom: 20px;
+    scrollbar-width: none;
+  }
+  .voices-row::-webkit-scrollbar { display: none; }
+  .voice-pill {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+    cursor: pointer;
+    padding: 12px 24px 12px 12px;
+    border-radius: 100px;
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .voice-pill:hover {
+    border-color: var(--topic-color);
+    background: rgba(255,255,255,0.04);
+  }
+  .voice-pill img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .voice-pill-name {
+    font-weight: 500;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+  .voice-pill-clips {
+    font-size: 12px;
+    color: var(--topic-color);
+  }
+
+  /* ── TOPIC NAV ── */
+  .topic-nav {
+    padding: 80px 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2px;
+  }
+  .topic-nav-item {
+    padding: 32px;
+    background: rgba(255,255,255,0.02);
+    border-left: 3px solid transparent;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .topic-nav-item:hover {
+    background: rgba(255,255,255,0.06);
+  }
+  .topic-nav-name {
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .topic-nav-count {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  /* ── ANIMATIONS ── */
+  .mosaic-item {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .mosaic-item.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  @media (max-width: 768px) {
+    .mosaic-grid {
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: 100px;
+    }
+    .m1 { grid-column: 1 / 3; grid-row: 1 / 3; }
+    .m2 { grid-column: 3 / 5; grid-row: 1 / 3; }
+    .m3 { grid-column: 1 / 3; grid-row: 3 / 4; }
+    .m4 { grid-column: 3 / 5; grid-row: 3 / 4; }
+    .m5 { grid-column: 1 / 5; grid-row: 4 / 6; }
+    .m6 { grid-column: 1 / 3; grid-row: 6 / 7; }
+    .m7 { grid-column: 3 / 5; grid-row: 6 / 7; }
+    .m8 { grid-column: 1 / 3; grid-row: 7 / 9; }
+    .m9 { grid-column: 3 / 5; grid-row: 7 / 8; }
+    .m10 { grid-column: 1 / 5; grid-row: 9 / 10; }
+    .m11 { grid-column: 3 / 5; grid-row: 8 / 9; }
+    .m12 { grid-column: 1 / 5; grid-row: 10 / 11; }
+    .topic-nav { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Cincy Voices — Topic Thread</div>
+  <h1 class="hero-title">
+    <span class="outline">Client</span><br>
+    <span class="filled">Impact</span>
+  </h1>
+  <div class="hero-count">26 CLIPS · 9 VOICES · 12 QUOTES</div>
+  <div class="hero-scroll-cue">
+    SCROLL
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </div>
+</section>
+
+<!-- MOSAIC WALL -->
+<section class="mosaic-section">
+  <div class="mosaic-grid">
+    <!-- Large video -->
+    <div class="mosaic-item video-card m1">
+      <img src="https://image.mux.com/PvmKD7e5xvgxN7bLpDBsuU4nkXqRkz00/thumbnail.jpg?time=2&width=600" alt="">
+      <div class="mosaic-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
+      <div class="mosaic-video-name">Adam Reynolds</div>
+    </div>
+
+    <!-- Quote -->
+    <div class="mosaic-item quote-card m2">
+      <div class="mosaic-quote-text">"The client doesn't remember your deliverable. They remember how you made them feel during the hardest week."</div>
+      <div class="mosaic-quote-attr">
+        <img class="mosaic-avatar" src="/headshots/meghan-cummings.jpg" alt="">
+        <span class="mosaic-attr-name">Meghan Cummings</span>
+      </div>
+    </div>
+
+    <!-- Video -->
+    <div class="mosaic-item video-card m3">
+      <img src="https://image.mux.com/xqDjrR02NvCOCPYbdixJl6sGmnHrM3FX/thumbnail.jpg?time=3&width=600" alt="">
+      <div class="mosaic-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
+      <div class="mosaic-video-name">Liz Hernandez</div>
+    </div>
+
+    <!-- Small video -->
+    <div class="mosaic-item video-card m4">
+      <img src="https://image.mux.com/OLqYSgt4MjnPvIOSBGTG8ENUvbaVaOR5/thumbnail.jpg?time=1&width=400" alt="">
+      <div class="mosaic-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
+      <div class="mosaic-video-name">Michael Barber</div>
+    </div>
+
+    <!-- Large quote -->
+    <div class="mosaic-item quote-card m5" style="border-left: 3px solid var(--topic-color);">
+      <div class="mosaic-quote-text">"Impact isn't about the size of the engagement. It's about whether anything actually changed after you left."</div>
+      <div class="mosaic-quote-attr">
+        <img class="mosaic-avatar" src="/headshots/adam-reynolds.jpg" alt="">
+        <span class="mosaic-attr-name">Adam Reynolds</span>
+      </div>
+    </div>
+
+    <!-- Quote -->
+    <div class="mosaic-item quote-card m6">
+      <div class="mosaic-quote-text">"We measure success in conversations that happen after we leave the room."</div>
+      <div class="mosaic-quote-attr">
+        <img class="mosaic-avatar" src="/headshots/grace-maza.jpg" alt="">
+        <span class="mosaic-attr-name">Grace Maza</span>
+      </div>
+    </div>
+
+    <!-- Video -->
+    <div class="mosaic-item video-card m7">
+      <img src="https://image.mux.com/f4kD02esIHuBntgrAb01s5q009fEFbMPM202/thumbnail.jpg?time=2&width=500" alt="">
+      <div class="mosaic-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
+      <div class="mosaic-video-name">Grace Maza</div>
+    </div>
+
+    <!-- Large video -->
+    <div class="mosaic-item video-card m8">
+      <img src="https://image.mux.com/PvmKD7e5xvgxN7bLpDBsuU4nkXqRkz00/thumbnail.jpg?time=8&width=600" alt="">
+      <div class="mosaic-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
+      <div class="mosaic-video-name">Rachel DeLong</div>
+    </div>
+
+    <!-- Quote -->
+    <div class="mosaic-item quote-card m9">
+      <div class="mosaic-quote-text">"The best client work feels like a conversation, not a presentation."</div>
+      <div class="mosaic-quote-attr">
+        <img class="mosaic-avatar" src="/headshots/liz-hernandez.jpg" alt="">
+        <span class="mosaic-attr-name">Liz Hernandez</span>
+      </div>
+    </div>
+
+    <!-- Video -->
+    <div class="mosaic-item video-card m10">
+      <img src="https://image.mux.com/xqDjrR02NvCOCPYbdixJl6sGmnHrM3FX/thumbnail.jpg?time=8&width=500" alt="">
+      <div class="mosaic-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
+      <div class="mosaic-video-name">Meghan Cummings</div>
+    </div>
+
+    <!-- Quote -->
+    <div class="mosaic-item quote-card m11" style="border-left: 3px solid var(--topic-color);">
+      <div class="mosaic-quote-text">"Every client relationship is a mirror. What they need from you reveals what you haven't finished learning."</div>
+      <div class="mosaic-quote-attr">
+        <img class="mosaic-avatar" src="/headshots/michael-barber.jpg" alt="">
+        <span class="mosaic-attr-name">Michael Barber</span>
+      </div>
+    </div>
+
+    <!-- Video -->
+    <div class="mosaic-item video-card m12">
+      <img src="https://image.mux.com/OLqYSgt4MjnPvIOSBGTG8ENUvbaVaOR5/thumbnail.jpg?time=6&width=400" alt="">
+      <div class="mosaic-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
+      <div class="mosaic-video-name">Rachel DeLong</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED QUOTE -->
+<section class="featured-quote">
+  <blockquote class="featured-quote-text">"Real impact is when a client calls you three years later — not for more work, but to tell you what changed."</blockquote>
+  <div class="featured-quote-speaker">
+    <img class="featured-avatar" src="/headshots/adam-reynolds.jpg" alt="">
+    <div style="text-align: left;">
+      <div class="featured-name">Adam Reynolds</div>
+      <div class="featured-role">Founder & CEO, Lofty Labs</div>
+    </div>
+  </div>
+</section>
+
+<!-- VOICES STRIP -->
+<section class="voices-strip">
+  <div class="voices-strip-title">Voices in this thread</div>
+  <div class="voices-row">
+    <div class="voice-pill">
+      <img src="/headshots/adam-reynolds.jpg" alt="">
+      <div>
+        <div class="voice-pill-name">Adam Reynolds</div>
+        <div class="voice-pill-clips">4 clips</div>
+      </div>
+    </div>
+    <div class="voice-pill">
+      <img src="/headshots/meghan-cummings.jpg" alt="">
+      <div>
+        <div class="voice-pill-name">Meghan Cummings</div>
+        <div class="voice-pill-clips">3 clips</div>
+      </div>
+    </div>
+    <div class="voice-pill">
+      <img src="/headshots/liz-hernandez.jpg" alt="">
+      <div>
+        <div class="voice-pill-name">Liz Hernandez</div>
+        <div class="voice-pill-clips">5 clips</div>
+      </div>
+    </div>
+    <div class="voice-pill">
+      <img src="/headshots/michael-barber.jpg" alt="">
+      <div>
+        <div class="voice-pill-name">Michael Barber</div>
+        <div class="voice-pill-clips">3 clips</div>
+      </div>
+    </div>
+    <div class="voice-pill">
+      <img src="/headshots/grace-maza.jpg" alt="">
+      <div>
+        <div class="voice-pill-name">Grace Maza</div>
+        <div class="voice-pill-clips">4 clips</div>
+      </div>
+    </div>
+    <div class="voice-pill">
+      <img src="/headshots/rachel-delong.jpg" alt="">
+      <div>
+        <div class="voice-pill-name">Rachel DeLong</div>
+        <div class="voice-pill-clips">3 clips</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOPIC NAV -->
+<nav class="topic-nav">
+  <div class="topic-nav-item" style="border-left-color: #7a9e7e;">
+    <div class="topic-nav-name">Trust & Relationships</div>
+    <div class="topic-nav-count">32 clips</div>
+  </div>
+  <div class="topic-nav-item" style="border-left-color: #c4724e;">
+    <div class="topic-nav-name">Origin Stories</div>
+    <div class="topic-nav-count">26 clips</div>
+  </div>
+  <div class="topic-nav-item" style="border-left-color: #5b8ba0;">
+    <div class="topic-nav-name">Culture & People</div>
+    <div class="topic-nav-count">28 clips</div>
+  </div>
+  <div class="topic-nav-item" style="border-left-color: #c94c60;">
+    <div class="topic-nav-name">The Fractional Model</div>
+    <div class="topic-nav-count">22 clips</div>
+  </div>
+  <div class="topic-nav-item" style="border-left-color: #6b4c6e;">
+    <div class="topic-nav-name">Growth & Change</div>
+    <div class="topic-nav-count">24 clips</div>
+  </div>
+  <div class="topic-nav-item" style="border-left-color: #b0884c;">
+    <div class="topic-nav-name">Collaboration</div>
+    <div class="topic-nav-count">20 clips</div>
+  </div>
+</nav>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.mosaic-item').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

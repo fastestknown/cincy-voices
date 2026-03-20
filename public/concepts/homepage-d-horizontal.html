@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Homepage Concept D — The Horizontal Experience | Cincy Voices</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cv-cream: #f5f0e8;
+    --cv-navy: #1a1f2e;
+    --cv-gold: #c9a84c;
+    --cv-charcoal: #2d2d2d;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--cv-cream); color: var(--cv-charcoal); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+  /* ── HORIZONTAL SCROLL CONTAINER ── */
+  .h-scroll-wrap {
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+  }
+  .h-scroll-track {
+    display: flex;
+    height: 100vh;
+    transition: transform 0.08s linear;
+    will-change: transform;
+  }
+
+  /* ── PANEL BASE ── */
+  .h-panel {
+    min-width: 100vw;
+    height: 100vh;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ── PANEL 1: Title ── */
+  .panel-title {
+    background: var(--cv-navy);
+    flex-direction: column;
+    text-align: center;
+    padding: 60px;
+  }
+  .panel-title-eyebrow {
+    font-size: 12px;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    color: var(--cv-gold);
+    margin-bottom: 48px;
+  }
+  .panel-title h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(56px, 8vw, 120px);
+    color: white;
+    line-height: 0.95;
+    margin-bottom: 32px;
+  }
+  .panel-title h1 em { color: var(--cv-gold); font-style: italic; }
+  .panel-title-sub {
+    font-size: 18px;
+    color: rgba(255,255,255,0.4);
+    max-width: 500px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+  }
+  .scroll-hint {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: rgba(255,255,255,0.3);
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    animation: hintPulse 2s ease-in-out infinite;
+  }
+  @keyframes hintPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+  }
+  .scroll-hint svg { animation: hintSlide 2s ease-in-out infinite; }
+  @keyframes hintSlide {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(8px); }
+  }
+
+  /* ── PANEL 2: Leader Carousel ── */
+  .panel-leaders {
+    min-width: 300vw;
+    padding: 0;
+    gap: 0;
+    justify-content: flex-start;
+  }
+  .leader-slide {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    flex-shrink: 0;
+  }
+  .leader-slide-photo {
+    position: relative;
+    overflow: hidden;
+  }
+  .leader-slide-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .leader-slide-photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, transparent 70%, var(--cv-cream) 100%);
+  }
+  .leader-slide-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px;
+  }
+  .leader-slide-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 120px;
+    color: rgba(0,0,0,0.04);
+    line-height: 1;
+    margin-bottom: -30px;
+  }
+  .leader-slide-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 4vw, 56px);
+    margin-bottom: 8px;
+  }
+  .leader-slide-role {
+    font-size: 15px;
+    color: rgba(0,0,0,0.4);
+    margin-bottom: 32px;
+  }
+  .leader-slide-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    line-height: 1.6;
+    font-style: italic;
+    border-left: 3px solid var(--cv-gold);
+    padding-left: 24px;
+    margin-bottom: 32px;
+    max-width: 480px;
+  }
+  .leader-slide-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .leader-tag {
+    font-size: 11px;
+    padding: 4px 14px;
+    border-radius: 100px;
+    color: white;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── PANEL 3: Quote Wall ── */
+  .panel-quotes {
+    background: var(--cv-navy);
+    min-width: 150vw;
+    padding: 80px;
+    gap: 40px;
+    justify-content: flex-start;
+    align-items: stretch;
+  }
+  .quote-column {
+    width: 380px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding-top: var(--offset, 0px);
+  }
+  .h-quote-card {
+    background: rgba(255,255,255,0.04);
+    border-radius: 12px;
+    padding: 32px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .h-quote-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.8);
+    font-style: italic;
+    margin-bottom: 20px;
+  }
+  .h-quote-attr {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .h-quote-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .h-quote-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: white;
+  }
+  .h-quote-role {
+    font-size: 12px;
+    color: rgba(255,255,255,0.35);
+  }
+
+  /* ── PANEL 4: Topics ── */
+  .panel-topics {
+    background: var(--cv-cream);
+    min-width: 100vw;
+    flex-direction: column;
+    padding: 80px;
+    gap: 48px;
+  }
+  .topics-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    text-align: center;
+  }
+  .topics-title em { color: var(--cv-gold); font-style: italic; }
+  .topic-cards-row {
+    display: flex;
+    gap: 16px;
+    overflow: visible;
+  }
+  .h-topic-card {
+    width: 200px;
+    height: 280px;
+    border-radius: 16px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.4s, box-shadow 0.4s;
+  }
+  .h-topic-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  }
+  .h-topic-card-bg {
+    position: absolute;
+    inset: 0;
+    opacity: 0.12;
+    transition: opacity 0.4s;
+  }
+  .h-topic-card:hover .h-topic-card-bg { opacity: 0.25; }
+  .h-topic-card-inner {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 24px;
+  }
+  .h-topic-card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+  .h-topic-card-count {
+    font-size: 12px;
+    color: rgba(0,0,0,0.4);
+  }
+  .h-topic-card-arrow {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .h-topic-card:hover .h-topic-card-arrow { opacity: 0.5; }
+
+  /* ── PANEL 5: Video CTA ── */
+  .panel-cta {
+    background: var(--cv-navy);
+    min-width: 100vw;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .cta-video-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 200px);
+    grid-template-rows: repeat(2, 140px);
+    gap: 8px;
+    opacity: 0.4;
+  }
+  .cta-thumb {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .cta-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .cta-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 4vw, 56px);
+    color: white;
+    text-align: center;
+    line-height: 1.2;
+  }
+  .cta-headline em { color: var(--cv-gold); font-style: italic; }
+  .cta-btn {
+    background: var(--cv-gold);
+    color: var(--cv-navy);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 16px 48px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  .cta-btn:hover { transform: scale(1.05); }
+
+  /* ── PROGRESS BAR ── */
+  .h-progress {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: var(--cv-gold);
+    z-index: 100;
+    transition: width 0.08s linear;
+  }
+
+  /* ── PANEL COUNTER ── */
+  .panel-counter {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    z-index: 100;
+    mix-blend-mode: difference;
+    letter-spacing: 2px;
+  }
+
+  @media (max-width: 768px) {
+    .h-scroll-wrap { height: auto; overflow: auto; }
+    .h-scroll-track { flex-direction: column; height: auto; }
+    .h-panel { min-width: 100vw; height: auto; min-height: 100vh; }
+    .panel-leaders { min-width: 100vw; flex-direction: column; }
+    .leader-slide { grid-template-columns: 1fr; width: 100vw; height: auto; }
+    .leader-slide-photo { height: 50vh; }
+    .leader-slide-content { padding: 40px 24px; }
+    .panel-quotes { min-width: 100vw; flex-wrap: wrap; padding: 40px 24px; }
+    .quote-column { width: 100%; }
+    .panel-topics { min-width: 100vw; }
+    .topic-cards-row { flex-wrap: wrap; justify-content: center; }
+    .h-progress { display: none; }
+    .panel-counter { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="h-progress" id="hProgress"></div>
+<div class="panel-counter" id="panelCounter">01 / 05</div>
+
+<div class="h-scroll-wrap" id="hWrap">
+  <div class="h-scroll-track" id="hTrack">
+
+    <!-- PANEL 1: TITLE -->
+    <section class="h-panel panel-title">
+      <div class="panel-title-eyebrow">A Work With Meaning Project</div>
+      <h1>Cincy<br><em>Voices</em></h1>
+      <p class="panel-title-sub">Seventeen Cincinnati business leaders. 182 unscripted video clips. Seven conversation threads. No teleprompters.</p>
+      <div class="scroll-hint">
+        Scroll to explore
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </section>
+
+    <!-- PANEL 2: LEADERS (3 slides wide) -->
+    <section class="h-panel panel-leaders">
+      <div class="leader-slide">
+        <div class="leader-slide-photo">
+          <img src="/headshots/adam-reynolds.jpg" alt="Adam Reynolds">
+        </div>
+        <div class="leader-slide-content">
+          <div class="leader-slide-num">01</div>
+          <div class="leader-slide-name">Adam Reynolds</div>
+          <div class="leader-slide-role">Founder & CEO, Lofty Labs</div>
+          <blockquote class="leader-slide-quote">"I didn't start this company because I had a vision. I started it because I couldn't stop thinking about the problem."</blockquote>
+          <div class="leader-slide-tags">
+            <span class="leader-tag" style="background:#c4724e;">Origins</span>
+            <span class="leader-tag" style="background:#7a9e7e;">Trust</span>
+            <span class="leader-tag" style="background:#c94c60;">Fractional</span>
+          </div>
+        </div>
+      </div>
+      <div class="leader-slide">
+        <div class="leader-slide-photo">
+          <img src="/headshots/meghan-cummings.jpg" alt="Meghan Cummings">
+        </div>
+        <div class="leader-slide-content">
+          <div class="leader-slide-num">02</div>
+          <div class="leader-slide-name">Meghan Cummings</div>
+          <div class="leader-slide-role">Chief People Officer</div>
+          <blockquote class="leader-slide-quote">"You can't hire your way to a culture fix. I've watched companies try. It's the most expensive mistake they make."</blockquote>
+          <div class="leader-slide-tags">
+            <span class="leader-tag" style="background:#5b8ba0;">Culture</span>
+            <span class="leader-tag" style="background:#d4a843;">Impact</span>
+          </div>
+        </div>
+      </div>
+      <div class="leader-slide">
+        <div class="leader-slide-photo">
+          <img src="/headshots/liz-hernandez.jpg" alt="Liz Hernandez">
+        </div>
+        <div class="leader-slide-content">
+          <div class="leader-slide-num">03</div>
+          <div class="leader-slide-name">Liz Hernandez</div>
+          <div class="leader-slide-role">VP of Strategy</div>
+          <blockquote class="leader-slide-quote">"The best origin stories aren't about where you started. They're about the moment you stopped pretending."</blockquote>
+          <div class="leader-slide-tags">
+            <span class="leader-tag" style="background:#c4724e;">Origins</span>
+            <span class="leader-tag" style="background:#6b4c6e;">Growth</span>
+            <span class="leader-tag" style="background:#b0884c;">Collab</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL 3: QUOTE WALL -->
+    <section class="h-panel panel-quotes">
+      <div class="quote-column" style="--offset: 0px;">
+        <div class="h-quote-card">
+          <div class="h-quote-text">"The client doesn't remember your deliverable. They remember how you made them feel during the hardest week."</div>
+          <div class="h-quote-attr">
+            <img class="h-quote-avatar" src="/headshots/meghan-cummings.jpg" alt="">
+            <div>
+              <div class="h-quote-name">Meghan Cummings</div>
+              <div class="h-quote-role">Chief People Officer</div>
+            </div>
+          </div>
+        </div>
+        <div class="h-quote-card">
+          <div class="h-quote-text">"People don't leave bad companies. They leave rooms where they feel invisible."</div>
+          <div class="h-quote-attr">
+            <img class="h-quote-avatar" src="/headshots/grace-maza.jpg" alt="">
+            <div>
+              <div class="h-quote-name">Grace Maza</div>
+              <div class="h-quote-role">Executive Director</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="quote-column" style="--offset: 60px;">
+        <div class="h-quote-card">
+          <div class="h-quote-text">"I got fired from my first real job and it was the best thing that ever happened to me."</div>
+          <div class="h-quote-attr">
+            <img class="h-quote-avatar" src="/headshots/michael-barber.jpg" alt="">
+            <div>
+              <div class="h-quote-name">Michael Barber</div>
+              <div class="h-quote-role">Managing Partner</div>
+            </div>
+          </div>
+        </div>
+        <div class="h-quote-card">
+          <div class="h-quote-text">"Fractional isn't about working less. It's about working for the companies that actually need you."</div>
+          <div class="h-quote-attr">
+            <img class="h-quote-avatar" src="/headshots/adam-reynolds.jpg" alt="">
+            <div>
+              <div class="h-quote-name">Adam Reynolds</div>
+              <div class="h-quote-role">Founder & CEO</div>
+            </div>
+          </div>
+        </div>
+        <div class="h-quote-card">
+          <div class="h-quote-text">"You build culture one awkward conversation at a time."</div>
+          <div class="h-quote-attr">
+            <img class="h-quote-avatar" src="/headshots/grace-maza.jpg" alt="">
+            <div>
+              <div class="h-quote-name">Grace Maza</div>
+              <div class="h-quote-role">Executive Director</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="quote-column" style="--offset: 30px;">
+        <div class="h-quote-card">
+          <div class="h-quote-text">"Culture isn't a department. It's a decision you make every Tuesday at 2pm."</div>
+          <div class="h-quote-attr">
+            <img class="h-quote-avatar" src="/headshots/liz-hernandez.jpg" alt="">
+            <div>
+              <div class="h-quote-name">Liz Hernandez</div>
+              <div class="h-quote-role">VP of Strategy</div>
+            </div>
+          </div>
+        </div>
+        <div class="h-quote-card">
+          <div class="h-quote-text">"My origin story is everyone else's too — we're all just trying to figure it out."</div>
+          <div class="h-quote-attr">
+            <img class="h-quote-avatar" src="/headshots/rachel-delong.jpg" alt="">
+            <div>
+              <div class="h-quote-name">Rachel DeLong</div>
+              <div class="h-quote-role">Founder</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL 4: TOPICS -->
+    <section class="h-panel panel-topics">
+      <h2 class="topics-title">Seven threads.<br>One <em>conversation.</em></h2>
+      <div class="topic-cards-row">
+        <div class="h-topic-card">
+          <div class="h-topic-card-bg" style="background:#7a9e7e;"></div>
+          <div class="h-topic-card-inner">
+            <div class="h-topic-card-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
+            <div class="h-topic-card-name">Trust &<br>Relationships</div>
+            <div class="h-topic-card-count">32 clips</div>
+          </div>
+        </div>
+        <div class="h-topic-card">
+          <div class="h-topic-card-bg" style="background:#c4724e;"></div>
+          <div class="h-topic-card-inner">
+            <div class="h-topic-card-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
+            <div class="h-topic-card-name">Origin<br>Stories</div>
+            <div class="h-topic-card-count">26 clips</div>
+          </div>
+        </div>
+        <div class="h-topic-card">
+          <div class="h-topic-card-bg" style="background:#d4a843;"></div>
+          <div class="h-topic-card-inner">
+            <div class="h-topic-card-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
+            <div class="h-topic-card-name">Client<br>Impact</div>
+            <div class="h-topic-card-count">24 clips</div>
+          </div>
+        </div>
+        <div class="h-topic-card">
+          <div class="h-topic-card-bg" style="background:#5b8ba0;"></div>
+          <div class="h-topic-card-inner">
+            <div class="h-topic-card-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
+            <div class="h-topic-card-name">Culture &<br>People</div>
+            <div class="h-topic-card-count">28 clips</div>
+          </div>
+        </div>
+        <div class="h-topic-card">
+          <div class="h-topic-card-bg" style="background:#c94c60;"></div>
+          <div class="h-topic-card-inner">
+            <div class="h-topic-card-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
+            <div class="h-topic-card-name">Fractional<br>Model</div>
+            <div class="h-topic-card-count">22 clips</div>
+          </div>
+        </div>
+        <div class="h-topic-card">
+          <div class="h-topic-card-bg" style="background:#6b4c6e;"></div>
+          <div class="h-topic-card-inner">
+            <div class="h-topic-card-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
+            <div class="h-topic-card-name">Growth &<br>Change</div>
+            <div class="h-topic-card-count">24 clips</div>
+          </div>
+        </div>
+        <div class="h-topic-card">
+          <div class="h-topic-card-bg" style="background:#b0884c;"></div>
+          <div class="h-topic-card-inner">
+            <div class="h-topic-card-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
+            <div class="h-topic-card-name">Collab-<br>oration</div>
+            <div class="h-topic-card-count">20 clips</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL 5: CTA -->
+    <section class="h-panel panel-cta">
+      <div class="cta-video-grid">
+        <div class="cta-thumb"><img src="https://image.mux.com/PvmKD7e5xvgxN7bLpDBsuU4nkXqRkz00/thumbnail.jpg?time=2&width=300" alt=""></div>
+        <div class="cta-thumb"><img src="https://image.mux.com/xqDjrR02NvCOCPYbdixJl6sGmnHrM3FX/thumbnail.jpg?time=3&width=300" alt=""></div>
+        <div class="cta-thumb"><img src="https://image.mux.com/OLqYSgt4MjnPvIOSBGTG8ENUvbaVaOR5/thumbnail.jpg?time=1&width=300" alt=""></div>
+        <div class="cta-thumb"><img src="https://image.mux.com/f4kD02esIHuBntgrAb01s5q009fEFbMPM202/thumbnail.jpg?time=2&width=300" alt=""></div>
+        <div class="cta-thumb"><img src="https://image.mux.com/PvmKD7e5xvgxN7bLpDBsuU4nkXqRkz00/thumbnail.jpg?time=8&width=300" alt=""></div>
+        <div class="cta-thumb"><img src="https://image.mux.com/xqDjrR02NvCOCPYbdixJl6sGmnHrM3FX/thumbnail.jpg?time=8&width=300" alt=""></div>
+      </div>
+      <h2 class="cta-headline">182 clips.<br>Zero scripts.<br>All <em>Cincinnati.</em></h2>
+      <button class="cta-btn">Start watching</button>
+    </section>
+
+  </div>
+</div>
+
+<script>
+  // Horizontal scroll: convert vertical scroll to horizontal
+  const wrap = document.getElementById('hWrap');
+  const track = document.getElementById('hTrack');
+  const progress = document.getElementById('hProgress');
+  const counter = document.getElementById('panelCounter');
+
+  // Only apply horizontal scroll on desktop
+  if (window.innerWidth > 768) {
+    const totalWidth = track.scrollWidth;
+    const viewWidth = window.innerWidth;
+    const maxScroll = totalWidth - viewWidth;
+    const docHeight = maxScroll; // 1:1 pixel mapping
+
+    // Set body height to allow scrolling
+    document.body.style.height = (docHeight + viewWidth) + 'px';
+    wrap.style.position = 'fixed';
+    wrap.style.top = '0';
+    wrap.style.left = '0';
+    wrap.style.width = '100vw';
+
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      const pct = Math.min(scrollY / maxScroll, 1);
+      track.style.transform = `translateX(${-scrollY}px)`;
+      progress.style.width = (pct * 100) + '%';
+
+      // Panel counter
+      const panelWidth = viewWidth;
+      const panelIdx = Math.min(Math.floor(scrollY / panelWidth) + 1, 5);
+      counter.textContent = `0${panelIdx} / 05`;
+    });
+  }
+</script>
+</body>
+</html>

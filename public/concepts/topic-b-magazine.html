@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic Concept B — The Magazine Spread | Cincy Voices</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cv-cream: #f5f0e8;
+    --cv-navy: #1a1f2e;
+    --cv-gold: #c9a84c;
+    --cv-charcoal: #2d2d2d;
+    --topic-color: #c4724e; /* Origin Stories */
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--cv-cream); color: var(--cv-charcoal); font-family: 'Inter', sans-serif; }
+
+  /* ── HERO: Full-bleed editorial cover ── */
+  .hero {
+    height: 100vh;
+    background: var(--cv-navy);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+    position: relative;
+  }
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--topic-color);
+    margin-bottom: 40px;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(48px, 6vw, 96px);
+    color: white;
+    line-height: 1.05;
+    margin-bottom: 32px;
+  }
+  .hero-title em {
+    color: var(--topic-color);
+    font-style: italic;
+  }
+  .hero-subtitle {
+    font-size: 18px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.7;
+    max-width: 440px;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 40px;
+    margin-top: 48px;
+  }
+  .hero-stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    color: var(--topic-color);
+  }
+  .hero-stat-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-mosaic {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 4px;
+    height: 100%;
+  }
+  .hero-mosaic-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.7);
+    transition: filter 0.6s;
+  }
+  .hero-mosaic-img:hover {
+    filter: saturate(1.2);
+  }
+  .hero-mosaic-img.span-2 {
+    grid-row: span 2;
+  }
+
+  /* ── EDITORIAL INTRO ── */
+  .editorial-intro {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 120px 40px;
+    text-align: center;
+  }
+  .drop-cap-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    line-height: 1.8;
+    color: var(--cv-charcoal);
+  }
+  .drop-cap-text::first-letter {
+    font-size: 72px;
+    float: left;
+    line-height: 0.8;
+    margin-right: 12px;
+    margin-top: 8px;
+    color: var(--topic-color);
+    font-weight: 700;
+  }
+
+  /* ── MAGAZINE SPREAD: Quote + Video pairs ── */
+  .spread {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 80vh;
+    border-top: 1px solid rgba(0,0,0,0.08);
+  }
+  .spread:nth-child(even) .spread-content { order: 2; }
+  .spread:nth-child(even) .spread-media { order: 1; }
+
+  .spread-content {
+    padding: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .spread-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 120px;
+    color: rgba(0,0,0,0.04);
+    line-height: 1;
+    margin-bottom: -20px;
+  }
+  .spread-speaker {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .spread-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--topic-color);
+  }
+  .spread-name {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+  }
+  .spread-role {
+    font-size: 13px;
+    color: rgba(0,0,0,0.5);
+  }
+  .spread-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    line-height: 1.5;
+    color: var(--cv-charcoal);
+    position: relative;
+    padding-left: 24px;
+    border-left: 3px solid var(--topic-color);
+  }
+  .spread-context {
+    font-size: 14px;
+    color: rgba(0,0,0,0.5);
+    margin-top: 24px;
+    line-height: 1.6;
+    padding-left: 24px;
+  }
+
+  .spread-media {
+    position: relative;
+    overflow: hidden;
+    background: var(--cv-navy);
+  }
+  .spread-video-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.85;
+    transition: opacity 0.4s, transform 0.6s;
+  }
+  .spread-media:hover .spread-video-thumb {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+  .spread-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--topic-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  .spread-play:hover { transform: translate(-50%, -50%) scale(1.1); }
+  .spread-play svg { fill: white; width: 24px; height: 24px; margin-left: 3px; }
+  .spread-duration {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+
+  /* ── PULL QUOTE DIVIDER ── */
+  .pull-quote-divider {
+    background: var(--topic-color);
+    padding: 100px 80px;
+    text-align: center;
+  }
+  .pull-quote-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 4vw, 56px);
+    color: white;
+    line-height: 1.3;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .pull-quote-attr {
+    color: rgba(255,255,255,0.7);
+    font-size: 14px;
+    margin-top: 32px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ── VOICES GRID ── */
+  .voices-section {
+    padding: 100px 80px;
+    background: var(--cv-navy);
+  }
+  .voices-section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--topic-color);
+    margin-bottom: 48px;
+  }
+  .voices-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2px;
+  }
+  .voice-card {
+    background: rgba(255,255,255,0.03);
+    padding: 40px 32px;
+    transition: background 0.3s;
+    cursor: pointer;
+  }
+  .voice-card:hover {
+    background: rgba(255,255,255,0.08);
+  }
+  .voice-card-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 16px;
+    filter: grayscale(1);
+    transition: filter 0.4s;
+  }
+  .voice-card:hover .voice-card-avatar { filter: grayscale(0); }
+  .voice-card-name {
+    color: white;
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .voice-card-role {
+    color: rgba(255,255,255,0.4);
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+  .voice-card-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  /* ── MORE TOPICS ── */
+  .more-topics {
+    padding: 100px 80px;
+  }
+  .more-topics-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--cv-charcoal);
+    margin-bottom: 48px;
+  }
+  .topics-row {
+    display: flex;
+    gap: 0;
+  }
+  .topic-strip {
+    flex: 1;
+    height: 200px;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    transition: flex 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .topic-strip:hover { flex: 3; }
+  .topic-strip-bg {
+    position: absolute;
+    inset: 0;
+    opacity: 0.15;
+    transition: opacity 0.4s;
+  }
+  .topic-strip:hover .topic-strip-bg { opacity: 0.3; }
+  .topic-strip-label {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transition: writing-mode 0.3s;
+  }
+  .topic-strip:hover .topic-strip-label {
+    writing-mode: horizontal-tb;
+  }
+
+  /* ── ANIMATIONS ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; height: auto; }
+    .hero-left { padding: 60px 24px; }
+    .hero-right { height: 50vh; }
+    .spread { grid-template-columns: 1fr; }
+    .spread:nth-child(even) .spread-content { order: 1; }
+    .spread:nth-child(even) .spread-media { order: 2; }
+    .spread-content { padding: 48px 24px; }
+    .spread-media { height: 50vh; }
+    .pull-quote-divider { padding: 60px 24px; }
+    .voices-section { padding: 60px 24px; }
+    .more-topics { padding: 60px 24px; }
+    .topics-row { flex-direction: column; }
+    .topic-strip { height: 80px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-label">Cincy Voices — Topic Thread</div>
+    <h1 class="hero-title">Origin<br><em>Stories</em></h1>
+    <p class="hero-subtitle">How Cincinnati's business leaders found their path — the moments, mentors, and mistakes that made them who they are.</p>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-num">26</div>
+        <div class="hero-stat-label">Clips</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">9</div>
+        <div class="hero-stat-label">Voices</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">12</div>
+        <div class="hero-stat-label">Quotes</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-mosaic">
+      <img class="hero-mosaic-img span-2" src="/headshots/adam-reynolds.jpg" alt="Adam Reynolds">
+      <img class="hero-mosaic-img" src="/headshots/meghan-cummings.jpg" alt="Meghan Cummings">
+      <img class="hero-mosaic-img" src="/headshots/liz-hernandez.jpg" alt="Liz Hernandez">
+      <img class="hero-mosaic-img" src="/headshots/michael-barber.jpg" alt="Michael Barber">
+      <img class="hero-mosaic-img" src="/headshots/grace-maza.jpg" alt="Grace Maza">
+    </div>
+  </div>
+</section>
+
+<!-- EDITORIAL INTRO -->
+<div class="editorial-intro reveal">
+  <p class="drop-cap-text">Every leader has a moment that redirected everything. A conversation with a stranger, a failure that cracked something open, a childhood pattern they didn't recognize until decades later. These are those moments — unscripted, unpolished, and surprisingly universal.</p>
+</div>
+
+<!-- SPREAD 1 -->
+<section class="spread">
+  <div class="spread-content reveal">
+    <div class="spread-number">01</div>
+    <div class="spread-speaker">
+      <img class="spread-avatar" src="/headshots/adam-reynolds.jpg" alt="Adam Reynolds">
+      <div>
+        <div class="spread-name">Adam Reynolds</div>
+        <div class="spread-role">Founder & CEO, Lofty Labs</div>
+      </div>
+    </div>
+    <blockquote class="spread-quote">"I didn't start this company because I had a vision. I started it because I couldn't stop thinking about the problem."</blockquote>
+    <p class="spread-context">Adam describes the obsession that preceded his company's founding — and why passion isn't always what it looks like from the outside.</p>
+  </div>
+  <div class="spread-media">
+    <img class="spread-video-thumb" src="https://image.mux.com/PvmKD7e5xvgxN7bLpDBsuU4nkXqRkz00/thumbnail.jpg?time=2&width=800" alt="Video thumbnail">
+    <div class="spread-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
+    <div class="spread-duration">2:34</div>
+  </div>
+</section>
+
+<!-- SPREAD 2 -->
+<section class="spread">
+  <div class="spread-content reveal">
+    <div class="spread-number">02</div>
+    <div class="spread-speaker">
+      <img class="spread-avatar" src="/headshots/meghan-cummings.jpg" alt="Meghan Cummings">
+      <div>
+        <div class="spread-name">Meghan Cummings</div>
+        <div class="spread-role">Chief People Officer</div>
+      </div>
+    </div>
+    <blockquote class="spread-quote">"My parents never ran a business but they taught me everything about leading people. Dinner table negotiations with five siblings — that was my MBA."</blockquote>
+    <p class="spread-context">Meghan traces her leadership style back to a chaotic, loving household where listening was survival.</p>
+  </div>
+  <div class="spread-media">
+    <img class="spread-video-thumb" src="https://image.mux.com/xqDjrR02NvCOCPYbdixJl6sGmnHrM3FX/thumbnail.jpg?time=3&width=800" alt="Video thumbnail">
+    <div class="spread-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
+    <div class="spread-duration">1:58</div>
+  </div>
+</section>
+
+<!-- PULL QUOTE DIVIDER -->
+<div class="pull-quote-divider">
+  <blockquote class="pull-quote-text">"The best origin stories aren't about where you started. They're about the moment you stopped pretending."</blockquote>
+  <div class="pull-quote-attr">— Liz Hernandez</div>
+</div>
+
+<!-- SPREAD 3 -->
+<section class="spread">
+  <div class="spread-content reveal">
+    <div class="spread-number">03</div>
+    <div class="spread-speaker">
+      <img class="spread-avatar" src="/headshots/michael-barber.jpg" alt="Michael Barber">
+      <div>
+        <div class="spread-name">Michael Barber</div>
+        <div class="spread-role">Managing Partner</div>
+      </div>
+    </div>
+    <blockquote class="spread-quote">"I got fired from my first real job and it was the best thing that ever happened to me. Not because it led to this — but because it taught me I could survive the worst."</blockquote>
+    <p class="spread-context">Michael talks about the liberation that comes from hitting bottom early — and why he tells every young hire that story on their first day.</p>
+  </div>
+  <div class="spread-media">
+    <img class="spread-video-thumb" src="https://image.mux.com/OLqYSgt4MjnPvIOSBGTG8ENUvbaVaOR5/thumbnail.jpg?time=2&width=800" alt="Video thumbnail">
+    <div class="spread-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
+    <div class="spread-duration">3:12</div>
+  </div>
+</section>
+
+<!-- SPREAD 4 -->
+<section class="spread">
+  <div class="spread-content reveal">
+    <div class="spread-number">04</div>
+    <div class="spread-speaker">
+      <img class="spread-avatar" src="/headshots/grace-maza.jpg" alt="Grace Maza">
+      <div>
+        <div class="spread-name">Grace Maza</div>
+        <div class="spread-role">Executive Director</div>
+      </div>
+    </div>
+    <blockquote class="spread-quote">"I moved to Cincinnati with two suitcases and zero connections. This city gave me a chance before I had a resume to prove I deserved one."</blockquote>
+    <p class="spread-context">Grace on being an outsider in a city that rewards insiders — and how that tension became her superpower.</p>
+  </div>
+  <div class="spread-media">
+    <img class="spread-video-thumb" src="https://image.mux.com/f4kD02esIHuBntgrAb01s5q009fEFbMPM202/thumbnail.jpg?time=1&width=800" alt="Video thumbnail">
+    <div class="spread-play"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
+    <div class="spread-duration">2:21</div>
+  </div>
+</section>
+
+<!-- VOICES IN THIS THREAD -->
+<section class="voices-section">
+  <div class="voices-section-title">All voices in this thread</div>
+  <div class="voices-grid">
+    <div class="voice-card">
+      <img class="voice-card-avatar" src="/headshots/adam-reynolds.jpg" alt="">
+      <div class="voice-card-name">Adam Reynolds</div>
+      <div class="voice-card-role">Founder & CEO</div>
+      <div class="voice-card-quote">"I couldn't stop thinking about the problem."</div>
+    </div>
+    <div class="voice-card">
+      <img class="voice-card-avatar" src="/headshots/meghan-cummings.jpg" alt="">
+      <div class="voice-card-name">Meghan Cummings</div>
+      <div class="voice-card-role">Chief People Officer</div>
+      <div class="voice-card-quote">"Dinner table negotiations — that was my MBA."</div>
+    </div>
+    <div class="voice-card">
+      <img class="voice-card-avatar" src="/headshots/liz-hernandez.jpg" alt="">
+      <div class="voice-card-name">Liz Hernandez</div>
+      <div class="voice-card-role">VP of Strategy</div>
+      <div class="voice-card-quote">"The moment you stopped pretending."</div>
+    </div>
+    <div class="voice-card">
+      <img class="voice-card-avatar" src="/headshots/michael-barber.jpg" alt="">
+      <div class="voice-card-name">Michael Barber</div>
+      <div class="voice-card-role">Managing Partner</div>
+      <div class="voice-card-quote">"I could survive the worst."</div>
+    </div>
+    <div class="voice-card">
+      <img class="voice-card-avatar" src="/headshots/grace-maza.jpg" alt="">
+      <div class="voice-card-name">Grace Maza</div>
+      <div class="voice-card-role">Executive Director</div>
+      <div class="voice-card-quote">"This city gave me a chance."</div>
+    </div>
+    <div class="voice-card">
+      <img class="voice-card-avatar" src="/headshots/rachel-delong.jpg" alt="">
+      <div class="voice-card-name">Rachel DeLong</div>
+      <div class="voice-card-role">Founder</div>
+      <div class="voice-card-quote">"My origin story is everyone else's too."</div>
+    </div>
+  </div>
+</section>
+
+<!-- MORE TOPICS -->
+<section class="more-topics">
+  <div class="more-topics-title">Explore more threads</div>
+  <div class="topics-row">
+    <div class="topic-strip" style="background: #7a9e7e;">
+      <div class="topic-strip-label">Trust</div>
+    </div>
+    <div class="topic-strip" style="background: #d4a843;">
+      <div class="topic-strip-label">Impact</div>
+    </div>
+    <div class="topic-strip" style="background: #5b8ba0;">
+      <div class="topic-strip-label">Culture</div>
+    </div>
+    <div class="topic-strip" style="background: #c94c60;">
+      <div class="topic-strip-label">Fractional</div>
+    </div>
+    <div class="topic-strip" style="background: #6b4c6e;">
+      <div class="topic-strip-label">Growth</div>
+    </div>
+    <div class="topic-strip" style="background: #b0884c;">
+      <div class="topic-strip-label">Collaboration</div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

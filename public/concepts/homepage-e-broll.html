@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Homepage E — The B-Roll Billboard | Cincy Voices</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --cream: #f5f0e8;
+  --navy: #1a1f2e;
+  --gold: #c9a84c;
+  --charcoal: #2d2d2d;
+  --warm-black: #0d0d0d;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--warm-black);
+  color: white;
+  overflow-x: hidden;
+}
+
+/* ── BILLBOARD HERO ── */
+.billboard {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.billboard-video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.billboard-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Fallback gradient — sits behind video, visible if video fails */
+.billboard-video-fallback {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 60%, rgba(201,168,76,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 30%, rgba(90,120,160,0.1) 0%, transparent 50%),
+    linear-gradient(180deg, #0d0d0d 0%, #1a1f2e 50%, #0d0d0d 100%);
+  z-index: -1;
+}
+.billboard-video video {
+  position: relative;
+  z-index: 0;
+}
+/* Subtle animated grain over video */
+.billboard-video::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 1;
+}
+
+.billboard-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 900px;
+  padding: 0 2rem;
+}
+
+.billboard-eyebrow {
+  font-size: 0.7rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeUp 1s 0.3s forwards;
+}
+
+.billboard-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 7vw, 6rem);
+  line-height: 1.05;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeUp 1s 0.6s forwards;
+}
+.billboard-title em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.billboard-sub {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: rgba(255,255,255,0.7);
+  line-height: 1.7;
+  max-width: 620px;
+  margin: 0 auto 3rem;
+  font-weight: 300;
+  opacity: 0;
+  animation: fadeUp 1s 0.9s forwards;
+}
+
+.billboard-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: white;
+  text-decoration: none;
+  padding: 1rem 2.5rem;
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 100px;
+  transition: all 0.4s;
+  opacity: 0;
+  animation: fadeUp 1s 1.2s forwards;
+}
+.billboard-cta:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy);
+}
+.billboard-cta svg { transition: transform 0.3s; }
+.billboard-cta:hover svg { transform: translateY(2px); }
+
+.scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0;
+  animation: fadeUp 1s 1.5s forwards;
+}
+.scroll-hint span {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+}
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.4), transparent);
+  animation: scrollPulse 2s infinite;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* ── THE STORY (scroll narrative) ── */
+.story {
+  position: relative;
+  padding: 10rem 2rem 8rem;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.story-block {
+  margin-bottom: 6rem;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.story-block.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.story-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+}
+
+.story-headline {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.3;
+  margin-bottom: 1.5rem;
+  color: white;
+}
+
+.story-body {
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: rgba(255,255,255,0.6);
+  font-weight: 300;
+}
+.story-body strong {
+  color: rgba(255,255,255,0.9);
+  font-weight: 500;
+}
+
+.story-divider {
+  width: 40px;
+  height: 1px;
+  background: var(--gold);
+  margin-top: 4rem;
+}
+
+/* ── LEADERS SHOWCASE ── */
+.leaders {
+  padding: 4rem 2rem 8rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.leaders-header {
+  text-align: center;
+  margin-bottom: 4rem;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.leaders-header.visible { opacity: 1; transform: translateY(0); }
+
+.leaders-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  margin-bottom: 1rem;
+}
+.leaders-header p {
+  color: rgba(255,255,255,0.5);
+  font-size: 1rem;
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.leaders-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.leader-card {
+  position: relative;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.leader-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.leader-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(0.4);
+  transition: all 0.6s ease;
+}
+.leader-card:hover img {
+  filter: grayscale(0);
+  transform: scale(1.05);
+}
+
+.leader-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(13,13,13,0.95) 0%, rgba(13,13,13,0.4) 40%, transparent 70%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2rem;
+  transition: background 0.4s;
+}
+.leader-card:hover .leader-overlay {
+  background: linear-gradient(0deg, rgba(13,13,13,0.98) 0%, rgba(13,13,13,0.5) 50%, rgba(13,13,13,0.2) 70%);
+}
+
+.leader-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  margin-bottom: 0.3rem;
+}
+.leader-role {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 1rem;
+  font-weight: 300;
+}
+
+.leader-peek {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.6;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease, opacity 0.4s;
+  opacity: 0;
+}
+.leader-card:hover .leader-peek {
+  max-height: 100px;
+  opacity: 1;
+}
+
+.leader-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 1rem;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.5s ease 0.1s, opacity 0.4s 0.1s;
+}
+.leader-card:hover .leader-link {
+  max-height: 40px;
+  opacity: 1;
+}
+.leader-link svg { transition: transform 0.3s; }
+.leader-link:hover svg { transform: translateX(4px); }
+
+/* ── SHAREABLE CLIPS ── */
+.clips {
+  padding: 8rem 2rem;
+  background: linear-gradient(180deg, var(--warm-black), #111318, var(--warm-black));
+}
+.clips-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.clips-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 3.5rem;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.clips-header.visible { opacity: 1; transform: translateY(0); }
+
+.clips-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 2.5rem);
+}
+.clips-header p {
+  color: rgba(255,255,255,0.4);
+  font-size: 0.85rem;
+}
+
+.clip-featured {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 3rem;
+  margin-bottom: 3rem;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.clip-featured.visible { opacity: 1; transform: translateY(0); }
+
+.clip-video {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 16/9;
+  background: #1a1a1a;
+  cursor: pointer;
+}
+.clip-video img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s;
+}
+.clip-video:hover img { transform: scale(1.03); }
+
+.clip-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 72px;
+  height: 72px;
+  background: rgba(255,255,255,0.95);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s;
+}
+.clip-video:hover .clip-play { transform: translate(-50%, -50%) scale(1.1); }
+.clip-play::after {
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 18px solid var(--navy);
+  border-top: 11px solid transparent;
+  border-bottom: 11px solid transparent;
+  margin-left: 4px;
+}
+.clip-duration {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: rgba(0,0,0,0.7);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.clip-meta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.clip-topic-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 1.5rem;
+}
+.clip-topic-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.clip-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  line-height: 1.4;
+  margin-bottom: 1rem;
+}
+.clip-speaker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+}
+.clip-speaker-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.clip-speaker-name {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+.clip-speaker-role {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.4);
+}
+.clip-excerpt {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 2rem;
+  font-weight: 300;
+}
+
+/* Share buttons */
+.share-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.6rem 1.2rem;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s;
+  cursor: pointer;
+  border: none;
+}
+.share-btn.linkedin {
+  background: #0a66c2;
+  color: white;
+}
+.share-btn.linkedin:hover { background: #004182; }
+.share-btn.x {
+  background: rgba(255,255,255,0.1);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.share-btn.x:hover { background: rgba(255,255,255,0.15); }
+.share-btn.copy {
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.6);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.share-btn.copy:hover { background: rgba(255,255,255,0.1); color: white; }
+
+/* Clip grid */
+.clips-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.clip-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s, border-color 0.3s;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.clip-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.clip-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255,255,255,0.12);
+}
+
+.clip-card-video {
+  position: relative;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  cursor: pointer;
+}
+.clip-card-video img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+.clip-card:hover .clip-card-video img { transform: scale(1.05); }
+
+.clip-card-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 48px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.clip-card:hover .clip-card-play { opacity: 1; }
+.clip-card-play::after {
+  content: '';
+  border-left: 12px solid var(--navy);
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  margin-left: 2px;
+}
+
+.clip-card-info {
+  padding: 1.25rem;
+}
+.clip-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  line-height: 1.4;
+  margin-bottom: 0.75rem;
+}
+.clip-card-speaker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+.clip-card-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.clip-card-speaker-name {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+.clip-card-share {
+  display: flex;
+  gap: 8px;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.clip-card-share .share-btn {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.7rem;
+}
+
+/* ── SHAREABLE QUOTES ── */
+.quotes {
+  padding: 8rem 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.quotes-header {
+  text-align: center;
+  margin-bottom: 4rem;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.quotes-header.visible { opacity: 1; transform: translateY(0); }
+.quotes-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  margin-bottom: 0.75rem;
+}
+.quotes-header p {
+  color: rgba(255,255,255,0.4);
+  font-size: 0.9rem;
+}
+
+.quotes-masonry {
+  columns: 2;
+  column-gap: 24px;
+}
+
+.quote-card {
+  break-inside: avoid;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 24px;
+  transition: transform 0.3s, border-color 0.3s;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.quote-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.quote-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255,255,255,0.12);
+}
+
+.quote-mark {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.5rem;
+  color: var(--gold);
+  line-height: 0.5;
+  margin-bottom: 1rem;
+}
+
+.quote-text {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 1.5rem;
+}
+
+.quote-attribution {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1.25rem;
+}
+.quote-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.quote-author {
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+.quote-author-role {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.4);
+}
+
+.quote-share {
+  display: flex;
+  gap: 8px;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.quote-share .share-btn {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.7rem;
+}
+
+/* ── TOPICS STRIP ── */
+.topics {
+  padding: 6rem 2rem;
+  background: var(--navy);
+}
+.topics-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.topics-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.topics-header.visible { opacity: 1; transform: translateY(0); }
+.topics-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+.topics-header p {
+  color: rgba(255,255,255,0.4);
+  font-size: 0.85rem;
+}
+
+.topics-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.topic-row {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background: rgba(255,255,255,0.03);
+  cursor: pointer;
+  transition: background 0.3s;
+  text-decoration: none;
+  color: white;
+  border-radius: 6px;
+  opacity: 0;
+  transform: translateY(15px);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.topic-row.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.topic-row:hover { background: rgba(255,255,255,0.06); }
+
+.topic-color {
+  width: 4px;
+  height: 32px;
+  border-radius: 2px;
+  margin-right: 1.5rem;
+  flex-shrink: 0;
+}
+.topic-info { flex: 1; }
+.topic-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  margin-bottom: 0.2rem;
+}
+.topic-desc {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.4);
+  font-weight: 300;
+}
+.topic-stat {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.35);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-right: 1.5rem;
+}
+.topic-arrow {
+  color: rgba(255,255,255,0.2);
+  transition: color 0.3s, transform 0.3s;
+}
+.topic-row:hover .topic-arrow { color: var(--gold); transform: translateX(4px); }
+
+/* ── WHAT IS FRACTIONAL ── */
+.fractional {
+  padding: 8rem 2rem;
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.fractional.visible { opacity: 1; transform: translateY(0); }
+
+.fractional h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  margin-bottom: 1.5rem;
+  line-height: 1.3;
+}
+.fractional p {
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: rgba(255,255,255,0.55);
+  font-weight: 300;
+  margin-bottom: 1.5rem;
+}
+.fractional p strong {
+  color: rgba(255,255,255,0.9);
+  font-weight: 500;
+}
+
+/* ── FOOTER CTA ── */
+.footer-cta {
+  padding: 6rem 2rem 8rem;
+  text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.footer-cta-inner {
+  max-width: 600px;
+  margin: 0 auto;
+}
+.footer-cta h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+.footer-cta p {
+  color: rgba(255,255,255,0.45);
+  font-size: 0.9rem;
+  margin-bottom: 2rem;
+  line-height: 1.7;
+}
+.footer-cta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2.5rem;
+  background: var(--gold);
+  color: var(--navy);
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 100px;
+  transition: all 0.3s;
+}
+.footer-cta-link:hover { background: #dbb85e; transform: translateY(-2px); }
+
+.footer-bottom {
+  padding: 3rem 2rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.25);
+}
+.footer-bottom a {
+  color: var(--gold);
+  text-decoration: none;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .leaders-grid { grid-template-columns: repeat(2, 1fr); }
+  .clip-featured { grid-template-columns: 1fr; }
+  .clips-grid { grid-template-columns: 1fr 1fr; }
+  .clips-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+}
+
+@media (max-width: 600px) {
+  .leaders-grid { grid-template-columns: 1fr 1fr; }
+  .clips-grid { grid-template-columns: 1fr; }
+  .quotes-masonry { columns: 1; }
+  .billboard-content { padding: 0 1.5rem; }
+  .story { padding: 6rem 1.5rem 4rem; }
+  .leader-overlay { padding: 1.25rem; }
+  .leader-name { font-size: 1.1rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── BILLBOARD HERO ── -->
+<section class="billboard">
+  <div class="billboard-video">
+    <video id="hero-video" autoplay muted loop playsinline
+           poster="https://image.mux.com/qOROinV8lP00rWgyTiOvRCZj4YM0158nDmt6HX01WWISRw/thumbnail.jpg?time=10&width=1920">
+    </video>
+    <!-- Fallback gradient if video fails to load -->
+    <div class="billboard-video-fallback"></div>
+  </div>
+  <div class="billboard-content">
+    <div class="billboard-eyebrow">Work With Meaning Presents</div>
+    <h1 class="billboard-title">Cincinnati<br><em>Voices</em></h1>
+    <p class="billboard-sub">Seventeen fractional leaders. One room. One day. The unfiltered conversations that define how Cincinnati does business differently.</p>
+    <a href="#story" class="billboard-cta">
+      Discover the conversations
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+    </a>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ── THE STORY ── -->
+<section class="story" id="story">
+  <div class="story-block">
+    <div class="story-label">The Event</div>
+    <h2 class="story-headline">One day that captured something real.</h2>
+    <p class="story-body">Cincinnati Voices was a <strong>single-day gathering</strong> of the city's most experienced fractional leaders — CMOs, COOs, CFOs, and strategists who've chosen to work differently. No panels. No keynotes. Just honest, unscripted conversations about the topics that actually matter.</p>
+    <div class="story-divider"></div>
+  </div>
+
+  <div class="story-block">
+    <div class="story-label">The Conversations</div>
+    <h2 class="story-headline">182 clips. 65 quotes. 7 threads of wisdom.</h2>
+    <p class="story-body">We captured every moment — the stories about how they got started, the hard-won lessons about <strong>trust, growth, and client impact</strong>, the honest takes on what fractional leadership really demands. Then we organized it all into topic threads so you can follow the conversations that matter to you.</p>
+    <div class="story-divider"></div>
+  </div>
+
+  <div class="story-block">
+    <div class="story-label">The People</div>
+    <h2 class="story-headline">Get to know the leaders who are reshaping how Cincinnati works.</h2>
+    <p class="story-body">These aren't executives hiding behind corporate talking points. They're <strong>founders, operators, and advisors</strong> who chose independence — and built something meaningful with it. Every profile is a window into who they are, how they think, and what they've learned along the way.</p>
+  </div>
+</section>
+
+<!-- ── LEADERS ── -->
+<section class="leaders">
+  <div class="leaders-header">
+    <h2>Meet the Voices</h2>
+    <p>Explore each leader's story — their clips, quotes, and the topics they're most passionate about.</p>
+  </div>
+
+  <div class="leaders-grid">
+    <div class="leader-card">
+      <img src="/headshots/molly-duffee.jpg" alt="Molly Duffee"
+           onerror="this.style.background='linear-gradient(135deg, #c9a84c 0%, #1a1f2e 100%)'; this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'">
+      <div class="leader-overlay">
+        <div class="leader-name">Molly Duffee</div>
+        <div class="leader-role">Fractional CMO</div>
+        <div class="leader-peek">"The best brands are built by people willing to be uncomfortably honest about who they are."</div>
+        <div class="leader-link">
+          Explore profile
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="leader-card">
+      <img src="/headshots/adam-dooley.jpg" alt="Adam Dooley"
+           onerror="this.style.background='linear-gradient(135deg, #5b8ba0 0%, #1a1f2e 100%)'; this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'">
+      <div class="leader-overlay">
+        <div class="leader-name">Adam Dooley</div>
+        <div class="leader-role">Fractional COO</div>
+        <div class="leader-peek">"Operational excellence isn't about perfection — it's about building systems that learn from their own mistakes."</div>
+        <div class="leader-link">
+          Explore profile
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="leader-card">
+      <img src="/headshots/ryan-mooney.jpg" alt="Ryan Mooney"
+           onerror="this.style.background='linear-gradient(135deg, #7a9e7e 0%, #1a1f2e 100%)'; this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'">
+      <div class="leader-overlay">
+        <div class="leader-name">Ryan Mooney</div>
+        <div class="leader-role">Growth Advisor</div>
+        <div class="leader-peek">"Growth isn't a department — it's a mindset that either runs through your whole company or it doesn't."</div>
+        <div class="leader-link">
+          Explore profile
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="leader-card">
+      <img src="/headshots/sarah-dusing.jpg" alt="Sarah Dusing"
+           onerror="this.style.background='linear-gradient(135deg, #c94c60 0%, #1a1f2e 100%)'; this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'">
+      <div class="leader-overlay">
+        <div class="leader-name">Sarah Dusing</div>
+        <div class="leader-role">Fractional CFO</div>
+        <div class="leader-peek">"The numbers tell you where you've been. The conversations tell you where you're going."</div>
+        <div class="leader-link">
+          Explore profile
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="leader-card">
+      <img src="/headshots/larry-kaczynski.jpg" alt="Larry Kaczynski"
+           onerror="this.style.background='linear-gradient(135deg, #6b4c6e 0%, #1a1f2e 100%)'; this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'">
+      <div class="leader-overlay">
+        <div class="leader-name">Larry Kaczynski</div>
+        <div class="leader-role">Business Strategist</div>
+        <div class="leader-peek">"Strategy without relationships is just a PowerPoint. Relationships without strategy is just networking."</div>
+        <div class="leader-link">
+          Explore profile
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="leader-card">
+      <img src="/headshots/katie-dill.jpg" alt="Katie Dill"
+           onerror="this.style.background='linear-gradient(135deg, #b0884c 0%, #1a1f2e 100%)'; this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'">
+      <div class="leader-overlay">
+        <div class="leader-name">Katie Dill</div>
+        <div class="leader-role">Brand Consultant</div>
+        <div class="leader-peek">"People don't buy what you do. They buy how you make them feel about what they're doing."</div>
+        <div class="leader-link">
+          Explore profile
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SHAREABLE CLIPS ── -->
+<section class="clips">
+  <div class="clips-inner">
+    <div class="clips-header">
+      <div>
+        <h2>Featured Clips</h2>
+        <p>Watch. Share. Spark a conversation on LinkedIn.</p>
+      </div>
+    </div>
+
+    <!-- Featured clip -->
+    <div class="clip-featured">
+      <div class="clip-video">
+        <img src="https://image.mux.com/sample/thumbnail.jpg?time=4&width=800" alt="Featured clip"
+             onerror="this.style.background='linear-gradient(135deg, #c9a84c 0%, #1a1f2e 100%)'; this.style.minHeight='300px'; this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'">
+        <div class="clip-play"></div>
+        <div class="clip-duration">3:24</div>
+      </div>
+      <div class="clip-meta">
+        <div class="clip-topic-badge">
+          <span class="clip-topic-dot" style="background: #7a9e7e;"></span>
+          Trust &amp; Relationships
+        </div>
+        <div class="clip-title">Why Cincinnati's Fractional Community Runs on Trust</div>
+        <div class="clip-speaker">
+          <img class="clip-speaker-avatar" src="/headshots/molly-duffee.jpg" alt=""
+               onerror="this.style.background='#333'; this.style.minWidth='40px'">
+          <div>
+            <div class="clip-speaker-name">Molly Duffee</div>
+            <div class="clip-speaker-role">Fractional CMO</div>
+          </div>
+        </div>
+        <div class="clip-excerpt">"In Cincinnati, your reputation walks into the room before you do. That changes everything about how you build a fractional practice."</div>
+        <div class="share-row">
+          <button class="share-btn linkedin" onclick="shareLinkedIn(this)" data-text="This insight from Molly Duffee on trust in Cincinnati's fractional community is worth 3 minutes of your time.">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
+            Share on LinkedIn
+          </button>
+          <button class="share-btn x" onclick="shareX(this)" data-text="&quot;Your reputation walks into the room before you do.&quot; — Molly Duffee on Cincinnati's fractional community">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            Post
+          </button>
+          <button class="share-btn copy" onclick="copyLink(this)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            Copy link
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Clip grid -->
+    <div class="clips-grid">
+      <div class="clip-card">
+        <div class="clip-card-video">
+          <img src="https://image.mux.com/sample2/thumbnail.jpg?time=3&width=480" alt=""
+               onerror="this.style.background='linear-gradient(135deg, #c4724e 0%, #1a1f2e 100%)'; this.style.minHeight='160px'; this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'">
+          <div class="clip-card-play"></div>
+          <div class="clip-duration">2:11</div>
+        </div>
+        <div class="clip-card-info">
+          <div class="clip-card-title">The Moment I Knew Corporate Wasn't for Me</div>
+          <div class="clip-card-speaker">
+            <img class="clip-card-avatar" src="/headshots/adam-dooley.jpg" alt=""
+                 onerror="this.style.background='#333'; this.style.minWidth='28px'">
+            <span class="clip-card-speaker-name">Adam Dooley</span>
+          </div>
+          <div class="clip-card-share">
+            <button class="share-btn linkedin" onclick="shareLinkedIn(this)" data-text="Adam Dooley on the moment he knew corporate wasn't for him. Worth watching.">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
+              LinkedIn
+            </button>
+            <button class="share-btn copy" onclick="copyLink(this)">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              Link
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="clip-card">
+        <div class="clip-card-video">
+          <img src="https://image.mux.com/sample3/thumbnail.jpg?time=5&width=480" alt=""
+               onerror="this.style.background='linear-gradient(135deg, #5b8ba0 0%, #1a1f2e 100%)'; this.style.minHeight='160px'; this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'">
+          <div class="clip-card-play"></div>
+          <div class="clip-duration">1:48</div>
+        </div>
+        <div class="clip-card-info">
+          <div class="clip-card-title">How I Charge What I'm Worth</div>
+          <div class="clip-card-speaker">
+            <img class="clip-card-avatar" src="/headshots/sarah-dusing.jpg" alt=""
+                 onerror="this.style.background='#333'; this.style.minWidth='28px'">
+            <span class="clip-card-speaker-name">Sarah Dusing</span>
+          </div>
+          <div class="clip-card-share">
+            <button class="share-btn linkedin" onclick="shareLinkedIn(this)" data-text="Sarah Dusing on pricing as a fractional leader. Real talk, no fluff.">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
+              LinkedIn
+            </button>
+            <button class="share-btn copy" onclick="copyLink(this)">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              Link
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="clip-card">
+        <div class="clip-card-video">
+          <img src="https://image.mux.com/sample4/thumbnail.jpg?time=2&width=480" alt=""
+               onerror="this.style.background='linear-gradient(135deg, #6b4c6e 0%, #1a1f2e 100%)'; this.style.minHeight='160px'; this.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'">
+          <div class="clip-card-play"></div>
+          <div class="clip-duration">2:55</div>
+        </div>
+        <div class="clip-card-info">
+          <div class="clip-card-title">What Clients Actually Need vs. What They Ask For</div>
+          <div class="clip-card-speaker">
+            <img class="clip-card-avatar" src="/headshots/ryan-mooney.jpg" alt=""
+                 onerror="this.style.background='#333'; this.style.minWidth='28px'">
+            <span class="clip-card-speaker-name">Ryan Mooney</span>
+          </div>
+          <div class="clip-card-share">
+            <button class="share-btn linkedin" onclick="shareLinkedIn(this)" data-text="Ryan Mooney nails the gap between what clients ask for and what they actually need.">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
+              LinkedIn
+            </button>
+            <button class="share-btn copy" onclick="copyLink(this)">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              Link
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SHAREABLE QUOTES ── -->
+<section class="quotes">
+  <div class="quotes-header">
+    <h2>Words Worth Sharing</h2>
+    <p>The quotes that stayed with us. Share the ones that resonate with you.</p>
+  </div>
+
+  <div class="quotes-masonry">
+    <div class="quote-card">
+      <div class="quote-mark">&ldquo;</div>
+      <div class="quote-text">Cincinnati has this quiet confidence — people here don't need to shout about what they're building. They just build it.</div>
+      <div class="quote-attribution">
+        <img class="quote-avatar" src="/headshots/molly-duffee.jpg" alt=""
+             onerror="this.style.background='#333'; this.style.minWidth='36px'">
+        <div>
+          <div class="quote-author">Molly Duffee</div>
+          <div class="quote-author-role">Fractional CMO</div>
+        </div>
+      </div>
+      <div class="quote-share">
+        <button class="share-btn linkedin" onclick="shareLinkedIn(this)" data-text="&quot;Cincinnati has this quiet confidence — people here don't need to shout about what they're building. They just build it.&quot; — Molly Duffee, Cincinnati Voices">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
+          Share on LinkedIn
+        </button>
+        <button class="share-btn x" onclick="shareX(this)" data-text="&quot;Cincinnati has this quiet confidence — people here don't need to shout about what they're building.&quot; — @MollyDuffee">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          Post
+        </button>
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-mark">&ldquo;</div>
+      <div class="quote-text">Every great brand is really just a promise that got kept enough times that people started believing it without checking.</div>
+      <div class="quote-attribution">
+        <img class="quote-avatar" src="/headshots/katie-dill.jpg" alt=""
+             onerror="this.style.background='#333'; this.style.minWidth='36px'">
+        <div>
+          <div class="quote-author">Katie Dill</div>
+          <div class="quote-author-role">Brand Consultant</div>
+        </div>
+      </div>
+      <div class="quote-share">
+        <button class="share-btn linkedin" onclick="shareLinkedIn(this)" data-text="&quot;Every great brand is really just a promise that got kept enough times that people started believing it without checking.&quot; — Katie Dill, Cincinnati Voices">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
+          Share on LinkedIn
+        </button>
+        <button class="share-btn x" onclick="shareX(this)" data-text="&quot;Every great brand is really just a promise that got kept enough times that people started believing it without checking.&quot; — Katie Dill">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          Post
+        </button>
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-mark">&ldquo;</div>
+      <div class="quote-text">I don't network. I just keep showing up in the same rooms as interesting people and eventually we make something together.</div>
+      <div class="quote-attribution">
+        <img class="quote-avatar" src="/headshots/larry-kaczynski.jpg" alt=""
+             onerror="this.style.background='#333'; this.style.minWidth='36px'">
+        <div>
+          <div class="quote-author">Larry Kaczynski</div>
+          <div class="quote-author-role">Business Strategist</div>
+        </div>
+      </div>
+      <div class="quote-share">
+        <button class="share-btn linkedin" onclick="shareLinkedIn(this)" data-text="&quot;I don't network. I just keep showing up in the same rooms as interesting people and eventually we make something together.&quot; — Larry Kaczynski, Cincinnati Voices">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
+          Share on LinkedIn
+        </button>
+        <button class="share-btn x" onclick="shareX(this)" data-text="&quot;I don't network. I just keep showing up in the same rooms as interesting people and eventually we make something together.&quot;">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          Post
+        </button>
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-mark">&ldquo;</div>
+      <div class="quote-text">The retention problem isn't compensation — it's meaning. People leave when they can't connect their daily work to something larger.</div>
+      <div class="quote-attribution">
+        <img class="quote-avatar" src="/headshots/adam-dooley.jpg" alt=""
+             onerror="this.style.background='#333'; this.style.minWidth='36px'">
+        <div>
+          <div class="quote-author">Adam Dooley</div>
+          <div class="quote-author-role">Fractional COO</div>
+        </div>
+      </div>
+      <div class="quote-share">
+        <button class="share-btn linkedin" onclick="shareLinkedIn(this)" data-text="&quot;The retention problem isn't compensation — it's meaning. People leave when they can't connect their daily work to something larger.&quot; — Adam Dooley, Cincinnati Voices">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
+          Share on LinkedIn
+        </button>
+        <button class="share-btn x" onclick="shareX(this)" data-text="&quot;The retention problem isn't compensation — it's meaning.&quot; — Adam Dooley">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          Post
+        </button>
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-mark">&ldquo;</div>
+      <div class="quote-text">The hardest part of fractional work is knowing when your job is done — when the client doesn't need you anymore and you have to be the one to say it.</div>
+      <div class="quote-attribution">
+        <img class="quote-avatar" src="/headshots/sarah-dusing.jpg" alt=""
+             onerror="this.style.background='#333'; this.style.minWidth='36px'">
+        <div>
+          <div class="quote-author">Sarah Dusing</div>
+          <div class="quote-author-role">Fractional CFO</div>
+        </div>
+      </div>
+      <div class="quote-share">
+        <button class="share-btn linkedin" onclick="shareLinkedIn(this)" data-text="&quot;The hardest part of fractional work is knowing when your job is done — when the client doesn't need you anymore and you have to be the one to say it.&quot; — Sarah Dusing, Cincinnati Voices">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
+          Share on LinkedIn
+        </button>
+        <button class="share-btn x" onclick="shareX(this)" data-text="&quot;The hardest part of fractional work is knowing when your job is done.&quot; — Sarah Dusing">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          Post
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TOPICS ── -->
+<section class="topics">
+  <div class="topics-inner">
+    <div class="topics-header">
+      <h2>Explore by Topic</h2>
+      <p>Seven threads. Dozens of perspectives. Pick the conversation that matters to you.</p>
+    </div>
+    <div class="topics-list">
+      <a class="topic-row" href="#">
+        <div class="topic-color" style="background: #7a9e7e;"></div>
+        <div class="topic-info">
+          <div class="topic-name">Trust &amp; Relationships</div>
+          <div class="topic-desc">How Cincinnati's fractional leaders build the trust that makes everything else possible</div>
+        </div>
+        <div class="topic-stat">31 clips</div>
+        <div class="topic-arrow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+      <a class="topic-row" href="#">
+        <div class="topic-color" style="background: #c4724e;"></div>
+        <div class="topic-info">
+          <div class="topic-name">Origin Stories</div>
+          <div class="topic-desc">The moments, accidents, and decisions that led each leader to fractional work</div>
+        </div>
+        <div class="topic-stat">28 clips</div>
+        <div class="topic-arrow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+      <a class="topic-row" href="#">
+        <div class="topic-color" style="background: #d4a843;"></div>
+        <div class="topic-info">
+          <div class="topic-name">Client Impact</div>
+          <div class="topic-desc">Real stories of transformation — the clients, the challenges, the outcomes</div>
+        </div>
+        <div class="topic-stat">26 clips</div>
+        <div class="topic-arrow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+      <a class="topic-row" href="#">
+        <div class="topic-color" style="background: #5b8ba0;"></div>
+        <div class="topic-info">
+          <div class="topic-name">Culture &amp; People</div>
+          <div class="topic-desc">Building teams, retaining talent, and creating culture from the outside in</div>
+        </div>
+        <div class="topic-stat">24 clips</div>
+        <div class="topic-arrow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+      <a class="topic-row" href="#">
+        <div class="topic-color" style="background: #c94c60;"></div>
+        <div class="topic-info">
+          <div class="topic-name">The Fractional Model</div>
+          <div class="topic-desc">What fractional actually means — pricing, boundaries, and the business of independence</div>
+        </div>
+        <div class="topic-stat">27 clips</div>
+        <div class="topic-arrow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+      <a class="topic-row" href="#">
+        <div class="topic-color" style="background: #6b4c6e;"></div>
+        <div class="topic-info">
+          <div class="topic-name">Growth &amp; Change</div>
+          <div class="topic-desc">Scaling up, pivoting, and the personal growth that comes with professional risk</div>
+        </div>
+        <div class="topic-stat">22 clips</div>
+        <div class="topic-arrow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+      <a class="topic-row" href="#">
+        <div class="topic-color" style="background: #b0884c;"></div>
+        <div class="topic-info">
+          <div class="topic-name">Collaboration</div>
+          <div class="topic-desc">How fractional leaders work together — referrals, partnerships, and shared wins</div>
+        </div>
+        <div class="topic-stat">24 clips</div>
+        <div class="topic-arrow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHAT IS FRACTIONAL ── -->
+<section class="fractional">
+  <h2>What is Fractional Leadership?</h2>
+  <p>Fractional leaders are <strong>seasoned executives who work with multiple companies</strong> instead of one. They bring C-suite experience — CMO, COO, CFO, CTO — at a fraction of the cost and commitment of a full-time hire.</p>
+  <p>For growing companies, it means getting <strong>the strategic leadership you need without the overhead you can't afford</strong>. For the leaders themselves, it means building a career around variety, autonomy, and impact.</p>
+  <p>Cincinnati's fractional community is unusually tight. These leaders <strong>refer each other, collaborate on projects, and genuinely root for each other's success</strong>. That's what makes this city different — and that's what Cincy Voices set out to capture.</p>
+</section>
+
+<!-- ── FOOTER CTA ── -->
+<section class="footer-cta">
+  <div class="footer-cta-inner">
+    <h2>Start Exploring</h2>
+    <p>Dive into the conversations. Get to know the leaders. Find the wisdom that resonates with where you are right now.</p>
+    <a href="#" class="footer-cta-link">
+      Meet the leaders
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+<div class="footer-bottom">
+  <a href="/concepts/">Back to Concept Gallery</a> &middot; Cincy Voices &middot; Work With Meaning
+</div>
+
+<!-- HLS.js for Mux streaming -->
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+<script>
+(function() {
+  const video = document.getElementById('hero-video');
+  const src = 'https://stream.mux.com/qOROinV8lP00rWgyTiOvRCZj4YM0158nDmt6HX01WWISRw.m3u8';
+
+  if (Hls.isSupported()) {
+    const hls = new Hls({ autoStartLoad: true });
+    hls.loadSource(src);
+    hls.attachMedia(video);
+    hls.on(Hls.Events.MANIFEST_PARSED, () => { video.play(); });
+  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    // Safari has native HLS support
+    video.src = src;
+    video.addEventListener('loadedmetadata', () => { video.play(); });
+  }
+})();
+</script>
+
+<!-- ── SHARE LOGIC ── -->
+<script>
+const SITE_URL = 'https://voices.workwithmeaning.com';
+
+function shareLinkedIn(btn) {
+  const text = btn.getAttribute('data-text');
+  const url = SITE_URL;
+  const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&summary=${encodeURIComponent(text)}`;
+  window.open(linkedInUrl, '_blank', 'width=600,height=500');
+}
+
+function shareX(btn) {
+  const text = btn.getAttribute('data-text');
+  const url = SITE_URL;
+  const xUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+  window.open(xUrl, '_blank', 'width=600,height=400');
+}
+
+function copyLink(btn) {
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    const original = btn.innerHTML;
+    btn.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Copied!';
+    btn.style.color = '#c9a84c';
+    setTimeout(() => {
+      btn.innerHTML = original;
+      btn.style.color = '';
+    }, 2000);
+  });
+}
+
+// Scroll-triggered reveals
+const revealEls = document.querySelectorAll('.story-block, .leaders-header, .leader-card, .clips-header, .clip-featured, .clip-card, .quotes-header, .quote-card, .topics-header, .topic-row, .fractional');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      // Stagger cards within the same section
+      const delay = entry.target.classList.contains('leader-card') ||
+                    entry.target.classList.contains('clip-card') ||
+                    entry.target.classList.contains('quote-card') ||
+                    entry.target.classList.contains('topic-row')
+        ? parseInt(entry.target.dataset.delay || 0)
+        : 0;
+      setTimeout(() => entry.target.classList.add('visible'), delay);
+    }
+  });
+}, { threshold: 0.15 });
+
+// Add stagger delays
+document.querySelectorAll('.leader-card').forEach((el, i) => { el.dataset.delay = i * 100; });
+document.querySelectorAll('.clip-card').forEach((el, i) => { el.dataset.delay = i * 120; });
+document.querySelectorAll('.quote-card').forEach((el, i) => { el.dataset.delay = i * 100; });
+document.querySelectorAll('.topic-row').forEach((el, i) => { el.dataset.delay = i * 80; });
+
+revealEls.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

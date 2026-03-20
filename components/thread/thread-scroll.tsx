@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { CinematicPlayer } from '@/components/video/cinematic-player';
 import { ScrollReveal } from '@/components/shared/scroll-reveal';
 import { FocusedOverlay } from '@/components/leader/focused-overlay';
+import { extractPullQuote } from '@/lib/pull-quote';
 import type { ThreadItemWithContent, Topic } from '@/lib/types';
 
 interface ThreadScrollProps {
@@ -64,7 +65,7 @@ export function ThreadScroll({ items, topic }: ThreadScrollProps) {
                   className="border-l-4 pl-6 py-4"
                   style={{ borderColor: topic.color }}
                 >
-                  <p className="font-display text-fluid-quote font-bold text-cv-charcoal leading-relaxed">
+                  <p className="font-display text-lg md:text-xl font-bold text-cv-charcoal leading-relaxed">
                     &ldquo;{item.quote.quote_text}&rdquo;
                   </p>
                   <cite className="block mt-3 text-cv-muted text-sm not-italic font-body">
@@ -92,8 +93,8 @@ export function ThreadScroll({ items, topic }: ThreadScrollProps) {
                       <div className="aspect-video bg-cv-cinematic/5 rounded-xl" />
                     )}
                     <div>
-                      <p className="text-cv-charcoal font-body leading-relaxed">
-                        {item.segment.text.slice(0, 200)}{item.segment.text.length > 200 ? '...' : ''}
+                      <p className="text-cv-charcoal font-body text-sm leading-relaxed">
+                        &ldquo;{extractPullQuote(item.segment.text)}&rdquo;
                       </p>
                       <p className="text-cv-muted text-sm mt-2">— {item.leader.name}</p>
                     </div>

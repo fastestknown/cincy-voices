@@ -6,6 +6,7 @@ import { ScrollReveal } from '@/components/shared/scroll-reveal';
 import { FocusedOverlay } from './focused-overlay';
 import { trackEvent } from '@/lib/analytics';
 import { ANALYTICS_EVENTS } from '@/lib/constants';
+import { extractPullQuote } from '@/lib/pull-quote';
 import type { Segment } from '@/lib/types';
 
 interface ClipSequenceProps {
@@ -62,8 +63,8 @@ export function ClipSequence({ segments, leaderName }: ClipSequenceProps) {
 
               {/* Quote beside video */}
               <div className={i % 2 === 0 ? 'md:order-last' : 'md:order-first'}>
-                <blockquote className="font-display text-fluid-h3 font-bold text-cv-charcoal leading-relaxed">
-                  &ldquo;{segment.text.slice(0, 200)}{segment.text.length > 200 ? '...' : ''}&rdquo;
+                <blockquote className="font-display text-base md:text-lg font-bold text-cv-charcoal leading-relaxed">
+                  &ldquo;{extractPullQuote(segment.text)}&rdquo;
                 </blockquote>
                 <p className="text-cv-muted text-sm mt-3">— {leaderName}</p>
 

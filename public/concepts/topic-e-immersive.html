@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic Concept E — The Immersive Scroll | Cincy Voices</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cv-cream: #f5f0e8;
+    --cv-navy: #1a1f2e;
+    --cv-gold: #c9a84c;
+    --cv-charcoal: #2d2d2d;
+    --topic-color: #c94c60; /* Fractional Model */
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: #0a0a0a; color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+  /* ── FULL-SCREEN PANELS ── */
+  .panel {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Panel 1: Topic Intro */
+  .panel-intro {
+    flex-direction: column;
+    text-align: center;
+    padding: 40px;
+  }
+  .panel-intro::before {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: var(--topic-color);
+    filter: blur(200px);
+    opacity: 0.12;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .topic-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 200px;
+    color: rgba(255,255,255,0.03);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    line-height: 1;
+  }
+  .topic-label {
+    font-size: 11px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--topic-color);
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .topic-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(48px, 7vw, 100px);
+    line-height: 1.05;
+    margin-bottom: 32px;
+    position: relative;
+  }
+  .topic-description {
+    font-size: 18px;
+    color: rgba(255,255,255,0.5);
+    max-width: 560px;
+    line-height: 1.7;
+    position: relative;
+  }
+  .topic-faces {
+    display: flex;
+    justify-content: center;
+    margin-top: 48px;
+    position: relative;
+  }
+  .topic-face {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #0a0a0a;
+    margin-left: -12px;
+    filter: grayscale(0.5);
+    transition: filter 0.3s, transform 0.3s;
+  }
+  .topic-face:first-child { margin-left: 0; }
+  .topic-face:hover { filter: grayscale(0); transform: scale(1.15); z-index: 2; }
+
+  /* Panel 2+: Video + Quote alternating */
+  .panel-clip {
+    padding: 0;
+  }
+  .clip-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    min-height: 100vh;
+  }
+  .clip-layout.reversed .clip-video { order: 2; }
+  .clip-layout.reversed .clip-quote-side { order: 1; }
+
+  .clip-video {
+    position: relative;
+    overflow: hidden;
+    background: #111;
+  }
+  .clip-video img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.8;
+    transition: opacity 0.5s;
+  }
+  .clip-video:hover img { opacity: 1; }
+  .clip-play-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 88px;
+    height: 88px;
+    border: 2px solid rgba(255,255,255,0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .clip-play-circle:hover {
+    border-color: var(--topic-color);
+    background: rgba(201,76,96,0.2);
+  }
+  .clip-play-circle svg { fill: white; width: 28px; height: 28px; margin-left: 4px; }
+  .clip-duration {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    background: rgba(0,0,0,0.5);
+    padding: 4px 12px;
+    border-radius: 4px;
+  }
+
+  .clip-quote-side {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px;
+    position: relative;
+  }
+  .clip-index {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    color: var(--topic-color);
+    margin-bottom: 32px;
+    letter-spacing: 2px;
+  }
+  .clip-speaker-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .clip-speaker-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .clip-speaker-name {
+    font-weight: 600;
+    font-size: 16px;
+  }
+  .clip-speaker-role {
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+  }
+  .clip-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 3vw, 36px);
+    line-height: 1.5;
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .clip-quote::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--topic-color);
+    border-radius: 2px;
+  }
+  .clip-context {
+    font-size: 15px;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.7;
+  }
+
+  /* ── QUOTE CAROUSEL PANEL ── */
+  .panel-quotes {
+    flex-direction: column;
+    padding: 80px 40px;
+    gap: 48px;
+  }
+  .carousel-label {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--topic-color);
+  }
+  .quote-carousel {
+    display: flex;
+    gap: 32px;
+    overflow-x: auto;
+    padding: 0 40px 20px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    max-width: 100vw;
+  }
+  .quote-carousel::-webkit-scrollbar { display: none; }
+  .carousel-card {
+    min-width: 340px;
+    max-width: 400px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 16px;
+    padding: 40px;
+    scroll-snap-align: center;
+    border: 1px solid rgba(255,255,255,0.06);
+    flex-shrink: 0;
+    transition: transform 0.3s;
+  }
+  .carousel-card:hover { transform: translateY(-4px); }
+  .carousel-card-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    line-height: 1.6;
+    font-style: italic;
+    margin-bottom: 24px;
+    color: rgba(255,255,255,0.85);
+  }
+  .carousel-card-attr {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .carousel-card-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .carousel-card-name {
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .carousel-card-role {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  /* ── CLOSING: Next topic ── */
+  .panel-next {
+    flex-direction: column;
+    gap: 32px;
+    text-align: center;
+  }
+  .next-label {
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+  }
+  .next-topics {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .next-topic-card {
+    width: 180px;
+    height: 220px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: transform 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .next-topic-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.12;
+    transition: opacity 0.3s;
+  }
+  .next-topic-card:hover { transform: translateY(-8px); }
+  .next-topic-card:hover::before { opacity: 0.2; }
+  .next-topic-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    position: relative;
+    text-align: center;
+  }
+  .next-topic-count {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    position: relative;
+  }
+
+  /* ── SCROLL PROGRESS ── */
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: var(--topic-color);
+    z-index: 100;
+    transition: width 0.1s linear;
+    width: 0%;
+  }
+
+  /* ── PANEL NAV DOTS ── */
+  .panel-nav {
+    position: fixed;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 50;
+  }
+  .panel-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+  }
+  .panel-dot.active {
+    background: var(--topic-color);
+    transform: scale(1.3);
+  }
+
+  /* ── REVEAL ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 768px) {
+    .clip-layout { grid-template-columns: 1fr; }
+    .clip-video { height: 50vh; }
+    .clip-quote-side { padding: 40px 24px; }
+    .panel-nav { display: none; }
+    .topic-number { font-size: 120px; }
+    .next-topics { gap: 12px; }
+    .next-topic-card { width: 140px; height: 170px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- NAV DOTS -->
+<nav class="panel-nav" id="panelNav">
+  <div class="panel-dot active" data-panel="0"></div>
+  <div class="panel-dot" data-panel="1"></div>
+  <div class="panel-dot" data-panel="2"></div>
+  <div class="panel-dot" data-panel="3"></div>
+  <div class="panel-dot" data-panel="4"></div>
+  <div class="panel-dot" data-panel="5"></div>
+  <div class="panel-dot" data-panel="6"></div>
+</nav>
+
+<!-- PANEL 1: INTRO -->
+<section class="panel panel-intro" id="p0">
+  <div class="topic-number">05</div>
+  <div class="topic-label fade-in">Cincy Voices — Topic Thread</div>
+  <h1 class="topic-title fade-in">The Fractional<br>Model</h1>
+  <p class="topic-description fade-in">Is fractional the future of leadership — or just a fancy word for freelancing? Cincinnati's business leaders have strong opinions.</p>
+  <div class="topic-faces fade-in">
+    <img class="topic-face" src="/headshots/adam-reynolds.jpg" alt="Adam Reynolds">
+    <img class="topic-face" src="/headshots/meghan-cummings.jpg" alt="Meghan Cummings">
+    <img class="topic-face" src="/headshots/liz-hernandez.jpg" alt="Liz Hernandez">
+    <img class="topic-face" src="/headshots/michael-barber.jpg" alt="Michael Barber">
+    <img class="topic-face" src="/headshots/grace-maza.jpg" alt="Grace Maza">
+    <img class="topic-face" src="/headshots/rachel-delong.jpg" alt="Rachel DeLong">
+  </div>
+</section>
+
+<!-- PANEL 2: CLIP 1 -->
+<section class="panel panel-clip" id="p1">
+  <div class="clip-layout">
+    <div class="clip-video">
+      <img src="https://image.mux.com/PvmKD7e5xvgxN7bLpDBsuU4nkXqRkz00/thumbnail.jpg?time=2&width=900" alt="">
+      <div class="clip-play-circle"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
+      <div class="clip-duration">2:34</div>
+    </div>
+    <div class="clip-quote-side">
+      <div class="clip-index fade-in">CLIP 01 OF 06</div>
+      <div class="clip-speaker-row fade-in">
+        <img class="clip-speaker-avatar" src="/headshots/adam-reynolds.jpg" alt="">
+        <div>
+          <div class="clip-speaker-name">Adam Reynolds</div>
+          <div class="clip-speaker-role">Founder & CEO, Lofty Labs</div>
+        </div>
+      </div>
+      <blockquote class="clip-quote fade-in">"Fractional isn't about working less. It's about working for the companies that actually need you, when they need you most."</blockquote>
+      <p class="clip-context fade-in">Adam's take on why full-time C-suite hires often fail in companies under 100 people — and what the alternative looks like.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PANEL 3: CLIP 2 -->
+<section class="panel panel-clip" id="p2">
+  <div class="clip-layout reversed">
+    <div class="clip-video">
+      <img src="https://image.mux.com/xqDjrR02NvCOCPYbdixJl6sGmnHrM3FX/thumbnail.jpg?time=3&width=900" alt="">
+      <div class="clip-play-circle"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
+      <div class="clip-duration">3:12</div>
+    </div>
+    <div class="clip-quote-side">
+      <div class="clip-index fade-in">CLIP 02 OF 06</div>
+      <div class="clip-speaker-row fade-in">
+        <img class="clip-speaker-avatar" src="/headshots/meghan-cummings.jpg" alt="">
+        <div>
+          <div class="clip-speaker-name">Meghan Cummings</div>
+          <div class="clip-speaker-role">Chief People Officer</div>
+        </div>
+      </div>
+      <blockquote class="clip-quote fade-in">"My clients get the best version of me because I'm not in their politics. I walk in, I build, I leave it better."</blockquote>
+      <p class="clip-context fade-in">Meghan on the paradox of being more impactful as an outsider than she ever was as an insider.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PANEL 4: CLIP 3 -->
+<section class="panel panel-clip" id="p3">
+  <div class="clip-layout">
+    <div class="clip-video">
+      <img src="https://image.mux.com/OLqYSgt4MjnPvIOSBGTG8ENUvbaVaOR5/thumbnail.jpg?time=1&width=900" alt="">
+      <div class="clip-play-circle"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
+      <div class="clip-duration">1:58</div>
+    </div>
+    <div class="clip-quote-side">
+      <div class="clip-index fade-in">CLIP 03 OF 06</div>
+      <div class="clip-speaker-row fade-in">
+        <img class="clip-speaker-avatar" src="/headshots/michael-barber.jpg" alt="">
+        <div>
+          <div class="clip-speaker-name">Michael Barber</div>
+          <div class="clip-speaker-role">Managing Partner</div>
+        </div>
+      </div>
+      <blockquote class="clip-quote fade-in">"The stigma is fading. Five years ago, fractional meant 'couldn't get a real job.' Now it means 'too good for just one.'"</blockquote>
+      <p class="clip-context fade-in">Michael on the cultural shift happening in boardrooms across Cincinnati — and why the best talent is choosing this model on purpose.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PANEL 5: QUOTE CAROUSEL -->
+<section class="panel panel-quotes" id="p4">
+  <div class="carousel-label">More from this thread</div>
+  <div class="quote-carousel">
+    <div class="carousel-card">
+      <div class="carousel-card-quote">"I tell founders: you don't need a full-time CMO. You need a CMO for the next 90 days."</div>
+      <div class="carousel-card-attr">
+        <img class="carousel-card-avatar" src="/headshots/liz-hernandez.jpg" alt="">
+        <div>
+          <div class="carousel-card-name">Liz Hernandez</div>
+          <div class="carousel-card-role">VP of Strategy</div>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-card">
+      <div class="carousel-card-quote">"The hardest part isn't the work. It's leaving before you get too attached to the team you built."</div>
+      <div class="carousel-card-attr">
+        <img class="carousel-card-avatar" src="/headshots/grace-maza.jpg" alt="">
+        <div>
+          <div class="carousel-card-name">Grace Maza</div>
+          <div class="carousel-card-role">Executive Director</div>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-card">
+      <div class="carousel-card-quote">"Fractional leaders have to earn trust faster. You don't get a six-month grace period. You get six weeks."</div>
+      <div class="carousel-card-attr">
+        <img class="carousel-card-avatar" src="/headshots/rachel-delong.jpg" alt="">
+        <div>
+          <div class="carousel-card-name">Rachel DeLong</div>
+          <div class="carousel-card-role">Founder</div>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-card">
+      <div class="carousel-card-quote">"The fractional model doesn't work without radical honesty. You have to say what the full-timer is afraid to say."</div>
+      <div class="carousel-card-attr">
+        <img class="carousel-card-avatar" src="/headshots/adam-reynolds.jpg" alt="">
+        <div>
+          <div class="carousel-card-name">Adam Reynolds</div>
+          <div class="carousel-card-role">Founder & CEO</div>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-card">
+      <div class="carousel-card-quote">"My kids know I'm not 'between jobs.' I chose this. That distinction matters."</div>
+      <div class="carousel-card-attr">
+        <img class="carousel-card-avatar" src="/headshots/meghan-cummings.jpg" alt="">
+        <div>
+          <div class="carousel-card-name">Meghan Cummings</div>
+          <div class="carousel-card-role">Chief People Officer</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PANEL 6: FEATURED CLIP -->
+<section class="panel panel-clip" id="p5">
+  <div class="clip-layout reversed">
+    <div class="clip-video">
+      <img src="https://image.mux.com/f4kD02esIHuBntgrAb01s5q009fEFbMPM202/thumbnail.jpg?time=2&width=900" alt="">
+      <div class="clip-play-circle"><svg viewBox="0 0 24 24"><polygon points="8,5 19,12 8,19"/></svg></div>
+      <div class="clip-duration">2:47</div>
+    </div>
+    <div class="clip-quote-side">
+      <div class="clip-index fade-in">FEATURED CLIP</div>
+      <div class="clip-speaker-row fade-in">
+        <img class="clip-speaker-avatar" src="/headshots/grace-maza.jpg" alt="">
+        <div>
+          <div class="clip-speaker-name">Grace Maza</div>
+          <div class="clip-speaker-role">Executive Director</div>
+        </div>
+      </div>
+      <blockquote class="clip-quote fade-in">"The fractional revolution isn't about headcount. It's about admitting that wisdom doesn't require a desk."</blockquote>
+      <p class="clip-context fade-in">Grace's closing reflection on what it means when a city's best leaders choose flexibility over titles.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PANEL 7: NEXT TOPICS -->
+<section class="panel panel-next" id="p6">
+  <div class="next-label">Continue exploring</div>
+  <div class="next-topics">
+    <div class="next-topic-card" style="border: 1px solid rgba(122,158,126,0.3);">
+      <div style="position:absolute;inset:0;background:#7a9e7e;opacity:0.08;"></div>
+      <div class="next-topic-name" style="color: #7a9e7e;">Trust &<br>Relationships</div>
+      <div class="next-topic-count">32 clips</div>
+    </div>
+    <div class="next-topic-card" style="border: 1px solid rgba(196,114,78,0.3);">
+      <div style="position:absolute;inset:0;background:#c4724e;opacity:0.08;"></div>
+      <div class="next-topic-name" style="color: #c4724e;">Origin<br>Stories</div>
+      <div class="next-topic-count">26 clips</div>
+    </div>
+    <div class="next-topic-card" style="border: 1px solid rgba(212,168,67,0.3);">
+      <div style="position:absolute;inset:0;background:#d4a843;opacity:0.08;"></div>
+      <div class="next-topic-name" style="color: #d4a843;">Client<br>Impact</div>
+      <div class="next-topic-count">24 clips</div>
+    </div>
+    <div class="next-topic-card" style="border: 1px solid rgba(91,139,160,0.3);">
+      <div style="position:absolute;inset:0;background:#5b8ba0;opacity:0.08;"></div>
+      <div class="next-topic-name" style="color: #5b8ba0;">Culture &<br>People</div>
+      <div class="next-topic-count">28 clips</div>
+    </div>
+    <div class="next-topic-card" style="border: 1px solid rgba(107,76,110,0.3);">
+      <div style="position:absolute;inset:0;background:#6b4c6e;opacity:0.08;"></div>
+      <div class="next-topic-name" style="color: #6b4c6e;">Growth &<br>Change</div>
+      <div class="next-topic-count">24 clips</div>
+    </div>
+    <div class="next-topic-card" style="border: 1px solid rgba(176,136,76,0.3);">
+      <div style="position:absolute;inset:0;background:#b0884c;opacity:0.08;"></div>
+      <div class="next-topic-name" style="color: #b0884c;">Collab-<br>oration</div>
+      <div class="next-topic-count">20 clips</div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Scroll progress
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = (window.scrollY / h) * 100;
+    document.getElementById('scrollProgress').style.width = pct + '%';
+  });
+
+  // Panel nav dots
+  const panels = document.querySelectorAll('.panel');
+  const dots = document.querySelectorAll('.panel-dot');
+  const panelObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const idx = e.target.id.replace('p', '');
+        dots.forEach(d => d.classList.remove('active'));
+        dots[idx]?.classList.add('active');
+      }
+    });
+  }, { threshold: 0.5 });
+  panels.forEach(p => panelObserver.observe(p));
+
+  dots.forEach(d => {
+    d.addEventListener('click', () => {
+      const idx = d.dataset.panel;
+      document.getElementById('p' + idx).scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // Fade-in reveal
+  const fadeObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
+</script>
+</body>
+</html>

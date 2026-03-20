@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cincy Voices — Homepage Concept B: The Editorial</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --navy: #1a2635;
+    --cream: #f5f1eb;
+    --charcoal: #2c3e50;
+    --gold: #c4a962;
+    --muted: #7a8fa3;
+  }
+  body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--charcoal); overflow-x: hidden; }
+  .font-display { font-family: 'Playfair Display', serif; }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1rem 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(245,241,235,0.9);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(229,221,210,0.5);
+    transition: all 0.4s ease;
+  }
+  nav.scrolled {
+    background: rgba(26,38,53,0.95);
+    border-color: rgba(196,169,98,0.1);
+  }
+  nav.scrolled a { color: rgba(240,237,229,0.5) !important; }
+  nav.scrolled .nav-brand { color: #f0ede5 !important; }
+  .nav-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; font-weight: 700;
+    color: var(--charcoal); text-decoration: none;
+    transition: color 0.4s;
+  }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-size: 0.85rem; font-weight: 500;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ─── HERO: Split editorial ─── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 4rem;
+  }
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem 4rem 4rem 6rem;
+    position: relative;
+  }
+  .hero-issue {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: slideRight 0.8s ease-out 0.2s forwards;
+  }
+  .hero-title {
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 900;
+    line-height: 0.95;
+    color: var(--charcoal);
+    opacity: 0;
+    animation: slideRight 0.8s ease-out 0.4s forwards;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .hero-deck {
+    margin-top: 2rem;
+    font-size: 1.1rem;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 28rem;
+    opacity: 0;
+    animation: slideRight 0.8s ease-out 0.7s forwards;
+  }
+  .hero-stats {
+    margin-top: 3rem;
+    display: flex;
+    gap: 3rem;
+    opacity: 0;
+    animation: slideRight 0.8s ease-out 0.9s forwards;
+  }
+  .hero-stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--charcoal);
+  }
+  .hero-stat-label {
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 0.25rem;
+  }
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-mosaic {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    height: 100%;
+    gap: 3px;
+  }
+  .hero-mosaic-cell {
+    overflow: hidden;
+    position: relative;
+  }
+  .hero-mosaic-cell img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform 0.8s ease;
+  }
+  .hero-mosaic-cell:hover img {
+    transform: scale(1.08);
+  }
+  .hero-mosaic-cell .cell-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 1rem;
+    background: linear-gradient(to top, rgba(26,38,53,0.8), transparent);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.4s ease;
+  }
+  .hero-mosaic-cell:hover .cell-overlay {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .cell-overlay-name {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #f0ede5;
+  }
+  .cell-overlay-role {
+    font-size: 0.7rem;
+    color: rgba(240,237,229,0.5);
+  }
+
+  @keyframes slideRight {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  /* ─── DIVIDER QUOTE ─── */
+  .divider-quote {
+    padding: 6rem 4rem;
+    background: var(--navy);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .divider-quote::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: 0; right: 0;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--cream), var(--navy));
+  }
+  .divider-quote::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 60px;
+    background: linear-gradient(to top, var(--cream), var(--navy));
+  }
+  .dq-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.3rem, 3vw, 2rem);
+    font-weight: 700;
+    font-style: italic;
+    color: rgba(240,237,229,0.8);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+  .dq-author {
+    color: var(--gold);
+    font-style: normal;
+    font-size: 0.85rem;
+    margin-top: 1.5rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+  }
+
+  /* ─── HORIZONTAL LEADER SCROLL ─── */
+  .leaders-scroll-section {
+    padding: 5rem 0 5rem 4rem;
+    background: var(--cream);
+  }
+  .scroll-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-right: 4rem;
+    margin-bottom: 3rem;
+  }
+  .scroll-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .scroll-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 900;
+    color: var(--charcoal);
+  }
+  .scroll-hint {
+    font-size: 0.8rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .scroll-hint-line {
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+  }
+  .leaders-track {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 2rem;
+    padding-right: 4rem;
+    scrollbar-width: none;
+  }
+  .leaders-track::-webkit-scrollbar { display: none; }
+  .scroll-card {
+    flex-shrink: 0;
+    width: 300px;
+    scroll-snap-align: start;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(229,221,210,0.6);
+    transition: all 0.4s ease;
+    cursor: pointer;
+  }
+  .scroll-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(26,38,53,0.1);
+    border-color: var(--gold);
+  }
+  .scroll-card-img {
+    aspect-ratio: 3/2;
+    overflow: hidden;
+    position: relative;
+  }
+  .scroll-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    transition: transform 0.6s ease;
+  }
+  .scroll-card:hover .scroll-card-img img { transform: scale(1.06); }
+  .scroll-card-quote {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 1.5rem 1.25rem 1rem;
+    background: linear-gradient(to top, rgba(26,38,53,0.85), transparent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .scroll-card:hover .scroll-card-quote { opacity: 1; }
+  .scroll-card-quote p {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    font-style: italic;
+    color: rgba(240,237,229,0.9);
+    line-height: 1.5;
+  }
+  .scroll-card-body {
+    padding: 1.25rem 1.5rem;
+  }
+  .scroll-card-name {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--charcoal);
+  }
+  .scroll-card-role {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 0.2rem;
+  }
+
+  /* ─── TOPICS AS COLORED PANELS ─── */
+  .topics-panels {
+    padding: 0 4rem 6rem;
+    background: var(--cream);
+  }
+  .topics-panels-header {
+    margin-bottom: 3rem;
+  }
+  .panels-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1rem;
+  }
+  .panel {
+    position: relative;
+    padding: 2.5rem 2rem;
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .panel:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  }
+  .panel-name {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: white;
+    position: relative;
+    z-index: 2;
+  }
+  .panel-desc {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.7);
+    margin-top: 0.5rem;
+    line-height: 1.5;
+    position: relative;
+    z-index: 2;
+  }
+  .panel-arrow {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 32px;
+    height: 32px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1rem;
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: all 0.4s ease;
+    z-index: 2;
+  }
+  .panel:hover .panel-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* ─── CTA SECTION ─── */
+  .cta-section {
+    background: var(--navy);
+    padding: 6rem 4rem;
+    text-align: center;
+    position: relative;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: 0; right: 0;
+    height: 80px;
+    background: linear-gradient(to bottom, var(--cream), var(--navy));
+  }
+  .cta-avatars {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+  .cta-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top;
+    border: 3px solid var(--navy);
+    margin-left: -12px;
+    transition: transform 0.3s ease;
+  }
+  .cta-avatar:hover { transform: scale(1.2); z-index: 5; }
+  .cta-avatar:first-child { margin-left: 0; }
+  .cta-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 900;
+    color: #f0ede5;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.3;
+  }
+  .cta-subtitle {
+    color: rgba(240,237,229,0.4);
+    font-size: 0.9rem;
+    margin-top: 1rem;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--navy);
+    border-top: 1px solid rgba(196,169,98,0.1);
+    padding: 2rem 4rem;
+    text-align: center;
+  }
+  footer p { color: rgba(240,237,229,0.3); font-size: 0.8rem; }
+  footer a { color: var(--gold); text-decoration: none; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .hero {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+    .hero-left { padding: 6rem 2rem 3rem; }
+    .hero-right { height: 60vh; }
+    .hero-mosaic { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+    .leaders-scroll-section { padding-left: 2rem; }
+    .scroll-header { padding-right: 2rem; }
+    .leaders-track { padding-right: 2rem; }
+    .topics-panels { padding: 0 2rem 4rem; }
+    .panels-grid { grid-template-columns: 1fr; }
+    nav { padding: 1rem 1.5rem; }
+  }
+  @media (max-width: 600px) {
+    .hero-stats { gap: 1.5rem; }
+    .hero-mosaic { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr; }
+    .hero-mosaic-cell:nth-child(n+3) { display: none; }
+    .scroll-card { width: 260px; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <a href="#" class="nav-brand font-display">Cincy Voices</a>
+  <div class="nav-links">
+    <a href="#leaders">Leaders</a>
+    <a href="#topics">Topics</a>
+    <a href="#">About</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-issue">A Work With Meaning Production</div>
+    <h1 class="hero-title font-display">
+      Real<br>
+      <em>voices.</em><br>
+      Real impact.
+    </h1>
+    <p class="hero-deck">
+      17 of Cincinnati's top fractional leaders sat down, got real, and shared the stories behind the work. No scripts. No polish. Just truth.
+    </p>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-num font-display">17</div>
+        <div class="hero-stat-label">Leaders</div>
+      </div>
+      <div>
+        <div class="hero-stat-num font-display">182</div>
+        <div class="hero-stat-label">Clips</div>
+      </div>
+      <div>
+        <div class="hero-stat-num font-display">7</div>
+        <div class="hero-stat-label">Topics</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-mosaic">
+      <div class="hero-mosaic-cell">
+        <img src="http://localhost:3001/headshots/amy-sheehy.jpg" alt="Amy Sheehy">
+        <div class="cell-overlay"><div class="cell-overlay-name">Amy Sheehy</div><div class="cell-overlay-role">Seed Consulting</div></div>
+      </div>
+      <div class="hero-mosaic-cell">
+        <img src="http://localhost:3001/headshots/todd-wilkowski.jpg" alt="Todd Wilkowski">
+        <div class="cell-overlay"><div class="cell-overlay-name">Todd Wilkowski</div><div class="cell-overlay-role">Fractional GC</div></div>
+      </div>
+      <div class="hero-mosaic-cell">
+        <img src="http://localhost:3001/headshots/christine-bell.jpg" alt="Christine Bell">
+        <div class="cell-overlay"><div class="cell-overlay-name">Christine Bell</div><div class="cell-overlay-role">EOS Integrator</div></div>
+      </div>
+      <div class="hero-mosaic-cell">
+        <img src="http://localhost:3001/headshots/adam-reynolds.jpg" alt="Adam Reynolds">
+        <div class="cell-overlay"><div class="cell-overlay-name">Adam Reynolds</div><div class="cell-overlay-role">Thrive CFO</div></div>
+      </div>
+      <div class="hero-mosaic-cell">
+        <img src="http://localhost:3001/headshots/susannah-strydom.jpg" alt="Susannah Strydom">
+        <div class="cell-overlay"><div class="cell-overlay-name">Susannah Strydom</div><div class="cell-overlay-role">Brand Strategy</div></div>
+      </div>
+      <div class="hero-mosaic-cell">
+        <img src="http://localhost:3001/headshots/kevin-lawson.jpg" alt="Kevin Lawson">
+        <div class="cell-overlay"><div class="cell-overlay-name">Kevin Lawson</div><div class="cell-overlay-role">Sales Advisors</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DIVIDER QUOTE ═══ -->
+<section class="divider-quote">
+  <p class="dq-text">&ldquo;When we make a difference in the boardroom, we often make a difference at the dinner table. And that's important to me.&rdquo;</p>
+  <p class="dq-author">Adam Reynolds &mdash; Founder & CEO, Thrive CFO</p>
+</section>
+
+<!-- ═══ LEADERS HORIZONTAL SCROLL ═══ -->
+<section class="leaders-scroll-section" id="leaders">
+  <div class="scroll-header">
+    <div>
+      <div class="scroll-label">The Cast</div>
+      <h2 class="scroll-title font-display">Meet Every Voice</h2>
+    </div>
+    <div class="scroll-hint">
+      <div class="scroll-hint-line"></div>
+      Scroll to explore
+    </div>
+  </div>
+  <div class="leaders-track" id="leadersTrack"></div>
+</section>
+
+<!-- ═══ TOPICS ═══ -->
+<section class="topics-panels" id="topics">
+  <div class="topics-panels-header">
+    <div class="scroll-label">The Threads</div>
+    <h2 class="scroll-title font-display">Dive Into a Topic</h2>
+  </div>
+  <div class="panels-grid" id="panelsGrid"></div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="cta-section">
+  <div class="cta-avatars" id="ctaAvatars"></div>
+  <h2 class="cta-title font-display">Every voice has a story.<br>Start listening.</h2>
+  <p class="cta-subtitle">A Work With Meaning production &mdash; Cincinnati, Ohio</p>
+</section>
+
+<footer>
+  <p><a href="https://workwithmean.ing" target="_blank">Work With Meaning</a> &copy; 2026</p>
+</footer>
+
+<script>
+const leaders = [
+  { slug: "adam-reynolds", name: "Adam Reynolds", role: "Founder & CEO, Thrive CFO", quote: "Your financials are telling you a story. Most founders just don't know how to read it yet." },
+  { slug: "amy-connor", name: "Amy Connor", role: "Founder, CMO on Loan", quote: "My model deliberately works itself out of a job." },
+  { slug: "amy-sheehy", name: "Amy Sheehy", role: "Founder, Seed Consulting", quote: "Most of my employees hated me, and I needed to demonstrate what my intentions were over time." },
+  { slug: "brennan-sweeney", name: "Brennan Sweeney", role: "Sweeney Consulting", quote: "Trust is critical, and you get nowhere without earning that trust." },
+  { slug: "carter-varn", name: "Carter Varn", role: "Fractional CIO", quote: "Technology can be that solid foundation for reaching those next set of goals." },
+  { slug: "christine-bell", name: "Christine Bell", role: "EOS Integrator", quote: "We grew 54% in 4 years. We doubled the size of our company." },
+  { slug: "dan-keck", name: "Dan Keck", role: "Area President, FocusCFO", quote: "Had I been aware of the fractional world, I would have probably started earlier." },
+  { slug: "emily-siegel", name: "Emily Siegel", role: "Fractional Design & Strategy", quote: null },
+  { slug: "ford-knowlton", name: "Ford Knowlton", role: "Host, Work With Meaning", quote: "Trust is the operating system for fractional work." },
+  { slug: "kevin-lawson", name: "Kevin Lawson", role: "Fractional VP of Sales", quote: "We don't trade dollars for hours, we trade dollars for impact." },
+  { slug: "mary-kay-laird", name: "Mary Kay Laird", role: "Supporting Strategies", quote: null },
+  { slug: "meredith-arlinghaus", name: "Meredith Arlinghaus", role: "Founder, EmpowerAP", quote: "I literally hit that breaking point where I knew something was going to break." },
+  { slug: "susannah-strydom", name: "Susannah Strydom", role: "Stardom Consulting", quote: "Design is not the person who makes things pretty. We problem solve visually." },
+  { slug: "tim-waymire", name: "Tim Waymire", role: "Tetelestai Capital", quote: null },
+  { slug: "tobias-brauer", name: "Tobias Brauer", role: "Founder, SolvStat", quote: "A brand is not just for recruiting customers. It's about building culture." },
+  { slug: "todd-wilkowski", name: "Todd Wilkowski", role: "Fractional General Counsel", quote: null },
+  { slug: "will-phillips", name: "Will Phillips", role: "TPG Elevate Work", quote: "The number one reason people aren't thriving is they're not in the right environment." },
+];
+
+const topics = [
+  { name: "Trust & Relationships", color: "#7a9e7e", desc: "How leaders build trust fast" },
+  { name: "Origin Stories", color: "#c4724e", desc: "The moments that changed everything" },
+  { name: "Client Impact", color: "#d4a843", desc: "Real transformation stories" },
+  { name: "Culture & People", color: "#5b8ba0", desc: "Building teams from the outside" },
+  { name: "The Fractional Model", color: "#c94c60", desc: "Why fractional leadership works" },
+  { name: "Growth & Change", color: "#6b4c6e", desc: "Driving scale and evolution" },
+  { name: "Collaboration", color: "#b0884c", desc: "Multiplying impact together" },
+];
+
+// Leader scroll cards
+const track = document.getElementById('leadersTrack');
+leaders.forEach(l => {
+  const card = document.createElement('div');
+  card.className = 'scroll-card';
+  card.innerHTML = `
+    <div class="scroll-card-img">
+      <img src="http://localhost:3001/headshots/${l.slug}.jpg" alt="${l.name}">
+      ${l.quote ? `<div class="scroll-card-quote"><p>&ldquo;${l.quote}&rdquo;</p></div>` : ''}
+    </div>
+    <div class="scroll-card-body">
+      <div class="scroll-card-name font-display">${l.name}</div>
+      <div class="scroll-card-role">${l.role}</div>
+    </div>
+  `;
+  track.appendChild(card);
+});
+
+// Topic panels
+const pGrid = document.getElementById('panelsGrid');
+topics.forEach(t => {
+  const panel = document.createElement('div');
+  panel.className = 'panel';
+  panel.style.background = `linear-gradient(135deg, ${t.color}, ${t.color}dd)`;
+  panel.innerHTML = `
+    <div class="panel-arrow">&rarr;</div>
+    <div class="panel-name">${t.name}</div>
+    <div class="panel-desc">${t.desc}</div>
+  `;
+  pGrid.appendChild(panel);
+});
+
+// CTA avatars
+const avatarContainer = document.getElementById('ctaAvatars');
+leaders.slice(0, 8).forEach(l => {
+  const img = document.createElement('img');
+  img.className = 'cta-avatar';
+  img.src = `http://localhost:3001/headshots/${l.slug}.jpg`;
+  img.alt = l.name;
+  avatarContainer.appendChild(img);
+});
+
+// Nav scroll effect
+window.addEventListener('scroll', () => {
+  document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 100);
+});
+</script>
+</body>
+</html>

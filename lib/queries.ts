@@ -1,6 +1,9 @@
 import { supabase } from './supabase';
 import type { Leader, Topic, Segment, Quote, LeaderWithTopics, ThreadItemWithContent, TopicWithStats } from './types';
 
+// Live stream footage doesn't always show people — exclude from video display
+const LIVE_STREAM_SOURCE_ID = '4a9daf4b-35ff-4529-b72d-7ced6245ffdb';
+
 // ── Homepage ──────────────────────────────────────────
 
 export async function getLeadersWithTopics(): Promise<LeaderWithTopics[]> {
@@ -86,6 +89,7 @@ export async function getLeaderSegments(leaderId: string): Promise<Segment[]> {
     .select('*')
     .eq('leader_id', leaderId)
     .not('mux_playback_id', 'is', null)
+    .neq('source_id', LIVE_STREAM_SOURCE_ID)
     .order('clip_quality_score', { ascending: false })
     .limit(5);
 
@@ -97,6 +101,7 @@ export async function getHeroSegment(segmentId: string): Promise<Segment | null>
     .from('cincy_voices_segments')
     .select('*')
     .eq('id', segmentId)
+    .neq('source_id', LIVE_STREAM_SOURCE_ID)
     .single();
 
   return data;

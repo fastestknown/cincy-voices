@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import type { Topic, Leader } from '@/lib/types';
 
@@ -34,7 +35,13 @@ export function ThreadHero({ topic, leaders }: ThreadHeroProps) {
                 layoutId={`avatar-${leader.slug}`}
                 className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/30 hover:border-white/60 transition-colors"
               >
-                <div className="w-full h-full bg-white/20" />
+                <Image
+                  src={`/headshots/${leader.slug}.jpg`}
+                  alt={leader.name}
+                  fill
+                  sizes="40px"
+                  className="object-cover"
+                />
               </motion.div>
             </Link>
           ))}
