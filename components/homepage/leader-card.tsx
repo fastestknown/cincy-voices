@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { trackEvent } from '@/lib/analytics';
 import { ANALYTICS_EVENTS } from '@/lib/constants';
@@ -27,8 +28,13 @@ export function LeaderCard({ leader }: LeaderCardProps) {
       >
         {/* Avatar / Micro-clip area */}
         <div className="relative aspect-[4/3] bg-gradient-to-br from-cv-navy/10 to-cv-sage/20 overflow-hidden">
-          {/* Headshots pending */}
-          <div className="w-full h-full bg-gradient-to-br from-cv-navy/20 to-cv-gold/20" />
+          <Image
+            src={`/headshots/${leader.slug}.jpg`}
+            alt={leader.name}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover object-top"
+          />
 
           {/* Micro-clip hover (desktop only) */}
           {isHovered && leader.micro_clip_url && (

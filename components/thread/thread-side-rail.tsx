@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Leader } from '@/lib/types';
 
 interface ThreadSideRailProps {
@@ -16,13 +17,19 @@ export function ThreadSideRail({ leaders, activeLeaderId }: ThreadSideRailProps)
           key={leader.id}
           href={`/leaders/${leader.slug}`}
           title={leader.name}
-          className={`block w-10 h-10 rounded-full overflow-hidden border-2 transition-all duration-300 ${
+          className={`relative block w-10 h-10 rounded-full overflow-hidden border-2 transition-all duration-300 ${
             activeLeaderId === leader.id
               ? 'border-cv-gold scale-110 shadow-md'
               : 'border-cv-border/50 opacity-40 hover:opacity-70'
           }`}
         >
-          <div className="w-full h-full bg-cv-navy/10" />
+          <Image
+            src={`/headshots/${leader.slug}.jpg`}
+            alt={leader.name}
+            fill
+            sizes="40px"
+            className="object-cover"
+          />
         </Link>
       ))}
     </aside>

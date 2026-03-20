@@ -2,7 +2,10 @@
 
 ## Role & Identity
 **Fractional CMO & Boutique Design Agency Founder** | Brand Strategy, Marketing Leadership
-Founded SolveStat about 2 years ago. Goes by "Toby Brower." Does fractional CMO work alongside running a boutique design agency. Background in agency leadership, managing teams of 15+.
+Founded Solstat about 2 years ago. Goes by "Toby." Does fractional CMO work alongside running a boutique design agency. Background in agency leadership, managing teams of 15+. Also affiliated with Ampleo (fractional CMO network). Office in OTR above Sacred Beast on Vine Street.
+
+## Origin Story
+Came up through graphic design. Art Academy of Cincinnati undergrad, first master's at DAP (Design, Architecture & Art Practice) in digital design (~2000-2003). Worked in the agency world (notably at Hyperquake). Was a professor at NKU (Northern Kentucky University) for ~11-12 years teaching design — many of his former students now run their own agencies (Odd Beast/Polymath, Gottroots). Pursued an Executive MBA at Notre Dame while working at Hyperquake (two-year program, flying back and forth). After graduating, his network encouraged him to try fractional work — "that wasn't really the plan" but he "took a leap of hope." Left Hyperquake with only ~3 months of work lined up. Kids are in their mid-20s, which gave him the freedom to take the entrepreneurial risk.
 
 ---
 
@@ -65,10 +68,17 @@ For Tobias, the most powerful form of vulnerability in business is intellectual 
 5. "You need to say, 'we are doing this' — not just 'let me give you some advice that you will deal with.'"
 6. "One of the places I can identify vulnerability right away is when someone has the courage to say, 'I don't know.'"
 
+### From Intake Interview (Additional)
+7. "If I'm not helping them make more money or sell more stuff, I'm not doing my job."
+8. "Because I have an MBA and because I came up in the creative world, I can straddle those worlds a little bit better than some people might be able to."
+9. "I like solving the problem, so I don't really care what the name is... Good people — that's what matters."
+10. "I saw this avenue and took a leap of hope that it would work out. And it has."
+11. "How do you leave a good stain as opposed to a bad stain on the planet when you're finally gone?"
+
 ---
 
 ## Note
-Tobias has fewer dedicated segments and only 1 official quote in the database, but his segments are consistently thoughtful and philosophy-rich. His profile should emphasize the depth of his thinking on brand, culture, service, and honesty — he's the marketing mind of the group.
+Tobias has fewer dedicated segments but his content is consistently thoughtful and philosophy-rich. His profile should emphasize the depth of his thinking on brand, culture, service, and honesty — he's the marketing mind of the group. The rare creative+MBA hybrid gives him unique credibility bridging the C-suite and the creative team.
 
 ---
 

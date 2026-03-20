@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   getTopicBySlug,
   getThreadItems,
@@ -101,8 +102,14 @@ export default async function TopicThreadPage({ params }: { params: Promise<{ sl
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {leaders.map(leader => (
               <Link key={leader.id} href={`/leaders/${leader.slug}`} className="group text-center">
-                <div className="w-16 h-16 mx-auto rounded-full overflow-hidden border-2 border-cv-border group-hover:border-cv-gold transition-colors">
-                  <div className="w-full h-full bg-cv-navy/10" />
+                <div className="relative w-16 h-16 mx-auto rounded-full overflow-hidden border-2 border-cv-border group-hover:border-cv-gold transition-colors">
+                  <Image
+                    src={`/headshots/${leader.slug}.jpg`}
+                    alt={leader.name}
+                    fill
+                    sizes="64px"
+                    className="object-cover"
+                  />
                 </div>
                 <p className="font-display text-sm font-bold text-cv-charcoal mt-2 group-hover:text-cv-navy transition-colors">
                   {leader.name}

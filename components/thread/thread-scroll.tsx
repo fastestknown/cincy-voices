@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import Image from 'next/image';
 import { CinematicPlayer } from '@/components/video/cinematic-player';
 import { ScrollReveal } from '@/components/shared/scroll-reveal';
 import { FocusedOverlay } from '@/components/leader/focused-overlay';
@@ -41,8 +42,14 @@ export function ThreadScroll({ items, topic }: ThreadScrollProps) {
               {/* Connective tissue — leader transition indicator */}
               {isNewLeader && i > 0 && (
                 <div className="flex items-center gap-3 mb-8">
-                  <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
-                    <div className="w-full h-full bg-cv-navy/10 rounded-full" />
+                  <div className="relative w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+                    <Image
+                      src={`/headshots/${item.leader.slug}.jpg`}
+                      alt={item.leader.name}
+                      fill
+                      sizes="32px"
+                      className="object-cover"
+                    />
                   </div>
                   <span className="text-cv-muted text-sm font-body">
                     {item.leader.name} responds

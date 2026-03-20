@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { CinematicPlayer } from '@/components/video/cinematic-player';
 import { trackEvent } from '@/lib/analytics';
@@ -41,8 +42,13 @@ export function ProfileHero({ leader, heroSegment }: ProfileHeroProps) {
             layoutId={`avatar-${leader.slug}`}
             className="w-20 h-20 rounded-full overflow-hidden border-2 border-cv-light-text/20 flex-shrink-0"
           >
-            {/* Headshots pending — placeholder gradient */}
-            <div className="w-full h-full bg-gradient-to-br from-cv-gold/30 to-cv-sage/30" />
+            <Image
+              src={`/headshots/${leader.slug}.jpg`}
+              alt={leader.name}
+              fill
+              sizes="80px"
+              className="object-cover"
+            />
           </motion.div>
 
           <div>
