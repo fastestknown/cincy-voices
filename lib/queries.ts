@@ -90,6 +90,7 @@ export async function getLeaderSegments(leaderId: string): Promise<Segment[]> {
     .eq('leader_id', leaderId)
     .not('mux_playback_id', 'is', null)
     .neq('source_id', LIVE_STREAM_SOURCE_ID)
+    .gte('clip_quality_score', 5)
     .order('clip_quality_score', { ascending: false })
     .limit(5);
 
@@ -181,6 +182,20 @@ export async function getLeaderQuotes(leaderId: string): Promise<Quote[]> {
   return data ?? [];
 }
 
+export async function getLeaderStats(leaderId: string): Promise<{ clipCount: number; totalMinutes: number }> {
+  const { data } = await supabase
+    .from('cincy_voices_segments')
+    .select('duration_ms')
+    .eq('leader_id', leaderId)
+    .not('mux_playback_id', 'is', null)
+    .neq('source_id', LIVE_STREAM_SOURCE_ID)
+    .gte('clip_quality_score', 5);
+
+  const clipCount = data?.length ?? 0;
+  const totalMs = data?.reduce((sum, s) => sum + (s.duration_ms ?? 0), 0) ?? 0;
+  return { clipCount, totalMinutes: Math.round(totalMs / 60000) };
+}
+
 // ── Topic Thread ──────────────────────────────────────
 
 export async function getTopicBySlug(slug: string): Promise<Topic | null> {
@@ -251,6 +266,82 @@ export async function getAllTopics(): Promise<Topic[]> {
     .order('sort_order');
 
   return data ?? [];
+}
+
+// ── Homepage B-roll videos ────────────────────────────
+
+export async function getBrollPlaybackIds(): Promise<string[]> {
+  const { data } = await supabase
+    .from('cincy_voices_segments')
+    .select('mux_playback_id, leader_id')
+    .not('mux_playback_id', 'is', null)
+    .neq('source_id', LIVE_STREAM_SOURCE_ID)
+    .gte('clip_quality_score', 5)
+    .gt('duration_ms', 15000)
+    .order('clip_quality_score', { ascending: false })
+    .limit(30);
+
+  if (!data?.length) return [];
+
+  // Dedupe by leader to get visual variety, pick top clip per leader
+  const seen = new Set<string>();
+  const ids: string[] = [];
+  for (const row of data) {
+    if (!seen.has(row.leader_id) && row.mux_playback_id) {
+      seen.add(row.leader_id);
+      ids.push(row.mux_playback_id);
+    }
+  }
+  return ids;
+}
+
+// ── Global stats ─────────────────────────────────────
+
+export async function getGlobalStats(): Promise<{ leaders: number; clips: number; quotes: number; topics: number }> {
+  const [leaders, clips, quotes, topics] = await Promise.all([
+    supabase.from('cincy_voices_leaders').select('id', { count: 'exact', head: true }),
+    supabase.from('cincy_voices_segments').select('id', { count: 'exact', head: true }).not('mux_playback_id', 'is', null).neq('source_id', LIVE_STREAM_SOURCE_ID).gte('clip_quality_score', 5),
+    supabase.from('cincy_voices_quotes').select('id', { count: 'exact', head: true }),
+    supabase.from('cincy_voices_topics').select('id', { count: 'exact', head: true }),
+  ]);
+
+  return {
+    leaders: leaders.count ?? 0,
+    clips: clips.count ?? 0,
+    quotes: quotes.count ?? 0,
+    topics: topics.count ?? 0,
+  };
+}
+
+// ── Featured quotes (for homepage ticker) ─────────────
+
+export async function getFeaturedQuotes(): Promise<{ quote_text: string; leader_name: string; leader_slug: string }[]> {
+  const { data } = await supabase
+    .from('cincy_voices_quotes')
+    .select('quote_text, leader_id')
+    .order('created_at')
+    .limit(20);
+
+  if (!data?.length) return [];
+
+  const leaderIds = Array.from(new Set(data.map(q => q.leader_id)));
+  const { data: leaders } = await supabase
+    .from('cincy_voices_leaders')
+    .select('id, name, slug')
+    .in('id', leaderIds);
+
+  const leaderMap = new Map(leaders?.map(l => [l.id, l]) ?? []);
+
+  return data
+    .filter(q => q.quote_text.length >= 40 && q.quote_text.length <= 160)
+    .map(q => {
+      const leader = leaderMap.get(q.leader_id);
+      return {
+        quote_text: q.quote_text,
+        leader_name: leader?.name ?? 'Unknown',
+        leader_slug: leader?.slug ?? '',
+      };
+    });
 }
 
 // ── All slugs (for static params) ─────────────────────

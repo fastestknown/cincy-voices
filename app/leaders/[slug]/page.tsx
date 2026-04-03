@@ -6,11 +6,13 @@ import {
   getLeaderQuotes,
   getRelatedLeaders,
   getLeaderTopicCounts,
+  getLeaderStats,
   getAllLeaderSlugs,
 } from '@/lib/queries';
 import { SITE } from '@/lib/constants';
 import { ProfileHero } from '@/components/leader/profile-hero';
 import { ClipSequence } from '@/components/leader/clip-sequence';
+import { QuoteMosaic } from '@/components/leader/quote-mosaic';
 import { TopicMap } from '@/components/leader/topic-map';
 import { RelatedLeaders } from '@/components/leader/related-leaders';
 import { ScrollReveal } from '@/components/shared/scroll-reveal';
@@ -43,52 +45,64 @@ export default async function LeaderProfilePage({ params }: { params: Promise<{ 
   const leader = await getLeaderBySlug(slug);
   if (!leader) notFound();
 
-  const [segments, quotes, relatedLeaders, topicCounts] = await Promise.all([
+  const [segments, quotes, relatedLeaders, topicCounts, stats] = await Promise.all([
     getLeaderSegments(leader.id),
     getLeaderQuotes(leader.id),
     getRelatedLeaders(leader.id),
     getLeaderTopicCounts(leader.id),
+    getLeaderStats(leader.id),
   ]);
 
   return (
     <>
-      {/* Profile hero — headshot + info side by side */}
-      <ProfileHero leader={leader} />
+      {/* Cinematic hero — full-bleed photo left, dossier info right */}
+      <ProfileHero
+        leader={leader}
+        clipCount={stats.clipCount}
+        quoteCount={quotes.length}
+        topicCount={topicCounts.length}
+        totalMinutes={stats.totalMinutes}
+      />
 
-      {/* Transition dark → cream */}
-      <div className="bg-gradient-to-b from-cv-navy to-cv-cream h-16" />
-
-      {/* Featured quotes */}
-      {quotes.length > 0 && (
-        <section className="bg-cv-cream py-12 px-6">
+      {/* Bio section */}
+      {leader.bio_summary && (
+        <section className="bg-cv-cream py-10 sm:py-16 px-4 sm:px-6">
           <div className="max-w-content mx-auto">
             <ScrollReveal>
-              <h2 className="font-display text-2xl md:text-3xl font-bold text-cv-charcoal mb-8">
-                What They Said
-              </h2>
+              <div className="max-w-3xl">
+                <span className="font-mono-label text-cv-muted text-xs tracking-widest">BIO</span>
+                <p className="mt-4 text-cv-charcoal/85 font-body text-lg leading-relaxed">
+                  {leader.bio_summary}
+                </p>
+              </div>
             </ScrollReveal>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {quotes.map((quote, i) => (
-                <ScrollReveal key={quote.id} delay={i * 0.08}>
-                  <blockquote className="p-5 bg-white rounded-xl border border-cv-border/50 shadow-sm">
-                    <p className="font-display text-base md:text-lg font-bold text-cv-charcoal leading-relaxed">
-                      &ldquo;{quote.quote_text}&rdquo;
-                    </p>
-                  </blockquote>
-                </ScrollReveal>
-              ))}
-            </div>
           </div>
         </section>
       )}
 
-      {/* "In Their Words" clip sequence */}
-      {segments.length > 0 && (
-        <section className="bg-cv-cream py-12 px-6">
+      {/* Quotes mosaic */}
+      {quotes.length > 0 && (
+        <section className="bg-cv-cream py-10 sm:py-16 px-4 sm:px-6 border-t border-cv-border/50">
           <div className="max-w-content mx-auto">
             <ScrollReveal>
-              <h2 className="font-display text-2xl md:text-3xl font-bold text-cv-charcoal mb-8">
+              <span className="font-mono-label text-cv-muted text-xs tracking-widest">QUOTES</span>
+              <h2 className="font-display text-fluid-h2 font-bold text-cv-charcoal mt-2 mb-8">
                 In Their Words
+              </h2>
+            </ScrollReveal>
+            <QuoteMosaic quotes={quotes} leaderName={leader.name} />
+          </div>
+        </section>
+      )}
+
+      {/* Video clips */}
+      {segments.length > 0 && (
+        <section className="bg-cv-cream py-10 sm:py-16 px-4 sm:px-6 border-t border-cv-border/50">
+          <div className="max-w-content mx-auto">
+            <ScrollReveal>
+              <span className="font-mono-label text-cv-muted text-xs tracking-widest">CLIPS</span>
+              <h2 className="font-display text-fluid-h2 font-bold text-cv-charcoal mt-2 mb-8">
+                Watch &amp; Listen
               </h2>
             </ScrollReveal>
             <ClipSequence segments={segments} leaderName={leader.name} />
@@ -96,12 +110,13 @@ export default async function LeaderProfilePage({ params }: { params: Promise<{ 
         </section>
       )}
 
-      {/* Topic map */}
+      {/* Topic connections */}
       {topicCounts.length > 0 && (
-        <section className="bg-cv-cream py-12 px-6">
+        <section className="bg-cv-cream py-10 sm:py-16 px-4 sm:px-6 border-t border-cv-border/50">
           <div className="max-w-content mx-auto">
             <ScrollReveal>
-              <h2 className="font-display text-2xl md:text-3xl font-bold text-cv-charcoal mb-8">
+              <span className="font-mono-label text-cv-muted text-xs tracking-widest">TOPICS</span>
+              <h2 className="font-display text-fluid-h2 font-bold text-cv-charcoal mt-2 mb-8">
                 What They Explore
               </h2>
             </ScrollReveal>
@@ -112,10 +127,11 @@ export default async function LeaderProfilePage({ params }: { params: Promise<{ 
 
       {/* Related leaders */}
       {relatedLeaders.length > 0 && (
-        <section className="bg-cv-cream py-12 px-6 border-t border-cv-border">
+        <section className="bg-cv-cream py-10 sm:py-16 px-4 sm:px-6 border-t border-cv-border/50">
           <div className="max-w-content mx-auto">
             <ScrollReveal>
-              <h2 className="font-display text-2xl md:text-3xl font-bold text-cv-charcoal mb-8">
+              <span className="font-mono-label text-cv-muted text-xs tracking-widest">CONNECTIONS</span>
+              <h2 className="font-display text-fluid-h2 font-bold text-cv-charcoal mt-2 mb-8">
                 Also in the Conversation
               </h2>
             </ScrollReveal>

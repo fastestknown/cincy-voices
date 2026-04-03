@@ -26,3 +26,91 @@
   text-shadow: 0 1px 4px rgba(0,0,0,0.7), 0 0 12px rgba(0,0,0,0.3);
   color: #f0ece6;
 }
+
+/* Quote ticker marquee */
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-ticker {
+  animation: ticker 60s linear infinite;
+}
+
+.animate-ticker:hover {
+  animation-play-state: paused;
+}
+
+/* Faces marquee strip */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+/* Ghost chapter numbers */
+.chapter-number {
+  font-size: clamp(8rem, 20vw, 16rem);
+  line-height: 0.85;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.04);
+  position: absolute;
+  top: -1rem;
+  right: -1rem;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Timeline connector line */
+.timeline-line {
+  position: absolute;
+  left: 1.25rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+}
+
+/* Video grid hero cells */
+@keyframes slowZoom {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.08); }
+}
+
+.animate-slow-zoom {
+  animation: slowZoom 20s ease-in-out infinite alternate;
+}
+
+/* Dossier stat grid */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.stat-grid > div {
+  padding: 0.75rem;
+  text-align: center;
+}
+
+/* JetBrains Mono for dossier labels */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+
+.font-mono-label {
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* B-roll video transition */
+@keyframes fadeInVideo {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.video-fade-in {
+  animation: fadeInVideo 1.5s ease-in-out;
+}

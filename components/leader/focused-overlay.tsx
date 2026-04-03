@@ -16,7 +16,7 @@ export function FocusedOverlay({ segment, leaderName, onClose }: FocusedOverlayP
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 bg-cv-cinematic/95 flex items-center justify-center p-6"
+      className="fixed inset-0 z-50 bg-cv-cinematic/95 flex items-center justify-center p-3 sm:p-6"
       onClick={onClose}
     >
       <motion.div

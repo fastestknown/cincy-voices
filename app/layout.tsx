@@ -31,7 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="font-body min-h-screen flex flex-col">
         <SiteHeader />
         <TransitionProvider>
-          <main className="flex-1 pt-16">{children}</main>
+          <main className="flex-1 pt-14 sm:pt-16">{children}</main>
         </TransitionProvider>
         <SiteFooter />
         <Analytics />

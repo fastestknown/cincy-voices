@@ -34,10 +34,10 @@ export function ClipSequence({ segments, leaderName }: ClipSequenceProps) {
 
   return (
     <>
-      <div className="space-y-12">
+      <div className="space-y-8 sm:space-y-12">
         {segments.map((segment, i) => (
           <ScrollReveal key={segment.id} delay={i * 0.1} scale={0.92}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 items-center">
               {/* Video — autoplay muted first one, poster for rest on mobile */}
               <div
                 className="cursor-pointer"

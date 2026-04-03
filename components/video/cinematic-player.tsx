@@ -48,9 +48,14 @@ export function CinematicPlayer({
   // Focused mode: unmute and play
   useEffect(() => {
     if (focused && playerRef.current) {
-      const el = playerRef.current as HTMLMediaElement;
-      el.muted = false;
-      el.play?.();
+      const el = playerRef.current;
+      // MuxPlayer uses a shadow DOM — access the underlying media element
+      const media = el.media?.nativeEl ?? el;
+      if (media) {
+        media.muted = false;
+        media.volume = 1;
+        media.play?.().catch(() => {});
+      }
     }
   }, [focused]);
 
@@ -80,7 +85,7 @@ export function CinematicPlayer({
         onEnded={() => { setIsPlaying(false); onComplete?.(); trackEvent(ANALYTICS_EVENTS.VIDEO_COMPLETE); }}
         style={{
           aspectRatio: '16/9',
-          '--controls': 'none',
+          '--controls': muted ? 'none' : undefined,
           '--media-object-fit': 'cover',
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } as Record<string, string>}
@@ -100,8 +105,12 @@ export function CinematicPlayer({
       {!isPlaying && !autoPlay && (
         <button
           onClick={() => {
-            const el = playerRef.current as HTMLMediaElement;
-            el?.play?.();
+            const el = playerRef.current;
+            const media = el?.media?.nativeEl ?? el;
+            if (media) {
+              if (!muted) { media.muted = false; media.volume = 1; }
+              media.play?.().catch(() => {});
+            }
           }}
           className="absolute inset-0 flex items-center justify-center bg-gradient-to-t from-black/40 to-transparent"
           aria-label="Play video"

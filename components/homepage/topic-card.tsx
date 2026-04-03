@@ -18,7 +18,7 @@ export function TopicCard({ topic }: TopicCardProps) {
     >
       <motion.article
         layoutId={`topic-${topic.slug}`}
-        className="min-w-[280px] md:min-w-[320px] bg-white rounded-2xl overflow-hidden border border-cv-border/50 hover:shadow-lg transition-shadow flex-shrink-0"
+        className="min-w-0 md:min-w-[320px] bg-white rounded-2xl overflow-hidden border border-cv-border/50 hover:shadow-lg transition-shadow flex-shrink-0"
       >
         {/* Color accent bar (spec §2.1) */}
         <div className="h-2" style={{ backgroundColor: topic.color }} />

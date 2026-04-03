@@ -1,37 +1,40 @@
-import { getLeadersWithTopics, getTopicsWithStats } from '@/lib/queries';
-import { MontageHero } from '@/components/homepage/montage-hero';
-import { CreamReveal } from '@/components/homepage/cream-reveal';
+import { getLeadersWithTopics, getTopicsWithStats, getBrollPlaybackIds, getFeaturedQuotes } from '@/lib/queries';
+import { BrollHero } from '@/components/homepage/broll-hero';
+import { QuoteTicker } from '@/components/homepage/quote-ticker';
 import { LeaderGrid } from '@/components/homepage/leader-grid';
 import { TopicRow } from '@/components/homepage/topic-row';
 import { FooterQuote } from '@/components/homepage/footer-quote';
 
-export const revalidate = 3600; // ISR: hourly
+export const revalidate = 3600;
 
 export default async function HomePage() {
-  const [leaders, topics] = await Promise.all([
+  const [leaders, topics, brollIds, quotes] = await Promise.all([
     getLeadersWithTopics(),
     getTopicsWithStats(),
+    getBrollPlaybackIds(),
+    getFeaturedQuotes(),
   ]);
 
-  // Footer quote: first topic's lead quote (derived from thread_items quotes)
   const footerTopic = topics.find(t => t.lead_quote);
   const footerQuote = footerTopic?.lead_quote ?? 'Real conversations. Real leaders. Real Cincinnati.';
 
   return (
     <>
-      {/* Montage hero — dark load, auto-play, timed captions */}
-      <MontageHero montagePlaybackId={null /* Replace with montage Mux ID when cut */} />
+      {/* B-roll hero — rotating background videos with centered title */}
+      <BrollHero playbackIds={brollIds} />
 
-      {/* Cream reveal transition — navy → cream over 200px scroll */}
-      <CreamReveal>
-        {/* Leader grid — asymmetric, micro-clip hover, topic tags */}
+      {/* Quote ticker marquee */}
+      <QuoteTicker quotes={quotes} />
+
+      {/* Leader grid — cream background */}
+      <div className="bg-cv-cream">
         <LeaderGrid leaders={leaders} />
+      </div>
 
-        {/* Topic thread cards — horizontal scroll, color bars, stats */}
-        <TopicRow topics={topics} />
-      </CreamReveal>
+      {/* Topic thread cards */}
+      <TopicRow topics={topics} />
 
-      {/* Dark footer quote — full-width, ambient video */}
+      {/* Dark footer quote */}
       <FooterQuote
         quote={footerQuote}
         leaderName={footerTopic ? `on ${footerTopic.name}` : 'Cincy Voices'}

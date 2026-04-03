@@ -12,45 +12,105 @@ interface ThreadHeroProps {
 }
 
 export function ThreadHero({ topic, leaders }: ThreadHeroProps) {
+  const displayLeaders = leaders.slice(0, 5);
+  const remaining = leaders.length - displayLeaders.length;
+
   return (
     <motion.section
       layoutId={`topic-${topic.slug}`}
-      className="py-20 px-6"
-      style={{ backgroundColor: topic.color }}
+      className="min-h-dvh flex items-center justify-center text-center relative overflow-hidden bg-cv-navy"
     >
-      <div className="max-w-content mx-auto">
-        <h1 className="font-display text-fluid-hero font-bold text-white">
+      {/* Topic-colored radial gradient */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: `radial-gradient(ellipse at 50% 40%, ${topic.color}22 0%, transparent 60%)`,
+        }}
+      />
+
+      <div className="relative z-10 px-4 sm:px-6 py-16 sm:py-20 max-w-[800px]">
+        {/* Topic badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.7 }}
+          className="inline-flex items-center gap-2 px-5 py-2 rounded-full mb-8"
+          style={{
+            background: `${topic.color}22`,
+            border: `1px solid ${topic.color}44`,
+          }}
+        >
+          <span
+            className="w-1.5 h-1.5 rounded-full"
+            style={{ background: topic.color }}
+          />
+          <span
+            className="text-[11px] font-semibold tracking-[3px] uppercase"
+            style={{ color: topic.color }}
+          >
+            Topic Thread
+          </span>
+        </motion.div>
+
+        {/* Title */}
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.7 }}
+          className="font-display text-fluid-giant font-black text-cv-light-text leading-[1.05]"
+        >
           {topic.name}
-        </h1>
+        </motion.h1>
+
+        {/* Description */}
         {topic.description && (
-          <p className="text-white/80 text-lg mt-4 max-w-2xl font-body leading-relaxed">
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, duration: 0.7 }}
+            className="text-cv-light-text/45 text-[17px] font-body font-light mt-6 max-w-[560px] mx-auto leading-relaxed"
+          >
             {topic.description}
-          </p>
+          </motion.p>
         )}
 
-        {/* Leader avatar row */}
-        <div className="flex items-center gap-3 mt-8">
-          {leaders.map(leader => (
+        {/* Leader avatars */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.9, duration: 0.7 }}
+          className="flex items-center justify-center gap-3 mt-10"
+        >
+          {displayLeaders.map(leader => (
             <Link key={leader.id} href={`/leaders/${leader.slug}`} title={leader.name}>
-              <motion.div
-                layoutId={`avatar-${leader.slug}`}
-                className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/30 hover:border-white/60 transition-colors"
+              <div
+                className="w-12 h-12 rounded-full overflow-hidden relative transition-all duration-300 hover:-translate-y-1 hover:scale-110 hover:shadow-[0_8px_20px_rgba(0,0,0,0.3)]"
+                style={{ border: `2px solid ${topic.color}66` }}
               >
                 <Image
                   src={`/headshots/${leader.slug}.jpg`}
                   alt={leader.name}
                   fill
-                  sizes="40px"
+                  sizes="48px"
                   className="object-cover"
                   style={{ objectPosition: headshotPosition(leader.slug) }}
                 />
-              </motion.div>
+              </div>
             </Link>
           ))}
-          <span className="text-white/60 text-sm ml-2 font-body">
-            {leaders.length} voice{leaders.length !== 1 ? 's' : ''}
-          </span>
-        </div>
+          {remaining > 0 && (
+            <div
+              className="w-12 h-12 rounded-full flex items-center justify-center text-xs font-semibold"
+              style={{
+                background: `${topic.color}33`,
+                border: `2px solid ${topic.color}44`,
+                color: topic.color,
+              }}
+            >
+              +{remaining}
+            </div>
+          )}
+        </motion.div>
       </div>
     </motion.section>
   );

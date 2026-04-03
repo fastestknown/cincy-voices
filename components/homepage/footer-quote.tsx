@@ -10,7 +10,7 @@ interface FooterQuoteProps {
 
 export function FooterQuote({ quote, leaderName, ambientPlaybackId }: FooterQuoteProps) {
   return (
-    <section className="relative bg-cv-navy py-32 px-6 overflow-hidden">
+    <section className="relative bg-cv-navy py-16 sm:py-24 md:py-32 px-4 sm:px-6 overflow-hidden">
       {/* Ambient video background (out of focus, spec §2.1) */}
       {ambientPlaybackId && (
         <div className="absolute inset-0 opacity-20 blur-sm">

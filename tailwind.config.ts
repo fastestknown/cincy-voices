@@ -11,6 +11,7 @@ const config: Config = {
       fontFamily: {
         display: ['"Playfair Display"', 'Georgia', 'serif'],
         body: ['"Inter"', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'monospace'],
       },
       fontSize: {
         // Fluid type via clamp() per spec §4.1
@@ -19,6 +20,7 @@ const config: Config = {
         'fluid-body': 'clamp(0.9rem, 1.5vw, 1.1rem)',
         'fluid-h2': 'clamp(1.6rem, 3.5vw, 2.4rem)',
         'fluid-h3': 'clamp(1.2rem, 2.5vw, 1.6rem)',
+        'fluid-giant': 'clamp(2.8rem, 6vw, 5rem)',
       },
       colors: {
         cv: {

@@ -18,7 +18,7 @@ export function TopicMap({ topicCounts }: TopicMapProps) {
         <ScrollReveal key={tc.topic.id} delay={i * 0.08}>
           <Link href={`/topics/${tc.topic.slug}`} className="block group">
             <div className="flex items-center gap-4">
-              <span className="font-body text-sm text-cv-muted w-40 flex-shrink-0 truncate group-hover:text-cv-charcoal transition-colors">
+              <span className="font-body text-xs sm:text-sm text-cv-muted w-28 sm:w-40 flex-shrink-0 truncate group-hover:text-cv-charcoal transition-colors">
                 {tc.topic.name}
               </span>
               <div className="flex-1 h-8 bg-cv-border/30 rounded-full overflow-hidden">
