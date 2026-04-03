@@ -1,7 +1,7 @@
 import { supabase } from './supabase';
 import type { Leader, Topic, Segment, Quote, LeaderWithTopics, ThreadItemWithContent, TopicWithStats } from './types';
 
-// Live stream footage doesn't always show people — exclude from video display
+// Live stream footage doesn't always show people -- exclude from video display
 const LIVE_STREAM_SOURCE_ID = '4a9daf4b-35ff-4529-b72d-7ced6245ffdb';
 
 // ── Homepage ──────────────────────────────────────────
@@ -277,6 +277,7 @@ export async function getBrollPlaybackIds(): Promise<string[]> {
     .not('mux_playback_id', 'is', null)
     .neq('source_id', LIVE_STREAM_SOURCE_ID)
     .gte('clip_quality_score', 5)
+    .lt('clip_quality_score', 10)
     .gt('duration_ms', 15000)
     .order('clip_quality_score', { ascending: false })
     .limit(30);
