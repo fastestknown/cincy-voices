@@ -35,6 +35,8 @@ export interface Segment {
   topic_thread_id: string | null;
   clip_quality_score: number | null;
   words: WordTimestamp[] | null;
+  trim_start_ms: number | null;
+  trim_end_ms: number | null;
   created_at: string;
 }
 

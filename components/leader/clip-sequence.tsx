@@ -38,7 +38,7 @@ export function ClipSequence({ segments, leaderName }: ClipSequenceProps) {
         {segments.map((segment, i) => (
           <ScrollReveal key={segment.id} delay={i * 0.1} scale={0.92}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 items-center">
-              {/* Video — autoplay muted first one, poster for rest on mobile */}
+              {/* Video -- autoplay muted first one, poster for rest on mobile */}
               <div
                 className="cursor-pointer"
                 onClick={() => segment.mux_playback_id && openFocus(segment)}
@@ -51,6 +51,8 @@ export function ClipSequence({ segments, leaderName }: ClipSequenceProps) {
                   <CinematicPlayer
                     playbackId={segment.mux_playback_id}
                     words={segment.words}
+                    trimStartMs={segment.trim_start_ms}
+                    trimEndMs={segment.trim_end_ms}
                     autoPlay={i === 0}
                     muted
                   />
@@ -66,7 +68,7 @@ export function ClipSequence({ segments, leaderName }: ClipSequenceProps) {
                 <blockquote className="font-display text-base md:text-lg font-bold text-cv-charcoal leading-relaxed">
                   &ldquo;{extractPullQuote(segment.text)}&rdquo;
                 </blockquote>
-                <p className="text-cv-muted text-sm mt-3">— {leaderName}</p>
+                <p className="text-cv-muted text-sm mt-3">&mdash; {leaderName}</p>
 
                 {/* Topic tag if assigned */}
                 {segment.topic_thread_id && (

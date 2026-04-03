@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 import MuxPlayer from '@mux/mux-player-react';
 import { trackEvent } from '@/lib/analytics';
 import { ANALYTICS_EVENTS } from '@/lib/constants';
@@ -10,6 +10,8 @@ import { generateVttUrl } from '@/lib/captions';
 interface CinematicPlayerProps {
   playbackId: string;
   words?: WordTimestamp[] | null;
+  trimStartMs?: number | null;
+  trimEndMs?: number | null;
   autoPlay?: boolean;
   muted?: boolean;
   loop?: boolean;
@@ -23,6 +25,8 @@ interface CinematicPlayerProps {
 export function CinematicPlayer({
   playbackId,
   words,
+  trimStartMs,
+  trimEndMs,
   autoPlay = false,
   muted = true,
   loop = false,
@@ -36,6 +40,10 @@ export function CinematicPlayer({
   const playerRef = useRef<any>(null);
   const [captionUrl, setCaptionUrl] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
+  const seekedToStart = useRef(false);
+
+  const trimStartSec = trimStartMs ? trimStartMs / 1000 : null;
+  const trimEndSec = trimEndMs ? trimEndMs / 1000 : null;
 
   useEffect(() => {
     if (words?.length) {
@@ -45,19 +53,45 @@ export function CinematicPlayer({
     }
   }, [words]);
 
-  // Focused mode: unmute and play
+  // Seek to trim start when metadata loads
+  const handleLoadedMetadata = useCallback(() => {
+    if (!trimStartSec || seekedToStart.current) return;
+    const el = playerRef.current;
+    if (!el) return;
+    const media = el.media?.nativeEl ?? el;
+    if (media) {
+      media.currentTime = trimStartSec;
+      seekedToStart.current = true;
+    }
+  }, [trimStartSec]);
+
+  // Pause at trim end
+  const handleTimeUpdate = useCallback(() => {
+    if (!trimEndSec) return;
+    const el = playerRef.current;
+    if (!el) return;
+    const media = el.media?.nativeEl ?? el;
+    if (media && media.currentTime >= trimEndSec) {
+      media.pause();
+      setIsPlaying(false);
+      onComplete?.();
+      trackEvent(ANALYTICS_EVENTS.VIDEO_COMPLETE);
+    }
+  }, [trimEndSec, onComplete]);
+
+  // Focused mode: unmute and play from trim start
   useEffect(() => {
     if (focused && playerRef.current) {
       const el = playerRef.current;
-      // MuxPlayer uses a shadow DOM — access the underlying media element
       const media = el.media?.nativeEl ?? el;
       if (media) {
         media.muted = false;
         media.volume = 1;
+        if (trimStartSec) media.currentTime = trimStartSec;
         media.play?.().catch(() => {});
       }
     }
-  }, [focused]);
+  }, [focused, trimStartSec]);
 
   // Escape key closes focused mode
   useEffect(() => {
@@ -69,6 +103,18 @@ export function CinematicPlayer({
     return () => window.removeEventListener('keydown', handler);
   }, [focused, onFocusClose]);
 
+  const handlePlayClick = useCallback(() => {
+    const el = playerRef.current;
+    const media = el?.media?.nativeEl ?? el;
+    if (media) {
+      if (!muted) { media.muted = false; media.volume = 1; }
+      if (trimStartSec && media.currentTime < trimStartSec - 0.5) {
+        media.currentTime = trimStartSec;
+      }
+      media.play?.().catch(() => {});
+    }
+  }, [muted, trimStartSec]);
+
   return (
     <div className={`relative rounded-xl overflow-hidden border border-white/10 ${
       focused ? 'ring-2 ring-cv-gold/40' : ''
@@ -77,10 +123,13 @@ export function CinematicPlayer({
         ref={playerRef}
         playbackId={playbackId}
         streamType="on-demand"
+        startTime={trimStartSec ?? undefined}
         autoPlay={autoPlay ? 'muted' : false}
         muted={muted}
         loop={loop}
         preload="metadata"
+        onLoadedMetadata={handleLoadedMetadata}
+        onTimeUpdate={handleTimeUpdate}
         onPlay={() => { setIsPlaying(true); onPlay?.(); trackEvent(ANALYTICS_EVENTS.VIDEO_PLAY); }}
         onEnded={() => { setIsPlaying(false); onComplete?.(); trackEvent(ANALYTICS_EVENTS.VIDEO_COMPLETE); }}
         style={{
@@ -104,14 +153,7 @@ export function CinematicPlayer({
       {/* Play button overlay when paused */}
       {!isPlaying && !autoPlay && (
         <button
-          onClick={() => {
-            const el = playerRef.current;
-            const media = el?.media?.nativeEl ?? el;
-            if (media) {
-              if (!muted) { media.muted = false; media.volume = 1; }
-              media.play?.().catch(() => {});
-            }
-          }}
+          onClick={handlePlayClick}
           className="absolute inset-0 flex items-center justify-center bg-gradient-to-t from-black/40 to-transparent"
           aria-label="Play video"
         >

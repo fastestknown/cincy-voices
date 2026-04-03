@@ -29,6 +29,8 @@ export function FocusedOverlay({ segment, leaderName, onClose }: FocusedOverlayP
         <CinematicPlayer
           playbackId={segment.mux_playback_id!}
           words={segment.words}
+          trimStartMs={segment.trim_start_ms}
+          trimEndMs={segment.trim_end_ms}
           focused
           muted={false}
           onFocusClose={onClose}
@@ -39,7 +41,7 @@ export function FocusedOverlay({ segment, leaderName, onClose }: FocusedOverlayP
           <p className="font-display text-lg text-cv-light-text/80">
             &ldquo;{segment.text.slice(0, 150)}{segment.text.length > 150 ? '...' : ''}&rdquo;
           </p>
-          <p className="text-cv-light-text/50 text-sm mt-2">— {leaderName}</p>
+          <p className="text-cv-light-text/50 text-sm mt-2">&mdash; {leaderName}</p>
         </div>
       </motion.div>
     </motion.div>
