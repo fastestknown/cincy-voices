@@ -1,5 +1,5 @@
 import { supabase } from './supabase';
-import type { Leader, Topic, Segment, Quote, LeaderWithTopics, ThreadItemWithContent, TopicWithStats } from './types';
+import type { Leader, Topic, Segment, Quote, LeaderWithTopics, ThreadItemWithContent, TopicWithStats, VaultSegment } from './types';
 
 // Live stream footage doesn't always show people -- exclude from video display
 const LIVE_STREAM_SOURCE_ID = '4a9daf4b-35ff-4529-b72d-7ced6245ffdb';
@@ -362,4 +362,93 @@ export async function getAllTopicSlugs(): Promise<string[]> {
     .select('slug');
 
   return data?.map(t => t.slug) ?? [];
+}
+
+// ── Vault ─────────────────────────────────────────────
+
+export async function getLeaderVaultClips(leaderId: string): Promise<VaultSegment[]> {
+  const { data: segments } = await supabase
+    .from('cincy_voices_segments')
+    .select('*')
+    .eq('leader_id', leaderId)
+    .not('mux_playback_id', 'is', null)
+    .neq('source_id', LIVE_STREAM_SOURCE_ID)
+    .gte('clip_quality_score', 5)
+    .order('clip_quality_score', { ascending: false });
+
+  if (!segments?.length) return [];
+
+  const segmentIds = segments.map(s => s.id);
+  const { data: threadItems } = await supabase
+    .from('cincy_voices_thread_items')
+    .select('segment_id, topic_id')
+    .in('segment_id', segmentIds);
+
+  const topicIds = Array.from(new Set((threadItems ?? []).map(ti => ti.topic_id)));
+  const { data: topics } = await supabase
+    .from('cincy_voices_topics')
+    .select('id, slug, name, color')
+    .in('id', topicIds);
+
+  const topicMap = new Map((topics ?? []).map(t => [t.id, t]));
+  const segmentTopicMap = new Map<string, { slug: string; name: string; color: string }>();
+  (threadItems ?? []).forEach(ti => {
+    if (!segmentTopicMap.has(ti.segment_id)) {
+      const topic = topicMap.get(ti.topic_id);
+      if (topic) segmentTopicMap.set(ti.segment_id, topic);
+    }
+  });
+
+  return segments.map(s => {
+    const topic = segmentTopicMap.get(s.id);
+    const duration_ms = s.end_time_ms && s.start_time_ms
+      ? s.end_time_ms - s.start_time_ms
+      : null;
+    return {
+      ...s,
+      topic_name: topic?.name ?? null,
+      topic_slug: topic?.slug ?? null,
+      topic_color: topic?.color ?? null,
+      duration_ms,
+    };
+  });
+}
+
+export async function getSegmentById(segmentId: string): Promise<VaultSegment | null> {
+  const { data: segment } = await supabase
+    .from('cincy_voices_segments')
+    .select('*')
+    .eq('id', segmentId)
+    .single();
+
+  if (!segment) return null;
+
+  const { data: threadItem } = await supabase
+    .from('cincy_voices_thread_items')
+    .select('topic_id')
+    .eq('segment_id', segmentId)
+    .limit(1)
+    .maybeSingle();
+
+  let topic = null;
+  if (threadItem?.topic_id) {
+    const { data } = await supabase
+      .from('cincy_voices_topics')
+      .select('id, slug, name, color')
+      .eq('id', threadItem.topic_id)
+      .single();
+    topic = data;
+  }
+
+  const duration_ms = segment.end_time_ms && segment.start_time_ms
+    ? segment.end_time_ms - segment.start_time_ms
+    : null;
+
+  return {
+    ...segment,
+    topic_name: topic?.name ?? null,
+    topic_slug: topic?.slug ?? null,
+    topic_color: topic?.color ?? null,
+    duration_ms,
+  };
 }

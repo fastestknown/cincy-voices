@@ -78,6 +78,13 @@ export interface ThreadItemWithContent extends ThreadItem {
   leader: Leader;
 }
 
+export interface VaultSegment extends Segment {
+  topic_name: string | null;
+  topic_slug: string | null;
+  topic_color: string | null;
+  duration_ms: number | null;
+}
+
 export interface TopicWithStats extends Topic {
   leader_count: number;
   item_count: number;
