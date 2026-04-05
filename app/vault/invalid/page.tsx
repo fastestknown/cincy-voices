@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function VaultInvalidPage() {
   return (
-    <div className="min-h-screen bg-cv-dark flex items-center justify-center px-4">
+    <div className="min-h-screen bg-cv-vault flex items-center justify-center px-4">
       <div className="max-w-md text-center">
         <p className="font-mono-label text-cv-gold text-xs tracking-widest mb-4">CINCY VOICES</p>
         <h1 className="font-display text-3xl text-white mb-4">Link expired or invalid</h1>

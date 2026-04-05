@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
-      <body className="font-body min-h-screen flex flex-col bg-cv-dark">
+      <body className="font-body min-h-screen flex flex-col bg-cv-vault">
         {children}
         <Analytics />
         {/* eslint-disable-next-line @next/next/no-before-interactive-script-outside-document */}

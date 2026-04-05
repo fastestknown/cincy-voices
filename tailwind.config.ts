@@ -28,12 +28,13 @@ const config: Config = {
           cream: '#faf6f0',
           navy: '#1a2744',
           cinematic: '#2a2a2a',
+          vault: '#162318',
           // Text
           charcoal: '#1a1a1a',
           'light-text': '#f0ece6',
           muted: '#6b6b6b',
           border: '#e8e4df',
-          // Thread colors (spec §4.2 — canonical)
+          // Thread colors (spec §4.2 -- canonical)
           sage: '#7a9e7e',
           terracotta: '#c4724e',
           gold: '#d4a843',

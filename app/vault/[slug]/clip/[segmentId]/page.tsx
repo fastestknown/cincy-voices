@@ -59,7 +59,7 @@ export default async function StandaloneClipPage({ params }: {
     : null;
 
   return (
-    <div className="min-h-screen bg-cv-dark">
+    <div className="min-h-screen bg-cv-vault">
       {/* Minimal nav */}
       <div className="px-4 sm:px-6 py-4 border-b border-white/10">
         <Link href="/" className="font-display text-lg text-white font-bold tracking-tight">

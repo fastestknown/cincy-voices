@@ -11,7 +11,7 @@ export function VaultHeader({ leader, clipCount }: VaultHeaderProps) {
     : null;
 
   return (
-    <div className="bg-cv-dark border-b border-white/10 px-4 sm:px-6 py-8">
+    <div className="bg-cv-vault border-b border-white/10 px-4 sm:px-6 py-8">
       <div className="max-w-5xl mx-auto">
         <div className="flex items-start gap-6">
           {headshotUrl && (
