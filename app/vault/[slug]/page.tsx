@@ -1,7 +1,8 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { supabase } from '@/lib/supabase';
 import { getLeaderBySlug, getLeaderVaultClips, getLeaderSources } from '@/lib/queries';
-import { verifyCookie, COOKIE_NAME } from '@/lib/vault-auth';
+import { verifyCookie, signCookie, COOKIE_NAME } from '@/lib/vault-auth';
 import { VaultHeader } from '@/components/vault/vault-header';
 import { VaultClipCard } from '@/components/vault/vault-clip-card';
 
@@ -15,6 +16,15 @@ function formatDuration(secs: number | null): string {
   return `${m} min`;
 }
 
+async function validateToken(slug: string, token: string): Promise<boolean> {
+  const { data: leader } = await supabase
+    .from('cincy_voices_leaders')
+    .select('vault_token')
+    .eq('slug', slug)
+    .single();
+  return !!leader && leader.vault_token === token;
+}
+
 export default async function VaultPage({ params, searchParams }: {
   params: Promise<{ slug: string }>;
   searchParams: Promise<{ token?: string }>;
@@ -22,15 +32,38 @@ export default async function VaultPage({ params, searchParams }: {
   const { slug } = await params;
   const { token } = await searchParams;
 
+  let authorized = false;
+
+  // Path 1: token in URL -- validate directly against DB (no redirect needed)
   if (token) {
-    redirect(`/api/vault/auth?slug=${slug}&token=${token}`);
+    authorized = await validateToken(slug, token);
+    if (authorized) {
+      // Set cookie for future visits (best-effort, may not work on all browsers)
+      try {
+        const cookieStore = await cookies();
+        const cookieValue = await signCookie(slug);
+        cookieStore.set(COOKIE_NAME, cookieValue, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          maxAge: 30 * 24 * 60 * 60,
+          path: '/',
+        });
+      } catch {
+        // Cookie setting may fail in some contexts; token in URL is the auth
+      }
+    }
   }
 
-  const cookieStore = await cookies();
-  const rawCookie = cookieStore.get(COOKIE_NAME)?.value;
-  const authorizedSlug = rawCookie ? await verifyCookie(rawCookie) : null;
+  // Path 2: no token -- check cookie
+  if (!authorized && !token) {
+    const cookieStore = await cookies();
+    const rawCookie = cookieStore.get(COOKIE_NAME)?.value;
+    const authorizedSlug = rawCookie ? await verifyCookie(rawCookie) : null;
+    authorized = authorizedSlug === slug;
+  }
 
-  if (authorizedSlug !== slug) {
+  if (!authorized) {
     redirect('/vault/invalid');
   }
 
@@ -46,12 +79,11 @@ export default async function VaultPage({ params, searchParams }: {
 
   const featured = allClips.filter(s => s.clip_quality_score === 10);
   const library = allClips.filter(s => (s.clip_quality_score ?? 0) < 10);
-
   const soloSources = sources.filter(s => s.source_type === 'solo_clip');
   const panelSources = sources.filter(s => s.source_type === 'panel' || s.source_type === 'pre_show');
 
   return (
-    <div className="min-h-screen bg-cv-dark">
+    <div className="min-h-full">
       <VaultHeader leader={leader} clipCount={allClips.length} />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-12">
@@ -96,10 +128,10 @@ export default async function VaultPage({ params, searchParams }: {
             <p className="font-mono-label text-cv-gold text-xs tracking-widest mb-2">RAW SOURCE FILES</p>
             <h2 className="font-display text-2xl text-white font-bold mb-2">Download Full Episodes</h2>
             <p className="text-white/50 font-body text-sm mb-6">
-              These are the complete, unedited recordings. Large files -- best downloaded on Wi-Fi.
+              Complete unedited recordings. Large files -- best downloaded on Wi-Fi.
             </p>
             <div className="space-y-3">
-              {soloSources.length > 0 && soloSources.map(source => (
+              {soloSources.map(source => (
                 <a
                   key={source.id}
                   href={`https://stream.mux.com/${source.mux_master_playback_id}/highest.mp4`}
@@ -133,7 +165,7 @@ export default async function VaultPage({ params, searchParams }: {
                     )}
                   </div>
                   <svg viewBox="0 0 20 20" className="w-5 h-5 fill-current text-white/40 group-hover:text-cv-gold transition-colors shrink-0 ml-4">
-                    <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+                    <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
                   </svg>
                 </a>
               ))}

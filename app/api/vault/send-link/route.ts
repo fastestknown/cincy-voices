@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
       .eq('slug', slug);
   }
 
-  const magic_link = `${SITE.url}/api/vault/auth?slug=${slug}&token=${token}`;
+  const magic_link = `${SITE.url}/vault/${slug}?token=${token}`;
 
   return NextResponse.json({ name: leader.name, slug, magic_link });
 }
