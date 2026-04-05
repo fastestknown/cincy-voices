@@ -8,7 +8,7 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: 'About',
-  description: 'Every city has a story. This one is told by the people building it.',
+  description: 'One day. Seventeen leaders. Real conversations about fractional leadership in Cincinnati.',
 };
 
 export default async function AboutPage() {
@@ -17,35 +17,33 @@ export default async function AboutPage() {
     getLeadersWithTopics(),
   ]);
 
-  // Double array for seamless marquee loop
   const facesDouble = [...leaders, ...leaders];
 
   return (
     <>
-      {/* Hero — Giant Serif Manifesto */}
+      {/* Hero */}
       <section className="bg-cv-navy min-h-dvh flex items-center justify-center text-center relative overflow-hidden">
-        {/* Subtle gold radial glow */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_30%,rgba(212,168,67,0.08)_0%,transparent_60%)]" />
 
         <div className="relative max-w-[900px] px-4 sm:px-6 py-16 sm:py-20">
           <ScrollReveal>
             <span className="font-mono-label text-cv-gold/60 text-xs tracking-[0.4em] block mb-10">
-              About This Project
+              About Cincy Voices
             </span>
           </ScrollReveal>
 
           <ScrollReveal delay={0.2}>
             <h1 className="font-display text-fluid-giant font-black text-cv-light-text leading-[1.15]">
-              Every city has a story.{' '}
+              One day.{' '}
               <span className="text-cv-gold">
-                This one is told by the people building it.
+                Seventeen leaders. Real conversations.
               </span>
             </h1>
           </ScrollReveal>
 
           <ScrollReveal delay={0.4}>
             <p className="text-cv-light-text/45 text-lg font-body font-light mt-8 max-w-[600px] mx-auto leading-relaxed">
-              Cincy Voices captures Cincinnati&apos;s business leaders in unscripted, unfiltered conversation — preserving the wisdom that usually disappears after the meeting ends.
+              Cincy Voices is what happens when you stop asking for a resume and start watching someone work.
             </p>
           </ScrollReveal>
 
@@ -58,89 +56,99 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* Chapter 1: The Problem */}
+      {/* Chapter 1: The Day */}
       <section className="bg-cv-navy py-14 sm:py-24 px-4 sm:px-6 relative">
         <div className="max-w-[800px] mx-auto relative">
           <div className="chapter-number font-display">01</div>
           <ScrollReveal>
             <span className="font-mono-label text-cv-gold text-xs tracking-[0.3em] block mb-4">
-              The Problem
+              The Day
             </span>
             <h2 className="font-display text-fluid-h2 font-bold text-cv-light-text leading-snug mb-8">
-              The best conversations happen off the record.
+              These weren&apos;t interviews. They weren&apos;t panels. They were conversations.
             </h2>
             <p className="text-cv-light-text/60 text-[17px] font-body font-light leading-[2]">
-              Every week in Cincinnati, business leaders sit across from each other and share{' '}
-              <strong className="text-cv-light-text font-medium">hard-won lessons</strong> — about
-              turnarounds they navigated, relationships they built, risks they took. And then the
-              conversation ends. The insight evaporates. The wisdom stays locked in a conference room.
+              On one day at{' '}
+              <strong className="text-cv-light-text font-medium">Cincinnati Podcast Studio</strong>,
+              seventeen fractional leaders gathered and did something simple: they talked. About their
+              clients, their origins, their failures, and what it actually takes to earn someone&apos;s
+              trust. No scripts, no teleprompters, no pitches.
             </p>
             <p className="text-cv-light-text/60 text-[17px] font-body font-light leading-[2] mt-8">
-              We wanted to change that.
+              They built new connections. They strengthened old ones. They spent the day in room with
+              people who understand the work because they&apos;re doing the same work. And they
+              demonstrated on camera, without preparation, the kind of{' '}
+              <strong className="text-cv-light-text font-medium">
+                character, values, and leadership
+              </strong>{' '}
+              that most Cincinnati businesses have never had a chance to see.
             </p>
           </ScrollReveal>
         </div>
       </section>
 
-      {/* Divider */}
       <div className="bg-cv-navy flex justify-center">
         <div className="w-[60px] h-[2px] bg-cv-gold/40" />
       </div>
 
-      {/* Chapter 2: The Approach */}
+      {/* Chapter 2: The Opportunity */}
       <section className="bg-cv-navy py-14 sm:py-24 px-4 sm:px-6 relative">
         <div className="max-w-[800px] mx-auto relative">
           <div className="chapter-number font-display">02</div>
           <ScrollReveal>
             <span className="font-mono-label text-cv-gold text-xs tracking-[0.3em] block mb-4">
-              The Approach
+              The Opportunity
             </span>
             <h2 className="font-display text-fluid-h2 font-bold text-cv-light-text leading-snug mb-8">
-              No scripts. No teleprompters. Just real people talking about real work.
+              Fractional leadership is one of the most underutilized opportunities for small businesses right now.
             </h2>
             <p className="text-cv-light-text/60 text-[17px] font-body font-light leading-[2]">
-              We brought Cincinnati&apos;s leaders together for{' '}
-              <strong className="text-cv-light-text font-medium">facilitated conversations</strong> — not
-              interviews, not panels, not pitches. Authentic dialogue about the topics that matter most:{' '}
-              <strong className="text-cv-light-text font-medium">
-                trust, growth, origin stories, client impact, culture, collaboration, and the fractional model
-              </strong>.
+              The model is proven. The talent exists. Most business owners know they have problems they
+              can&apos;t solve internally. But they don&apos;t act.
             </p>
             <p className="text-cv-light-text/60 text-[17px] font-body font-light leading-[2] mt-8">
-              Then we captured everything. Every insight, every story, every moment of vulnerability.
-              And we built this site to let you experience it as if you were in the room.
+              The reason isn&apos;t cost. It isn&apos;t awareness. It&apos;s{' '}
+              <strong className="text-cv-light-text font-medium">trust</strong>.
+            </p>
+            <p className="text-cv-light-text/60 text-[17px] font-body font-light leading-[2] mt-8">
+              When a business has a challenge they can&apos;t handle on their own, the barrier to
+              getting help isn&apos;t finding someone qualified. It&apos;s trusting someone enough to
+              let them in. To give them real access. To bet the relationship on it.
+            </p>
+            <p className="text-cv-light-text/60 text-[17px] font-body font-light leading-[2] mt-8">
+              Most businesses don&apos;t act on it because they don&apos;t know who to trust. Cincy
+              Voices exists to change that.
             </p>
           </ScrollReveal>
         </div>
       </section>
 
-      {/* Divider */}
       <div className="bg-cv-navy flex justify-center">
         <div className="w-[60px] h-[2px] bg-cv-gold/40" />
       </div>
 
-      {/* Chapter 3: The Vision */}
+      {/* Chapter 3: How We Help */}
       <section className="bg-cv-navy py-14 sm:py-24 px-4 sm:px-6 relative">
         <div className="max-w-[800px] mx-auto relative">
           <div className="chapter-number font-display">03</div>
           <ScrollReveal>
             <span className="font-mono-label text-cv-gold text-xs tracking-[0.3em] block mb-4">
-              The Vision
+              How We Help
             </span>
             <h2 className="font-display text-fluid-h2 font-bold text-cv-light-text leading-snug mb-8">
-              A living archive of Cincinnati&apos;s leadership wisdom.
+              We don&apos;t match people because their resume looks good.
             </h2>
             <p className="text-cv-light-text/60 text-[17px] font-body font-light leading-[2]">
-              Cincy Voices isn&apos;t a one-time project. It&apos;s{' '}
-              <strong className="text-cv-light-text font-medium">a growing collection</strong> — a place
-              where the perspectives of this city&apos;s most thoughtful leaders are preserved, connected,
-              and made accessible to anyone who wants to learn from them.
+              <strong className="text-cv-light-text font-medium">Work With Meaning</strong> was built
+              around one idea: the most successful business relationships are built on a foundation of
+              trust, not credentials. We make introductions because these leaders are trusted by people
+              already in your network. Because peers have watched them work. Because clients will
+              vouch for them directly.
             </p>
             <p className="text-cv-light-text/60 text-[17px] font-body font-light leading-[2] mt-8">
-              Browse by leader. Explore by topic. Watch the clips that resonate.{' '}
-              <strong className="text-cv-light-text font-medium">
-                This is Cincinnati, in its own words.
-              </strong>
+              When relationship and trust are the infrastructure for a partnership, it is far more
+              likely to succeed. That&apos;s what we&apos;re building in Cincinnati, one introduction
+              at a time.
             </p>
           </ScrollReveal>
         </div>
@@ -215,26 +223,108 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* Credit Section */}
-      <section className="bg-cv-navy py-14 sm:py-24 px-4 sm:px-6">
-        <ScrollReveal>
-          <div className="max-w-[600px] mx-auto text-center">
-            <p className="font-display text-sm font-bold text-cv-gold tracking-[0.3em] mb-6">
-              A PROJECT BY
-            </p>
-            <p className="text-cv-light-text/40 text-[15px] font-body leading-[1.8]">
-              Cincy Voices is produced by{' '}
+      {/* CTA: Businesses */}
+      <section className="bg-cv-navy py-14 sm:py-24 px-4 sm:px-6 relative">
+        <div className="max-w-[800px] mx-auto">
+          <div className="bg-white/[0.03] border border-cv-gold/20 rounded-2xl p-8 sm:p-12">
+            <ScrollReveal>
+              <span className="font-mono-label text-cv-gold text-xs tracking-[0.3em] block mb-4">
+                For Business Owners
+              </span>
+              <h2 className="font-display text-fluid-h2 font-bold text-cv-light-text leading-snug mb-6">
+                Curious about what a fractional leader could do for your business?
+              </h2>
+              <p className="text-cv-light-text/60 text-[17px] font-body font-light leading-[2] mb-8">
+                Work With Meaning helps you find the right fractional leader for your specific
+                situation, with a background uniquely suited to your industry and a track record
+                you can verify through people you already trust. No cold searches, no blind
+                interviews. Just warm introductions built on real relationships.
+              </p>
               <a
                 href="https://workwithmean.ing"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-cv-gold border-b border-cv-gold/30 hover:border-cv-gold transition-colors"
+                className="inline-flex items-center gap-2 bg-cv-gold text-cv-navy font-body font-semibold px-7 py-3.5 rounded-full hover:bg-cv-gold/90 transition-colors text-sm"
               >
-                Work With Meaning
-              </a>{' '}
-              — a Cincinnati-based firm that helps leaders build businesses rooted in purpose,
-              relationships, and strategic clarity.
-            </p>
+                Learn how we work
+                <svg viewBox="0 0 20 20" className="w-4 h-4 fill-current">
+                  <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+              </a>
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA: Fractional Leaders */}
+      <section className="bg-cv-navy py-0 pb-14 sm:pb-24 px-4 sm:px-6">
+        <div className="max-w-[800px] mx-auto">
+          <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-8 sm:p-12">
+            <ScrollReveal>
+              <span className="font-mono-label text-cv-light-text/40 text-xs tracking-[0.3em] block mb-4">
+                For Fractional Leaders
+              </span>
+              <h2 className="font-display text-fluid-h2 font-bold text-cv-light-text leading-snug mb-6">
+                Building a practice on trust and long-term relationships?
+              </h2>
+              <p className="text-cv-light-text/60 text-[17px] font-body font-light leading-[2] mb-8">
+                If you&apos;re a fractional leader who wants to grow your practice through relationships
+                rather than cold outreach, we&apos;d like to know you. Work With Meaning connects
+                leaders who are serious about earning trust with the businesses that need exactly what
+                you offer.
+              </p>
+              <a
+                href="mailto:ford@workwithmean.ing"
+                className="inline-flex items-center gap-2 border border-cv-gold/40 text-cv-gold font-body font-semibold px-7 py-3.5 rounded-full hover:border-cv-gold hover:bg-cv-gold/5 transition-colors text-sm"
+              >
+                Reach out to Ford
+                <svg viewBox="0 0 20 20" className="w-4 h-4 fill-current">
+                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                </svg>
+              </a>
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Credit Section */}
+      <section className="bg-cv-navy py-14 sm:py-24 px-4 sm:px-6 border-t border-white/[0.06]">
+        <ScrollReveal>
+          <div className="max-w-[700px] mx-auto text-center space-y-10">
+            <div>
+              <p className="font-mono-label text-cv-gold text-xs tracking-[0.3em] mb-4">
+                FILMED &amp; PRODUCED BY
+              </p>
+              <p className="text-cv-light-text/60 text-[16px] font-body leading-[2]">
+                <strong className="text-cv-light-text font-medium">Brian and Josh</strong> at{' '}
+                <strong className="text-cv-light-text font-medium">Cincinnati Podcast Studio</strong>{' '}
+                filmed, edited, and made this day possible. They created a space where leaders could
+                show up as themselves and a final product that does them justice.
+              </p>
+            </div>
+
+            <div className="w-[40px] h-px bg-cv-gold/30 mx-auto" />
+
+            <div>
+              <p className="font-mono-label text-cv-gold text-xs tracking-[0.3em] mb-4">
+                A PROJECT BY
+              </p>
+              <p className="text-cv-light-text/60 text-[16px] font-body leading-[2]">
+                Cincy Voices is produced by{' '}
+                <a
+                  href="https://workwithmean.ing"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-cv-gold border-b border-cv-gold/30 hover:border-cv-gold transition-colors"
+                >
+                  Work With Meaning
+                </a>{' '}
+                -- a Cincinnati firm dedicated to helping businesses find fractional leaders they can
+                trust, and helping fractional leaders build the relationships that make their practice
+                sustainable.
+              </p>
+            </div>
           </div>
         </ScrollReveal>
       </section>
