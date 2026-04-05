@@ -1,5 +1,5 @@
 import { supabase } from './supabase';
-import type { Leader, Topic, Segment, Quote, LeaderWithTopics, ThreadItemWithContent, TopicWithStats, VaultSegment } from './types';
+import type { Leader, Topic, Segment, Quote, LeaderWithTopics, ThreadItemWithContent, TopicWithStats, VaultSegment, VaultSource } from './types';
 
 // Live stream footage doesn't always show people -- exclude from video display
 const LIVE_STREAM_SOURCE_ID = '4a9daf4b-35ff-4529-b72d-7ced6245ffdb';
@@ -412,6 +412,27 @@ export async function getLeaderVaultClips(leaderId: string): Promise<VaultSegmen
       duration_ms,
     };
   });
+}
+
+export async function getLeaderSources(leaderId: string): Promise<VaultSource[]> {
+  const { data: participations } = await supabase
+    .from('cincy_voices_source_participants')
+    .select('source_id')
+    .eq('leader_id', leaderId);
+
+  if (!participations?.length) return [];
+
+  const sourceIds = participations.map(p => p.source_id);
+
+  const { data: sources } = await supabase
+    .from('cincy_voices_sources')
+    .select('id, title, source_type, mux_master_playback_id, duration_seconds')
+    .in('id', sourceIds)
+    .not('mux_master_playback_id', 'is', null)
+    .neq('source_type', 'livestream')
+    .order('source_type');
+
+  return (sources ?? []) as VaultSource[];
 }
 
 export async function getSegmentById(segmentId: string): Promise<VaultSegment | null> {

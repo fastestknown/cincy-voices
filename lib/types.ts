@@ -78,6 +78,14 @@ export interface ThreadItemWithContent extends ThreadItem {
   leader: Leader;
 }
 
+export interface VaultSource {
+  id: string;
+  title: string;
+  source_type: string;
+  mux_master_playback_id: string;
+  duration_seconds: number | null;
+}
+
 export interface VaultSegment extends Segment {
   topic_name: string | null;
   topic_slug: string | null;

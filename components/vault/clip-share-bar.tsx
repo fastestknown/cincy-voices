@@ -7,9 +7,10 @@ interface ClipShareBarProps {
   pullQuote: string;
   leaderSlug: string;
   segmentId: string;
+  downloadUrl?: string;
 }
 
-export function ClipShareBar({ clipUrl, pullQuote }: ClipShareBarProps) {
+export function ClipShareBar({ clipUrl, pullQuote, downloadUrl }: ClipShareBarProps) {
   const [copied, setCopied] = useState(false);
   const [showEmbed, setShowEmbed] = useState(false);
   const [embedCopied, setEmbedCopied] = useState(false);
@@ -57,6 +58,19 @@ export function ClipShareBar({ clipUrl, pullQuote }: ClipShareBarProps) {
         >
           {showEmbed ? 'Hide embed' : 'Embed'}
         </button>
+
+        {downloadUrl && (
+          <a
+            href={downloadUrl}
+            download
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-white/10 text-white text-xs font-body font-medium hover:bg-white/20 transition-colors"
+          >
+            <svg viewBox="0 0 20 20" className="w-3.5 h-3.5 fill-current">
+              <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+            Download
+          </a>
+        )}
       </div>
 
       {showEmbed && (

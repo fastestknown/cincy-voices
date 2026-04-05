@@ -8,6 +8,7 @@ interface VaultClipCardProps {
   segment: VaultSegment;
   leaderSlug: string;
   featured?: boolean;
+  downloadsEnabled?: boolean;
 }
 
 function formatDuration(ms: number | null): string {
@@ -18,9 +19,12 @@ function formatDuration(ms: number | null): string {
   return `${m}:${s.toString().padStart(2, '0')}`;
 }
 
-export function VaultClipCard({ segment, leaderSlug, featured = false }: VaultClipCardProps) {
+export function VaultClipCard({ segment, leaderSlug, featured = false, downloadsEnabled = false }: VaultClipCardProps) {
   const pullQuote = extractPullQuote(segment.text);
   const clipUrl = `${SITE.url}/vault/${leaderSlug}/clip/${segment.id}`;
+  const downloadUrl = downloadsEnabled && segment.mux_playback_id
+    ? `https://stream.mux.com/${segment.mux_playback_id}/highest.mp4`
+    : undefined;
 
   return (
     <div className="bg-white/5 border border-white/10 rounded-xl overflow-hidden">
@@ -60,6 +64,7 @@ export function VaultClipCard({ segment, leaderSlug, featured = false }: VaultCl
           pullQuote={pullQuote}
           leaderSlug={leaderSlug}
           segmentId={segment.id}
+          downloadUrl={downloadUrl}
         />
       </div>
     </div>
