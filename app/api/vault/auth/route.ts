@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 import { supabase } from '@/lib/supabase';
 import { signCookie, COOKIE_NAME } from '@/lib/vault-auth';
 
@@ -23,8 +22,10 @@ export async function GET(request: NextRequest) {
   }
 
   const cookieValue = await signCookie(slug);
-  const cookieStore = await cookies();
-  cookieStore.set(COOKIE_NAME, cookieValue, {
+
+  // In Route Handlers, cookies must be set on the response object directly
+  const response = NextResponse.redirect(new URL(`/vault/${slug}`, request.url));
+  response.cookies.set(COOKIE_NAME, cookieValue, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
@@ -32,5 +33,5 @@ export async function GET(request: NextRequest) {
     path: '/',
   });
 
-  return NextResponse.redirect(new URL(`/vault/${slug}`, request.url));
+  return response;
 }
