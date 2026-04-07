@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { motion } from 'framer-motion';
 import Hls from 'hls.js';
 
 interface BrollHeroProps {
@@ -11,7 +12,7 @@ function attachHls(video: HTMLVideoElement, playbackId: string) {
   const src = `https://stream.mux.com/${playbackId}.m3u8`;
 
   if (video.canPlayType('application/vnd.apple.mpegurl')) {
-    // Safari — native HLS
+    // Safari -- native HLS
     video.src = src;
     video.play().catch(() => {});
   } else if (Hls.isSupported()) {
@@ -130,7 +131,7 @@ export function BrollHero({ playbackIds }: BrollHeroProps) {
       <HeroContent />
 
       {/* Scroll prompt */}
-      <div className="absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 z-10 text-cv-light-text/40 text-xs sm:text-sm animate-bounce font-body">
+      <div className="absolute bottom-6 sm:bottom-10 inset-x-0 mx-auto w-max z-10 text-cv-light-text/40 text-xs sm:text-sm animate-bounce font-body">
         <div className="flex flex-col items-center gap-2">
           <span>Scroll to explore</span>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -145,22 +146,49 @@ export function BrollHero({ playbackIds }: BrollHeroProps) {
 function HeroContent() {
   return (
     <div className="relative z-10 flex flex-col items-center justify-center h-full px-4 sm:px-6 text-center">
-      {/* Gold accent line */}
-      <div className="w-12 sm:w-16 h-0.5 bg-cv-gold mb-6 sm:mb-8" />
+      <motion.div
+        className="w-12 sm:w-16 h-0.5 bg-cv-gold mb-6 sm:mb-8"
+        initial={{ scaleX: 0, opacity: 0 }}
+        animate={{ scaleX: 1, opacity: 1 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
+      />
 
       <h1 className="font-display font-bold text-cv-light-text leading-[0.95]">
-        <span className="block text-fluid-giant tracking-tight">CINCY</span>
-        <span className="block text-fluid-giant tracking-tight">VOICES</span>
+        <motion.span
+          className="block text-fluid-giant tracking-tight"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.7, ease: 'easeOut' }}
+        >
+          CINCY
+        </motion.span>
+        <motion.span
+          className="block text-fluid-giant tracking-tight"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35, duration: 0.7, ease: 'easeOut' }}
+        >
+          VOICES
+        </motion.span>
       </h1>
 
-      <p className="font-body text-cv-light-text/60 text-base sm:text-lg md:text-xl mt-4 sm:mt-6 max-w-xl leading-relaxed">
+      <motion.p
+        className="font-body text-cv-light-text/60 text-base sm:text-lg md:text-xl mt-4 sm:mt-6 max-w-xl leading-relaxed"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.65, duration: 0.7, ease: 'easeOut' }}
+      >
         Real conversations from Cincinnati&apos;s fractional leaders.
         <br className="hidden md:block" />
         No scripts. No polish. Just truth.
-      </p>
+      </motion.p>
 
-      {/* Gold accent line */}
-      <div className="w-12 sm:w-16 h-0.5 bg-cv-gold mt-6 sm:mt-8" />
+      <motion.div
+        className="w-12 sm:w-16 h-0.5 bg-cv-gold mt-6 sm:mt-8"
+        initial={{ scaleX: 0, opacity: 0 }}
+        animate={{ scaleX: 1, opacity: 1 }}
+        transition={{ delay: 0.9, duration: 0.6, ease: 'easeOut' }}
+      />
     </div>
   );
 }

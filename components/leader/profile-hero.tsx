@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 import { headshotPosition } from '@/lib/headshot-position';
 import type { Leader } from '@/lib/types';
 
@@ -18,8 +19,13 @@ export function ProfileHero({ leader, clipCount, quoteCount, topicCount, totalMi
       <div className="max-w-bleed mx-auto">
         {/* Cinematic split: Photo left, info right */}
         <div className="flex flex-col lg:flex-row min-h-[70vh]">
-          {/* Left — Full-bleed photo */}
-          <div className="relative lg:w-[45%] aspect-[4/3] sm:aspect-[3/4] lg:aspect-auto lg:min-h-[70vh]">
+          {/* Left -- Full-bleed photo */}
+          <motion.div
+            className="relative lg:w-[45%] aspect-[4/3] sm:aspect-[3/4] lg:aspect-auto lg:min-h-[70vh]"
+            initial={{ opacity: 0, scale: 1.04 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.9, ease: 'easeOut' }}
+          >
             <Image
               src={`/headshots/${leader.slug}.jpg`}
               alt={leader.name}
@@ -33,34 +39,59 @@ export function ProfileHero({ leader, clipCount, quoteCount, topicCount, totalMi
             <div className="absolute inset-0 bg-gradient-to-t from-cv-navy via-transparent to-transparent lg:hidden" />
             {/* Right edge gradient on desktop */}
             <div className="hidden lg:block absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-cv-navy" />
-          </div>
+          </motion.div>
 
-          {/* Right — Info panel */}
+          {/* Right -- Info panel */}
           <div className="relative lg:w-[55%] flex flex-col justify-center px-4 sm:px-8 lg:px-16 py-8 sm:py-12 lg:py-20">
             {/* Dossier-style section label */}
-            <span className="font-mono-label text-cv-gold/60 text-xs mb-4 tracking-widest">
+            <motion.span
+              className="font-mono-label text-cv-gold/60 text-xs mb-4 tracking-widest"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.6, ease: 'easeOut' }}
+            >
               LEADER PROFILE
-            </span>
+            </motion.span>
 
-            <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-cv-light-text leading-tight">
+            <motion.h1
+              className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-cv-light-text leading-tight"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.45, duration: 0.7, ease: 'easeOut' }}
+            >
               {leader.name}
-            </h1>
+            </motion.h1>
 
             {(leader.role || leader.company) && (
-              <p className="text-cv-light-text/50 text-base sm:text-lg font-body mt-2 sm:mt-3">
+              <motion.p
+                className="text-cv-light-text/50 text-base sm:text-lg font-body mt-2 sm:mt-3"
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, duration: 0.6, ease: 'easeOut' }}
+              >
                 {leader.role}{leader.role && leader.company ? ' · ' : ''}{leader.company}
-              </p>
+              </motion.p>
             )}
 
             {/* Hero quote */}
             {leader.hero_quote && (
-              <blockquote className="mt-6 sm:mt-8 font-display text-lg sm:text-xl md:text-2xl font-bold text-cv-gold/80 leading-relaxed border-l-2 border-cv-gold/30 pl-4 sm:pl-6">
+              <motion.blockquote
+                className="mt-6 sm:mt-8 font-display text-lg sm:text-xl md:text-2xl font-bold text-cv-gold/80 leading-relaxed border-l-2 border-cv-gold/30 pl-4 sm:pl-6"
+                initial={{ opacity: 0, x: -12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.75, duration: 0.7, ease: 'easeOut' }}
+              >
                 &ldquo;{leader.hero_quote}&rdquo;
-              </blockquote>
+              </motion.blockquote>
             )}
 
             {/* Dossier stats grid */}
-            <div className="mt-8 stat-grid rounded-lg overflow-hidden bg-white/5 max-w-sm">
+            <motion.div
+              className="mt-8 stat-grid rounded-lg overflow-hidden bg-white/5 max-w-sm"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.9, duration: 0.6, ease: 'easeOut' }}
+            >
               <div>
                 <p className="text-2xl font-bold text-cv-light-text">{clipCount}</p>
                 <p className="text-xs text-cv-light-text/40 font-mono-label mt-1">Clips</p>
@@ -77,17 +108,22 @@ export function ProfileHero({ leader, clipCount, quoteCount, topicCount, totalMi
                 <p className="text-2xl font-bold text-cv-light-text">{totalMinutes}</p>
                 <p className="text-xs text-cv-light-text/40 font-mono-label mt-1">Minutes</p>
               </div>
-            </div>
+            </motion.div>
 
             {/* Expertise tags */}
             {(leader.expertise_tags ?? []).length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-6">
+              <motion.div
+                className="flex flex-wrap gap-2 mt-6"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.05, duration: 0.6 }}
+              >
                 {(leader.expertise_tags ?? []).map(tag => (
                   <span key={tag} className="px-3 py-1 rounded-full text-xs font-medium bg-cv-light-text/8 text-cv-light-text/60 border border-cv-light-text/10">
                     {tag}
                   </span>
                 ))}
-              </div>
+              </motion.div>
             )}
 
             {/* LinkedIn */}

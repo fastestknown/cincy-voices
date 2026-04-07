@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { SITE } from '@/lib/constants';
@@ -8,15 +8,23 @@ import { SITE } from '@/lib/constants';
 export function SiteHeader() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   const navLinks = [
     { href: '/leaders', label: 'Leaders', active: pathname.startsWith('/leaders') },
-    { href: '/#topics', label: 'Topics', active: false },
+    { href: '/topics', label: 'Topics', active: pathname.startsWith('/topics') },
     { href: '/about', label: 'About', active: pathname === '/about' },
+    { href: '/connect', label: 'Connect', active: pathname === '/connect' },
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-cv-cream/80 backdrop-blur-sm border-b border-cv-border/50">
+    <header className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b transition-all duration-300 ${scrolled ? 'bg-cv-cream/95 border-cv-border/70 shadow-sm' : 'bg-cv-cream/80 border-cv-border/50'}`}>
       <div className="max-w-bleed mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
         <Link href="/" className="font-display text-lg sm:text-xl font-semibold text-cv-charcoal">
           {SITE.name}
@@ -33,12 +41,6 @@ export function SiteHeader() {
               {link.label}
             </Link>
           ))}
-          <Link
-            href="/concepts"
-            className="px-4 py-1.5 rounded-full bg-cv-navy text-cv-light-text text-xs font-medium hover:bg-cv-charcoal transition-colors"
-          >
-            Concept Gallery
-          </Link>
         </nav>
 
         {/* Mobile hamburger */}
@@ -75,13 +77,6 @@ export function SiteHeader() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="/concepts"
-              onClick={() => setMenuOpen(false)}
-              className="mt-2 px-4 py-2.5 rounded-full bg-cv-navy text-cv-light-text text-xs font-medium text-center hover:bg-cv-charcoal transition-colors"
-            >
-              Concept Gallery
-            </Link>
           </div>
         </nav>
       )}

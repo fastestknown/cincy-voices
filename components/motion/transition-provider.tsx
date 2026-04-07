@@ -10,7 +10,7 @@ export function TransitionProvider({ children }: { children: React.ReactNode }) 
 
   return (
     <LayoutGroup>
-      <AnimatePresence mode="wait" initial={false}>
+      <AnimatePresence mode="sync" initial={false}>
         <motion.div
           key={pathname}
           initial={{ opacity: 0 }}
@@ -28,18 +28,18 @@ export function TransitionProvider({ children }: { children: React.ReactNode }) 
   );
 }
 
-// Motion contract — layoutId ownership per route pair:
+// Motion contract -- layoutId ownership per route pair:
 //
 // Homepage → Leader Profile:
-//   layoutId="avatar-{slug}" — avatar morphs to profile hero avatar
+//   layoutId="avatar-{slug}" -- avatar morphs to profile hero avatar
 //   Non-shared content crossfades (out 0.3s, in 0.4s with 0.2s delay)
 //
 // Homepage/Profile → Topic Thread:
-//   layoutId="topic-{slug}" — topic tag expands to thread header
+//   layoutId="topic-{slug}" -- topic tag expands to thread header
 //   Thread color floods top of screen
 //
 // Leader Profile → Leader Profile:
-//   layoutId="avatar-{slug}" — avatar morphs between profiles
+//   layoutId="avatar-{slug}" -- avatar morphs between profiles
 //
 // Reduced motion:
 //   All layoutId animations → instant crossfade (no morph)

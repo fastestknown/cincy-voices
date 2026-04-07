@@ -293,12 +293,35 @@ export default async function AboutPage() {
         <ScrollReveal>
           <div className="max-w-[700px] mx-auto text-center space-y-10">
             <div>
-              <p className="font-mono-label text-cv-gold text-xs tracking-[0.3em] mb-4">
+              <p className="font-mono-label text-cv-gold text-xs tracking-[0.3em] mb-8">
                 FILMED &amp; PRODUCED BY
               </p>
+              <div className="flex justify-center mb-8">
+                <a
+                  href="https://cincinnatipodcaststudio.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="opacity-70 hover:opacity-100 transition-opacity duration-300"
+                >
+                  <Image
+                    src="/cps-badge-white.png"
+                    alt="Cincinnati Podcast Studio"
+                    width={140}
+                    height={140}
+                    className="w-[120px] h-[120px] sm:w-[140px] sm:h-[140px]"
+                  />
+                </a>
+              </div>
               <p className="text-cv-light-text/60 text-[16px] font-body leading-[2]">
                 <strong className="text-cv-light-text font-medium">Brian and Josh</strong> at{' '}
-                <strong className="text-cv-light-text font-medium">Cincinnati Podcast Studio</strong>{' '}
+                <a
+                  href="https://cincinnatipodcaststudio.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-cv-light-text font-medium border-b border-cv-gold/30 hover:border-cv-gold transition-colors"
+                >
+                  Cincinnati Podcast Studio
+                </a>{' '}
                 filmed, edited, and made this day possible. They created a space where leaders could
                 show up as themselves and a final product that does them justice.
               </p>

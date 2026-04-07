@@ -79,7 +79,7 @@ export function ThreadHero({ topic, leaders }: ThreadHeroProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.9, duration: 0.7 }}
-          className="flex items-center justify-center gap-3 mt-10"
+          className="flex items-center justify-center gap-3 mt-10 mb-6"
         >
           {displayLeaders.map(leader => (
             <Link key={leader.id} href={`/leaders/${leader.slug}`} title={leader.name}>
@@ -112,6 +112,17 @@ export function ThreadHero({ topic, leaders }: ThreadHeroProps) {
           )}
         </motion.div>
       </div>
+
+      {/* Scroll prompt */}
+      <motion.div
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-cv-light-text/30"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.4, duration: 0.8 }}
+      >
+        <span className="text-[10px] font-mono-label tracking-[3px]">SCROLL</span>
+        <div className="w-px h-10 bg-gradient-to-b from-cv-light-text/30 to-transparent animate-pulse" />
+      </motion.div>
     </motion.section>
   );
 }
