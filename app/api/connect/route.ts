@@ -52,6 +52,51 @@ export async function POST(request: NextRequest) {
     // Beehiiv failure is non-fatal
   }
 
+  // Upsert HubSpot contact
+  try {
+    const hsToken = process.env.HUBSPOT_PRIVATE_APP_TOKEN;
+    if (hsToken) {
+      const hsApi = 'https://api.hubapi.com/crm/v3/objects/contacts';
+      const searchRes = await fetch(`${hsApi}/search`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${hsToken}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          filterGroups: [{ filters: [{ propertyName: 'email', operator: 'EQ', value: email }] }],
+          limit: 1,
+        }),
+      });
+      const searchData = await searchRes.json();
+      const existingId = searchData.results?.[0]?.id ?? null;
+      const today = new Date().toISOString().split('T')[0];
+
+      if (existingId) {
+        await fetch(`${hsApi}/${existingId}`, {
+          method: 'PATCH',
+          headers: { 'Authorization': `Bearer ${hsToken}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ properties: { wwm_lead_source: 'cincy-voices', wwm_last_meaningful_touch: today } }),
+        });
+      } else {
+        await fetch(hsApi, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${hsToken}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            properties: {
+              email,
+              firstname: firstName,
+              lastname: lastName,
+              lifecyclestage: 'lead',
+              hs_lead_status: 'OPEN',
+              wwm_lead_source: 'cincy-voices',
+              wwm_last_meaningful_touch: today,
+            },
+          }),
+        });
+      }
+    }
+  } catch {
+    // HubSpot failure is non-fatal
+  }
+
   // Notify Ford via email
   try {
     await fetch('https://api.resend.com/emails', {

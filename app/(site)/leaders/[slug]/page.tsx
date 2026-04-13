@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   return {
     title: leader.name,
-    description: leader.hero_quote ?? `${leader.name} — ${leader.role ?? 'fractional leader'} in Cincinnati`,
+    description: leader.hero_quote ?? `${leader.name}, ${leader.role ?? 'fractional leader'} in Cincinnati`,
     openGraph: {
       title: `${leader.name} | ${SITE.name}`,
       description: leader.hero_quote ?? SITE.tagline,
@@ -55,7 +55,7 @@ export default async function LeaderProfilePage({ params }: { params: Promise<{ 
 
   return (
     <>
-      {/* Cinematic hero — full-bleed photo left, dossier info right */}
+      {/* Cinematic hero - full-bleed photo left, dossier info right */}
       <ProfileHero
         leader={leader}
         clipCount={stats.clipCount}
@@ -105,7 +105,7 @@ export default async function LeaderProfilePage({ params }: { params: Promise<{ 
                 Watch &amp; Listen
               </h2>
             </ScrollReveal>
-            <ClipSequence segments={segments} leaderName={leader.name} />
+            <ClipSequence segments={segments} leaderName={leader.name} heroSegmentId={leader.hero_segment_id} />
           </div>
         </section>
       )}

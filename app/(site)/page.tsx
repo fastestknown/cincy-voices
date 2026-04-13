@@ -4,6 +4,7 @@ import { QuoteTicker } from '@/components/homepage/quote-ticker';
 import { LeaderGrid } from '@/components/homepage/leader-grid';
 import { TopicRow } from '@/components/homepage/topic-row';
 import { FooterQuote } from '@/components/homepage/footer-quote';
+import { OriginStrip } from '@/components/homepage/origin-strip';
 
 export const revalidate = 3600;
 
@@ -20,13 +21,16 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* B-roll hero — rotating background videos with centered title */}
+      {/* B-roll hero - rotating background videos with centered title */}
       <BrollHero playbackIds={brollIds} />
+
+      {/* Origin strip - one day, seventeen voices */}
+      <OriginStrip />
 
       {/* Quote ticker marquee */}
       <QuoteTicker quotes={quotes} />
 
-      {/* Leader grid — cream background */}
+      {/* Leader grid - cream background */}
       <div className="bg-cv-cream">
         <LeaderGrid leaders={leaders} />
       </div>
