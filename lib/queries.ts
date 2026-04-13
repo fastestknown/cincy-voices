@@ -88,6 +88,7 @@ export async function getLeaderSegments(leaderId: string): Promise<Segment[]> {
     .from('cincy_voices_segments')
     .select('*')
     .eq('leader_id', leaderId)
+    .eq('clip_candidate', true)
     .not('mux_playback_id', 'is', null)
     .neq('source_id', LIVE_STREAM_SOURCE_ID)
     .gte('clip_quality_score', 5)
@@ -222,7 +223,7 @@ export async function getThreadItems(topicId: string): Promise<ThreadItemWithCon
   const leaderIds = Array.from(new Set(items.map(i => i.leader_id)));
 
   const [segments, quotes, leaders] = await Promise.all([
-    segmentIds.length ? supabase.from('cincy_voices_segments').select('*').in('id', segmentIds).then(r => r.data ?? []) : [],
+    segmentIds.length ? supabase.from('cincy_voices_segments').select('*').in('id', segmentIds).gte('clip_quality_score', 5).then(r => r.data ?? []) : [],
     quoteIds.length ? supabase.from('cincy_voices_quotes').select('*').in('id', quoteIds).then(r => r.data ?? []) : [],
     supabase.from('cincy_voices_leaders').select('*').in('id', leaderIds).then(r => r.data ?? []),
   ]);
@@ -231,12 +232,20 @@ export async function getThreadItems(topicId: string): Promise<ThreadItemWithCon
   const quoteMap = new Map((quotes as { id: string; quote_text: string }[]).map(q => [q.id, q]));
   const leaderMap = new Map((leaders as Leader[]).map(l => [l.id, l]));
 
-  return items.map(item => ({
-    ...item,
-    segment: item.segment_id ? segMap.get(item.segment_id) ?? null : null,
-    quote: item.quote_id ? quoteMap.get(item.quote_id) ?? null : null,
-    leader: leaderMap.get(item.leader_id)!,
-  }));
+  return items
+    .filter(item => {
+      // Drop video_clip items whose segment was filtered out (hidden/low quality)
+      if (item.content_type === 'video_clip' && item.segment_id) {
+        return segMap.has(item.segment_id);
+      }
+      return true;
+    })
+    .map(item => ({
+      ...item,
+      segment: item.segment_id ? segMap.get(item.segment_id) ?? null : null,
+      quote: item.quote_id ? quoteMap.get(item.quote_id) ?? null : null,
+      leader: leaderMap.get(item.leader_id)!,
+    }));
 }
 
 export async function getTopicLeaders(topicId: string): Promise<Leader[]> {
