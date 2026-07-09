@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import {
   getLeaderBySlug,
   getLeaderSegments,
@@ -9,6 +10,7 @@ import {
   getLeaderStats,
   getAllLeaderSlugs,
 } from '@/lib/queries';
+import { getEditorialArticleForLeader } from '@/lib/editorial';
 import { SITE } from '@/lib/constants';
 import { ProfileHero } from '@/components/leader/profile-hero';
 import { ClipSequence } from '@/components/leader/clip-sequence';
@@ -52,6 +54,7 @@ export default async function LeaderProfilePage({ params }: { params: Promise<{ 
     getLeaderTopicCounts(leader.id),
     getLeaderStats(leader.id),
   ]);
+  const editorialArticle = getEditorialArticleForLeader(leader.slug);
 
   return (
     <>
@@ -75,6 +78,36 @@ export default async function LeaderProfilePage({ params }: { params: Promise<{ 
                   {leader.bio_summary}
                 </p>
               </div>
+            </ScrollReveal>
+          </div>
+        </section>
+      )}
+
+      {editorialArticle && (
+        <section className="bg-cv-cream px-4 sm:px-6 pb-10 sm:pb-16">
+          <div className="max-w-content mx-auto">
+            <ScrollReveal>
+              <Link
+                href={`/editorial/${editorialArticle.slug}`}
+                className="group block max-w-4xl border-y border-cv-border py-7 sm:py-9 transition-colors hover:border-cv-gold/60"
+              >
+                <span className="font-mono-label text-cv-muted text-xs tracking-widest">
+                  EDITORIAL PROFILE
+                </span>
+                <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                  <div>
+                    <h2 className="font-display text-2xl sm:text-3xl font-bold text-cv-charcoal">
+                      {editorialArticle.title}
+                    </h2>
+                    <p className="text-cv-muted font-body text-base leading-relaxed mt-3 max-w-2xl">
+                      {editorialArticle.dek}
+                    </p>
+                  </div>
+                  <span className="shrink-0 text-sm font-medium text-cv-charcoal">
+                    Read the story <span className="inline-block transition-transform group-hover:translate-x-1">-&gt;</span>
+                  </span>
+                </div>
+              </Link>
             </ScrollReveal>
           </div>
         </section>
