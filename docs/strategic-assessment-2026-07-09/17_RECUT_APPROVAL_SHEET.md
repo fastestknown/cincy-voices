@@ -30,7 +30,7 @@ The original `will-phillips_root-causes_813000-842500_STAGED.mp4` was left in pl
 
 **Recommendation: APPROVE the window, but re-run Gemini QA on the staged file before it moves anywhere near public_site or sales_deck.** The content itself reads strong (self-deprecating opener, complete thought) but I don't want to represent it as QA-passed until it's actually been scored on the right footage.
 
-**Decision:** ☑ Approve the 561000–582000ms window (Ford, 2026-07-09). **Held for fresh Gemini QA** — not run in this pass (would mean sending the clip to Google's API, which is outside the local-only scope of this closure). Status: window locked, staged file already matches, but flagged do-not-use (public_site, sales_deck, vault, Mux, Supabase) until re-scored.
+**Decision:** ☑ **FINAL — 561000–578500ms, local-approved** (Ford, 2026-07-09, after watching the local candidate). Superseded the original 561000–582000ms window per the Gemini re-score recommendation (see below and `20_WP_OUTSIDER_GEMINI_RESCORE_2026-07-09.md`). Status: **final, local-approved only.** Not marked public-ready, sales-ready, vault-ready, Mux-ready, or Supabase-ready — none of those were part of this approval and each needs its own explicit go.
 
 ---
 
@@ -86,6 +86,14 @@ Result file: `/Users/fordknowlton/jun-os/data/cincy-voices/gemini-checks/will-ph
 Scores: AQ8 VQ8 MS9 SC8 BR9 LU9. Starts cleanly: true. Ends cleanly: false. Recommended action: recut. Note: end at 0:17.5, before the "um" and new thought.
 
 Operational implication: the approved 561000-582000ms window is not QA-passed for use. The next candidate should keep the 561000ms start and test a 578500ms end, pending a local cut/watch. No Mux upload, Supabase write, vault use, sales use, or public use should happen until that shorter candidate is cut and approved.
+
+### Outsider Questions recut candidate — 2026-07-09
+
+New local file cut: `will-phillips_outsider-questions_561000-578500_STAGED.mp4`, at `/Users/fordknowlton/jun-os/data/cincy-voices/recuts/staged/`. Duration 17.53s, re-encoded (not stream-copied) for an accurate trim. Tail check via ffmpeg silencedetect: silence begins at 16.94s and runs to the end of the file, so the clip ends in a natural pause, consistent with Gemini's "end before the 'um'" note — not a mid-word or mid-sentence cut.
+
+The original `will-phillips_outsider-questions_561000-582000_STAGED.mp4` is untouched (verified via MD5 match to its pre-cut state) and remains superseded — do not use.
+
+**Resolution (2026-07-09):** Ford watched the local candidate and approved it. `will-phillips_outsider-questions_561000-578500_STAGED.mp4` is now **final, local-approved.** This is a local-approval status only — it governs that the trim/edit decision is closed, not that the clip is cleared for any production surface. Public-site, sales-deck, vault, Mux, and Supabase readiness are separate gates that have not been opened and require their own explicit approval each. No upload, deploy, Supabase write, Mux action, publish, or outbound send has happened.
 
 ### Desktop outtake file — verification result
 

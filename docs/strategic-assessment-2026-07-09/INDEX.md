@@ -21,6 +21,7 @@ Prepared 2026-07-09. Acting as Fable 5 (CEO/operator mode) inside Claude Code, p
 15. `14_PROFILE_ENRICHMENT_MODEL.md` — the WWM Platform bridge.
 16. `15_MAGAZINE_AND_EDITORIAL_PILOT.md` — should the magazine use this content.
 17. `16_DAY1_LIVE_BUG_VERIFICATION.md` — live verification of the two P0 data bugs and the local direct-clip guard.
+18. `22_REVIEW_FLOW_SUCCESSOR_SPEC_2026-07-09.md`: local packet workflow to replace one-off `review.html` batches without touching production.
 
 ## What was inspected
 

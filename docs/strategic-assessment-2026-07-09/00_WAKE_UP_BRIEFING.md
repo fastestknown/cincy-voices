@@ -1,5 +1,7 @@
 # Wake-Up Briefing — Cincy Voices, 2026-07-09
 
+> **Status update, later 2026-07-09 (preserved as historical briefing below, not rewritten):** all 3 items in "Do this in the next 7 days" are now closed. The two live data bugs (items 1-2) were fixed in production Supabase and deployed (commit `b8dca12`), Ford-approved — see `16_DAY1_LIVE_BUG_VERIFICATION.md`. The five recut approvals (item 3) are closed locally — see `17_RECUT_APPROVAL_SHEET.md` and `18_JUNE1_BATCH_CLOSURE_2026-07-09.md`. Local-approval status only; nothing from the recut batch is marked public/sales/vault/Mux/Supabase-ready. Items 4-5 remain open.
+
 ## The big decision
 
 Cincy Voices is not a website problem. It's a media library with four real consumers (leader vault, WWM sales collateral, WWM Platform profile enrichment, and a possible future magazine slice) sitting behind an unfinished editorial QA loop. The decision in front of you isn't "what do we build next," it's **"do we finish closing the loop on what's already shot, or keep opening new fronts."** Close the loop first.

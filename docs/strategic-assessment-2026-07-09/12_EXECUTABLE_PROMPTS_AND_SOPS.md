@@ -9,6 +9,43 @@ Paste-ready. All outputs from these prompts are drafts requiring Review or Expli
 3. Mark keep / cut / escalate. Escalations go to Ford in the weekly batch, not individually.
 4. Confirm consent status before marking anything "ready to publish," not just "ready to stage."
 
+## Review-flow successor build prompt
+
+```
+You are working in `/Users/fordknowlton/cincy-voices`.
+
+Use the Fable 5 authority model explicitly. This is a local review-flow successor build, not a publishing task.
+
+Decision rights:
+- CEO: protect Cincy Voices as a trust-building media library.
+- Operator: make status and closure unambiguous.
+- Product Architect: build local packet artifacts and preserve production boundaries.
+- Documentary Editor: make clip review humane and quality-centered.
+- Risk and Consent Lead: keep consent and external-use gates hard-blocked unless explicitly cleared.
+
+Task:
+Build the first local review packet successor described in `docs/strategic-assessment-2026-07-09/22_REVIEW_FLOW_SUCCESSOR_SPEC_2026-07-09.md`.
+
+Rules:
+- Do not touch Mux.
+- Do not write to Supabase.
+- Do not deploy.
+- Do not publish.
+- Do not send anything.
+- Do not generate or send vault magic links.
+- Do not mark anything public-ready, sales-ready, vault-ready, Mux-ready, Supabase-ready, deploy-ready, or publish-ready.
+- Use `Approve locally`, not `Approve`, in the UI.
+- Export decisions to local JSON only.
+
+Output:
+1. Create a packet folder under `docs/review-packets/YYYY-MM-DD/`.
+2. Create packet JSON.
+3. Create a static HTML review page.
+4. If Ford decisions are already known, create a closure note. Otherwise leave a clear pending-decision note.
+5. Run a local build or static-file sanity check if applicable.
+6. State exactly whether any production, Mux, Supabase, deploy, publish, or outbound action happened.
+```
+
 ## Gemini video scoring prompt (reuse existing, documented here for completeness)
 
 ```
