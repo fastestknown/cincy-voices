@@ -1,0 +1,168 @@
+{
+  "packet_id": "cv-review-2026-07-09-june1-historical-test",
+  "packet_type": "historical-test",
+  "created_at": "2026-07-09",
+  "purpose": "Smoke-test the local review packet successor using the already closed June 1 recut batch. This packet must not re-open the closed decisions.",
+  "authority_model": {
+    "ceo": "Protect Cincy Voices as a trust-building media library, not a content factory.",
+    "operator": "Keep local status, closure, and next gates unambiguous.",
+    "product_architect": "Preserve local-only packet boundaries and avoid production writes.",
+    "documentary_editor": "Represent the editorial quality decision clearly.",
+    "risk_and_consent_lead": "Keep external use blocked until explicit channel and consent approval exists."
+  },
+  "production_boundary": {
+    "mux_action": false,
+    "supabase_write": false,
+    "deploy": false,
+    "publish": false,
+    "outbound_send": false,
+    "vault_magic_link": false,
+    "cleared_beyond_local_review": false
+  },
+  "items": [
+    {
+      "item_id": "wp-root-causes-815120-842500",
+      "leader_slug": "will-phillips",
+      "leader_name": "Will Phillips",
+      "title": "Root Causes",
+      "source_file": "/Users/fordknowlton/jun-os/data/cincy-voices/recuts/staged/will-phillips_root-causes_815120-842500_STAGED.mp4",
+      "supersedes": [
+        "/Users/fordknowlton/jun-os/data/cincy-voices/recuts/staged/will-phillips_root-causes_813000-842500_STAGED.mp4"
+      ],
+      "duration_seconds": 27.38,
+      "source_window_ms": {
+        "start": 815120,
+        "end": 842500
+      },
+      "current_status": "final-local-approved",
+      "documentary_editor_recommendation": "Keep as final local-approved.",
+      "risk_consent_status": "unconfirmed for downstream external use",
+      "downstream_gates": {
+        "public_site": "blocked",
+        "sales": "blocked",
+        "vault": "blocked",
+        "mux": "blocked",
+        "supabase": "blocked",
+        "publish": "blocked"
+      },
+      "watch_prompt": "Historical test only. Do not re-open unless Ford explicitly asks.",
+      "ford_decision": "approved locally",
+      "ford_notes": "Ford chose to drop the opening word rather than preserve dead air or use a jump-cut splice.",
+      "production_action_requested": false
+    },
+    {
+      "item_id": "wp-outsider-questions-561000-578500",
+      "leader_slug": "will-phillips",
+      "leader_name": "Will Phillips",
+      "title": "Outsider Questions",
+      "source_file": "/Users/fordknowlton/jun-os/data/cincy-voices/recuts/staged/will-phillips_outsider-questions_561000-578500_STAGED.mp4",
+      "supersedes": [
+        "/Users/fordknowlton/jun-os/data/cincy-voices/recuts/staged/will-phillips_outsider-questions_561000-582000_STAGED.mp4"
+      ],
+      "duration_seconds": 17.53,
+      "source_window_ms": {
+        "start": 561000,
+        "end": 578500
+      },
+      "current_status": "final-local-approved",
+      "documentary_editor_recommendation": "Keep as final local-approved.",
+      "risk_consent_status": "unconfirmed for downstream external use",
+      "downstream_gates": {
+        "public_site": "blocked",
+        "sales": "blocked",
+        "vault": "blocked",
+        "mux": "blocked",
+        "supabase": "blocked",
+        "publish": "blocked"
+      },
+      "watch_prompt": "Historical test only. Do not re-open unless Ford explicitly asks.",
+      "ford_decision": "approved locally",
+      "ford_notes": "Ford watched and approved the shorter recut. Original 561000-582000ms file remains superseded and do-not-use.",
+      "production_action_requested": false
+    },
+    {
+      "item_id": "as-charity-model-652730-669500",
+      "leader_slug": "amy-sheehy",
+      "leader_name": "Amy Sheehy",
+      "title": "Charity Model",
+      "source_file": "/Users/fordknowlton/jun-os/data/cincy-voices/recuts/staged/amy-sheehy_charity-model_652730-669500_STAGED.mp4",
+      "supersedes": [],
+      "duration_seconds": 16.77,
+      "source_window_ms": {
+        "start": 652730,
+        "end": 669500
+      },
+      "current_status": "final-local-approved",
+      "documentary_editor_recommendation": "Keep as final local-approved.",
+      "risk_consent_status": "unconfirmed for downstream external use",
+      "downstream_gates": {
+        "public_site": "blocked",
+        "sales": "blocked",
+        "vault": "blocked",
+        "mux": "blocked",
+        "supabase": "blocked",
+        "publish": "blocked"
+      },
+      "watch_prompt": "Historical test only. Do not re-open unless Ford explicitly asks.",
+      "ford_decision": "approved locally",
+      "ford_notes": "Short version selected. No new cut required.",
+      "production_action_requested": false
+    },
+    {
+      "item_id": "cb-adversity-154868-177500",
+      "leader_slug": "christine-bell",
+      "leader_name": "Christine Bell",
+      "title": "Adversity",
+      "source_file": "/Users/fordknowlton/jun-os/data/cincy-voices/recuts/staged/christine-bell_adversity_154868-177500_STAGED.mp4",
+      "supersedes": [],
+      "duration_seconds": 22.63,
+      "source_window_ms": {
+        "start": 154868,
+        "end": 177500
+      },
+      "current_status": "final-local-approved",
+      "documentary_editor_recommendation": "Keep as final local-approved with sensitivity noted.",
+      "risk_consent_status": "unconfirmed for downstream external use",
+      "downstream_gates": {
+        "public_site": "blocked",
+        "sales": "blocked",
+        "vault": "blocked",
+        "mux": "blocked",
+        "supabase": "blocked",
+        "publish": "blocked"
+      },
+      "watch_prompt": "Historical test only. Do not re-open unless Ford explicitly asks.",
+      "ford_decision": "approved locally",
+      "ford_notes": "Stumble kept intentionally. Personal-disclosure sensitivity remains a separate downstream gate.",
+      "production_action_requested": false
+    },
+    {
+      "item_id": "cb-fractional-growing-589082-602580",
+      "leader_slug": "christine-bell",
+      "leader_name": "Christine Bell",
+      "title": "Fractional Growing",
+      "source_file": "/Users/fordknowlton/jun-os/data/cincy-voices/recuts/staged/christine-bell_fractional-growing_589082-602580_STAGED.mp4",
+      "supersedes": [],
+      "duration_seconds": 13.5,
+      "source_window_ms": {
+        "start": 589082,
+        "end": 602580
+      },
+      "current_status": "dropped",
+      "documentary_editor_recommendation": "Drop. Do not use.",
+      "risk_consent_status": "not applicable while dropped",
+      "downstream_gates": {
+        "public_site": "blocked",
+        "sales": "blocked",
+        "vault": "blocked",
+        "mux": "blocked",
+        "supabase": "blocked",
+        "publish": "blocked"
+      },
+      "watch_prompt": "Historical test only. Do not re-open unless Ford explicitly asks.",
+      "ford_decision": "dropped",
+      "ford_notes": "File preserved because older review.html referenced it. It remains do-not-use.",
+      "production_action_requested": false
+    }
+  ]
+}
