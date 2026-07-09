@@ -25,6 +25,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   return {
     title: article.title,
     description: article.dek,
+    ...(article.hidden ? { robots: { index: false, follow: false } } : {}),
     openGraph: {
       title: `${article.title} | ${SITE.name}`,
       description: article.dek,

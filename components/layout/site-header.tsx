@@ -18,7 +18,6 @@ export function SiteHeader() {
 
   const navLinks = [
     { href: '/leaders', label: 'Leaders', active: pathname.startsWith('/leaders') },
-    { href: '/editorial', label: 'Editorial', active: pathname.startsWith('/editorial') },
     { href: '/topics', label: 'Topics', active: pathname.startsWith('/topics') },
     { href: '/about', label: 'About', active: pathname === '/about' },
     { href: '/connect', label: 'Connect', active: pathname === '/connect' },

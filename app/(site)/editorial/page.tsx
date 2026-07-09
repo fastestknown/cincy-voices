@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getAllEditorialArticles } from '@/lib/editorial';
+import { getVisibleEditorialArticles } from '@/lib/editorial';
 import { ScrollReveal } from '@/components/shared/scroll-reveal';
 
 export const revalidate = 3600;
@@ -9,10 +9,11 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: 'Editorial',
   description: 'Written profiles and stories from Cincinnati fractional leaders.',
+  robots: { index: false, follow: false },
 };
 
 export default function EditorialPage() {
-  const articles = getAllEditorialArticles();
+  const articles = getVisibleEditorialArticles();
 
   return (
     <div className="bg-cv-cream min-h-screen">

@@ -7,6 +7,7 @@ leaderName: "Kevin Lawson"
 leaderRole: "Fractional VP of Sales"
 category: "Fractional Leader Spotlight"
 publishedAt: "2026-07-01"
+hidden: "true"
 readTime: "5 min"
 heroImage: "/headshots/kevin-lawson.jpg"
 pullQuotes:

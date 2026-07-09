@@ -15,6 +15,8 @@ export interface EditorialArticle {
   pullQuotes: string[];
   topics: string[];
   body: string;
+  /** Reachable only via direct /editorial/[slug] link — hidden from the index page and leader-page callout until launch. */
+  hidden: boolean;
 }
 
 const editorialDirectory = path.join(process.cwd(), 'content/editorial');
@@ -73,6 +75,7 @@ function parseFrontmatter(fileContent: string): EditorialArticle {
     pullQuotes: lists.get('pullQuotes') ?? [],
     topics: lists.get('topics') ?? [],
     body: body.trim(),
+    hidden: fields.get('hidden') === 'true',
   };
 }
 
@@ -100,8 +103,13 @@ export function getAllEditorialSlugs(): string[] {
   return getAllEditorialArticles().map(article => article.slug);
 }
 
+/** Articles safe to link to from the index page or a leader profile — excludes anything still `hidden: true`. */
+export function getVisibleEditorialArticles(): EditorialArticle[] {
+  return getAllEditorialArticles().filter(article => !article.hidden);
+}
+
 export function getEditorialArticleForLeader(leaderSlug: string): EditorialArticle | null {
-  return getAllEditorialArticles().find(article => article.leaderSlug === leaderSlug) ?? null;
+  return getVisibleEditorialArticles().find(article => article.leaderSlug === leaderSlug) ?? null;
 }
 
 export function renderArticleParagraphs(body: string): string[] {
