@@ -449,9 +449,19 @@ export async function getSegmentById(segmentId: string): Promise<VaultSegment | 
     .from('cincy_voices_segments')
     .select('*')
     .eq('id', segmentId)
+    .not('mux_playback_id', 'is', null)
+    .neq('source_id', LIVE_STREAM_SOURCE_ID)
+    .gte('clip_quality_score', 5)
     .single();
 
   if (!segment) return null;
+  if (
+    segment.trim_start_ms != null &&
+    segment.trim_end_ms != null &&
+    segment.trim_start_ms > segment.trim_end_ms
+  ) {
+    return null;
+  }
 
   const { data: threadItem } = await supabase
     .from('cincy_voices_thread_items')
