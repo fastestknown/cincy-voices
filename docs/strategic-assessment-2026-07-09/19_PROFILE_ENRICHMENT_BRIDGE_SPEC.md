@@ -2,6 +2,15 @@
 
 Design/spec pass only. No production code written, no bridge run, no writes to WWM Platform, Supabase, HubSpot, or Open Brain, no content sent to any external API. Everything below is architecture and design, meant to unblock a scoped implementation approval later.
 
+## Addendum - 2026-07-09 Follow-up Scope Checks
+
+Two follow-up checks were completed after this spec was first written:
+
+1. `/process-leader` scope check in the WWM Platform repo: `leaders.approval_status` does exist, and there are existing operator approve/reject routes. The remaining risk is still real, but narrower: `/process-leader` mutates live `leaders` profile fields before review because there is no separate draft/versioned leader profile table. See `/Users/fordknowlton/wwm-platform/docs/process-leader-review-gate-scope-2026-07-09.md`.
+2. Consent-source check in Google Drive: `FLA_Cincy_Voices_Complete_Catalogue.docx` says original consent was for WWM Marketing and Atlas use requires re-consent. The actual underlying release/form text was not found in this pass, so §5 remains a proposed default mapping and cannot be treated as validated consent language. See `21_CV_CONSENT_SOURCE_AUDIT_2026-07-09.md`.
+
+These checks do not change the locked direction in §0: Cincy Voices profile enrichment should land in a draft table, avoid direct `leaders` writes, keep Ford review separate from leader consent, and use manual linking for v1.
+
 **Correction to prior assumption:** `14_PROFILE_ENRICHMENT_MODEL.md` and `05_PRODUCT_AND_SOFTWARE_ARCHITECTURE.md` both assumed the leader side already has a `pending_review` gate "matching the existing business-profile pattern exactly." Having now read the actual deployed code, **that's not true.** The business side has it; the leader side does not. This changes the risk picture — see §5 and §7.
 
 **Status (2026-07-09):** The missing leader `pending_review` gate is the main blocker before any build. Ford has made the 6 design decisions below (§0). This remains a design/spec document — nothing has been built, run, or written to any system as a result of these decisions.

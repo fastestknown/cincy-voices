@@ -73,10 +73,20 @@ The original `will-phillips_root-causes_813000-842500_STAGED.mp4` was left in pl
 
 ## Closure Status (2026-07-09)
 
-4 of 5 fully closed locally, no further local work needed on those. 1 (Root Causes) needs one more decision from you — see the options above — before it's final. Full detail in `18_JUNE1_BATCH_CLOSURE_2026-07-09.md`.
+All 5 decisions are closed locally. Root Causes was finalized at 815120-842500ms after Ford chose to drop "If" and remove the dead-air opening from the 813000ms staged file. Full detail in `18_JUNE1_BATCH_CLOSURE_2026-07-09.md`.
 
 Nothing in this batch has touched Mux, Supabase, or any deploy/publish surface.
 
+### Outsider Questions Gemini re-score - 2026-07-09
+
+Ford approved the external Gemini check after local closure. Gemini scored the 561000-582000ms staged clip highly on substance but recommended `recut` because the ending is not clean.
+
+Result file: `/Users/fordknowlton/jun-os/data/cincy-voices/gemini-checks/will-phillips-outsider-questions-2026-07-09_093335-gemini.json`
+
+Scores: AQ8 VQ8 MS9 SC8 BR9 LU9. Starts cleanly: true. Ends cleanly: false. Recommended action: recut. Note: end at 0:17.5, before the "um" and new thought.
+
+Operational implication: the approved 561000-582000ms window is not QA-passed for use. The next candidate should keep the 561000ms start and test a 578500ms end, pending a local cut/watch. No Mux upload, Supabase write, vault use, sales use, or public use should happen until that shorter candidate is cut and approved.
+
 ### Desktop outtake file — verification result
 
-Checked directly (not from memory): `sb_Will_Phillips.mp4` **does exist**, at `/Users/fordknowlton/Desktop/cincy-voices-supercuts/clips/sb_Will_Phillips.mp4` — nested inside a subfolder, which is likely why a flat/quick Desktop listing missed it. The corresponding review file, `REVIEW_will-phillips_outtake-check_0-40s.mp4`, also exists in the staged folder as expected. Left both in place — deletion wasn't part of this round's explicit approval, only verification was. Say the word and I'll remove the Desktop file.
+Checked directly (not from memory): `sb_Will_Phillips.mp4` did exist at `/Users/fordknowlton/Desktop/cincy-voices-supercuts/clips/sb_Will_Phillips.mp4`, nested inside a subfolder. Ford later approved cleanup, and the Desktop outtake file was deleted on 2026-07-09. The corresponding review file, `REVIEW_will-phillips_outtake-check_0-40s.mp4`, remains in the staged folder as expected.
