@@ -30,19 +30,16 @@ export function ThreadScroll({ items, topic }: ThreadScrollProps) {
     window.scrollTo(0, scrollPos);
   }, [scrollPos]);
 
-  let lastLeaderId = '';
-
   return (
     <>
       <div className="space-y-16">
         {items.map((item, i) => {
-          const isNewLeader = item.leader_id !== lastLeaderId;
-          lastLeaderId = item.leader_id;
+          const isNewLeader = i > 0 && item.leader_id !== items[i - 1].leader_id;
 
           return (
             <ScrollReveal key={item.id} delay={0} scale={item.content_type === 'video_clip' ? 0.92 : undefined}>
               {/* Connective tissue — leader transition indicator */}
-              {isNewLeader && i > 0 && (
+              {isNewLeader && (
                 <div className="flex items-center gap-3 mb-8">
                   <div className="relative w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
                     <Image

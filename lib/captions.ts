@@ -1,7 +1,7 @@
 import type { WordTimestamp } from './types';
 
 /**
- * Generate WebVTT blob URL from word-level timestamps.
+ * Generate a WebVTT data URL from word-level timestamps.
  * Groups words into ~8-word caption lines with proper timing.
  */
 export function generateVttUrl(words: WordTimestamp[]): string {
@@ -21,8 +21,7 @@ export function generateVttUrl(words: WordTimestamp[]): string {
     lines.push('');
   }
 
-  const blob = new Blob([lines.join('\n')], { type: 'text/vtt' });
-  return URL.createObjectURL(blob);
+  return `data:text/vtt;charset=utf-8,${encodeURIComponent(lines.join('\n'))}`;
 }
 
 function formatVttTime(ms: number): string {

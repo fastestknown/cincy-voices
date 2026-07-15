@@ -28,7 +28,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="font-body min-h-screen flex flex-col bg-cv-vault">
         {children}
         <Analytics />
-        {/* eslint-disable-next-line @next/next/no-before-interactive-script-outside-document */}
         <script
           defer
           data-domain="voices.workwithmean.ing"

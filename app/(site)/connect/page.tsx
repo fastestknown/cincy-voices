@@ -7,8 +7,9 @@ export const metadata: Metadata = {
   description: 'Whether you run a business or lead a fractional practice, Work With Meaning starts with a conversation.',
 };
 
-export default function ConnectPage({ searchParams }: { searchParams: { type?: string } }) {
-  const defaultType = searchParams.type === 'leader' ? 'leader' : searchParams.type === 'business' ? 'business' : undefined;
+export default async function ConnectPage({ searchParams }: { searchParams: Promise<{ type?: string }> }) {
+  const { type } = await searchParams;
+  const defaultType = type === 'leader' ? 'leader' : type === 'business' ? 'business' : undefined;
 
   return (
     <>

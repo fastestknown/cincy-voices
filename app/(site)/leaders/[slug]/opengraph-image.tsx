@@ -20,7 +20,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
         padding: '60px',
       }}>
         {leader.hero_quote && (
-          <div style={{ fontSize: 36, fontWeight: 700, color: '#f0ece6', lineHeight: 1.3, maxWidth: '80%' }}>
+          <div style={{ display: 'flex', fontSize: 36, fontWeight: 700, color: '#f0ece6', lineHeight: 1.3, maxWidth: '80%' }}>
             &ldquo;{leader.hero_quote.slice(0, 150)}{leader.hero_quote.length > 150 ? '...' : ''}&rdquo;
           </div>
         )}

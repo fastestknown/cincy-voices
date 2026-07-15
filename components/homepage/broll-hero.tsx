@@ -33,13 +33,14 @@ export function BrollHero({ playbackIds }: BrollHeroProps) {
     const start = Math.floor(Math.random() * playbackIds.length);
     return [start, (start + 1) % playbackIds.length];
   });
-  const videoRefs = [useRef<HTMLVideoElement>(null), useRef<HTMLVideoElement>(null)];
+  const videoRefs = useRef<[HTMLVideoElement | null, HTMLVideoElement | null]>([null, null]);
+  const initialIndices = useRef(indices);
   const hlsRefs = useRef<(Hls | null)[]>([null, null]);
-  const timerRef = useRef<ReturnType<typeof setInterval>>();
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Attach HLS to a slot
   const loadSlot = useCallback((slot: 0 | 1, playbackId: string) => {
-    const video = videoRefs[slot].current;
+    const video = videoRefs.current[slot];
     if (!video) return;
 
     // Destroy previous HLS instance for this slot
@@ -55,15 +56,17 @@ export function BrollHero({ playbackIds }: BrollHeroProps) {
   // Initial load
   useEffect(() => {
     if (!playbackIds.length) return;
-    loadSlot(0, playbackIds[indices[0]]);
+    const startingIndices = initialIndices.current;
+    const hlsInstances = hlsRefs.current;
+    loadSlot(0, playbackIds[startingIndices[0]]);
     if (playbackIds.length > 1) {
-      loadSlot(1, playbackIds[indices[1]]);
+      loadSlot(1, playbackIds[startingIndices[1]]);
     }
 
     return () => {
-      hlsRefs.current.forEach(hls => hls?.destroy());
+      hlsInstances.forEach(hls => hls?.destroy());
     };
-  }, []); // Only on mount
+  }, [loadSlot, playbackIds]);
 
   const rotateVideo = useCallback(() => {
     if (playbackIds.length <= 1) return;
@@ -91,7 +94,9 @@ export function BrollHero({ playbackIds }: BrollHeroProps) {
   useEffect(() => {
     if (playbackIds.length <= 1) return;
     timerRef.current = setInterval(rotateVideo, 12000);
-    return () => clearInterval(timerRef.current);
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
   }, [rotateVideo, playbackIds.length]);
 
   if (!playbackIds.length) {
@@ -111,7 +116,7 @@ export function BrollHero({ playbackIds }: BrollHeroProps) {
         return (
           <video
             key={`slot-${slot}`}
-            ref={videoRefs[slot as 0 | 1]}
+            ref={(element) => { videoRefs.current[slot as 0 | 1] = element; }}
             poster={`https://image.mux.com/${id}/thumbnail.jpg?time=2&width=1920`}
             muted
             loop

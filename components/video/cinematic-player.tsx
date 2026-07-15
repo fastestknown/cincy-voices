@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState, useCallback } from 'react';
 import MuxPlayer from '@mux/mux-player-react';
+import type MuxPlayerElement from '@mux/mux-player';
 import { trackEvent } from '@/lib/analytics';
 import { ANALYTICS_EVENTS } from '@/lib/constants';
 import type { WordTimestamp } from '@/lib/types';
@@ -36,34 +37,13 @@ export function CinematicPlayer({
   focused = false,
   onFocusClose,
 }: CinematicPlayerProps) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const playerRef = useRef<any>(null);
-  const [captionUrl, setCaptionUrl] = useState('');
+  const playerRef = useRef<MuxPlayerElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const seekedToStart = useRef(false);
 
   const trimStartSec = trimStartMs ? trimStartMs / 1000 : null;
   const trimEndSec = trimEndMs ? trimEndMs / 1000 : null;
 
-  useEffect(() => {
-    if (words?.length) {
-      const url = generateVttUrl(words);
-      setCaptionUrl(url);
-      return () => URL.revokeObjectURL(url);
-    }
-  }, [words]);
-
-  // Seek to trim start when metadata loads
-  const handleLoadedMetadata = useCallback(() => {
-    if (!trimStartSec || seekedToStart.current) return;
-    const el = playerRef.current;
-    if (!el) return;
-    const media = el.media?.nativeEl ?? el;
-    if (media) {
-      media.currentTime = trimStartSec;
-      seekedToStart.current = true;
-    }
-  }, [trimStartSec]);
+  const captionUrl = words?.length ? generateVttUrl(words) : '';
 
   // Pause at trim end
   const handleTimeUpdate = useCallback(() => {
@@ -79,20 +59,6 @@ export function CinematicPlayer({
     }
   }, [trimEndSec, onComplete]);
 
-  // Focused mode: unmute and play from trim start
-  useEffect(() => {
-    if (focused && playerRef.current) {
-      const el = playerRef.current;
-      const media = el.media?.nativeEl ?? el;
-      if (media) {
-        media.muted = false;
-        media.volume = 1;
-        if (trimStartSec) media.currentTime = trimStartSec;
-        media.play?.().catch(() => {});
-      }
-    }
-  }, [focused, trimStartSec]);
-
   // Escape key closes focused mode
   useEffect(() => {
     if (!focused || !onFocusClose) return;
@@ -105,15 +71,8 @@ export function CinematicPlayer({
 
   const handlePlayClick = useCallback(() => {
     const el = playerRef.current;
-    const media = el?.media?.nativeEl ?? el;
-    if (media) {
-      if (!muted) { media.muted = false; media.volume = 1; }
-      if (trimStartSec && media.currentTime < trimStartSec - 0.5) {
-        media.currentTime = trimStartSec;
-      }
-      media.play?.().catch(() => {});
-    }
-  }, [muted, trimStartSec]);
+    el?.play().catch(() => {});
+  }, []);
 
   return (
     <div className={`relative rounded-xl overflow-hidden border border-white/10 ${
@@ -124,11 +83,10 @@ export function CinematicPlayer({
         playbackId={playbackId}
         streamType="on-demand"
         startTime={trimStartSec ?? undefined}
-        autoPlay={autoPlay ? 'muted' : false}
+        autoPlay={focused ? true : autoPlay ? 'muted' : false}
         muted={muted}
         loop={loop}
         preload="metadata"
-        onLoadedMetadata={handleLoadedMetadata}
         onTimeUpdate={handleTimeUpdate}
         onPlay={() => { setIsPlaying(true); onPlay?.(); trackEvent(ANALYTICS_EVENTS.VIDEO_PLAY); }}
         onEnded={() => { setIsPlaying(false); onComplete?.(); trackEvent(ANALYTICS_EVENTS.VIDEO_COMPLETE); }}
@@ -136,7 +94,6 @@ export function CinematicPlayer({
           aspectRatio: '16/9',
           '--controls': muted ? 'none' : undefined,
           '--media-object-fit': 'cover',
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } as Record<string, string>}
       />
 
