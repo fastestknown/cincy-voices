@@ -8,9 +8,11 @@ import {
   getEditorialArticleBySlug,
   renderArticleParagraphs,
 } from '@/lib/editorial';
+import { getTestimonialBySlug, parseTestimonialMarker } from '@/lib/testimonials';
 import { getLeaderBySlug } from '@/lib/queries';
 import { SITE } from '@/lib/constants';
 import { ScrollReveal } from '@/components/shared/scroll-reveal';
+import { TestimonialCard } from '@/components/shared/testimonial-card';
 
 export const revalidate = 3600;
 
@@ -91,6 +93,17 @@ export default async function EditorialArticlePage({ params }: { params: { slug:
         <div className="max-w-content mx-auto grid gap-10 lg:grid-cols-[minmax(0,1fr)_300px]">
           <div className="max-w-3xl">
             {paragraphs.map((paragraph, index) => {
+              const testimonialSlug = parseTestimonialMarker(paragraph);
+              const testimonial = testimonialSlug ? getTestimonialBySlug(testimonialSlug) : null;
+
+              if (testimonial) {
+                return (
+                  <ScrollReveal key={`${paragraph.slice(0, 24)}-${index}`}>
+                    <TestimonialCard testimonial={testimonial} />
+                  </ScrollReveal>
+                );
+              }
+
               const isQuote = paragraph.startsWith('"') && paragraph.endsWith('"');
               const shouldShowPullQuote = index === 10 && article.pullQuotes[0];
 

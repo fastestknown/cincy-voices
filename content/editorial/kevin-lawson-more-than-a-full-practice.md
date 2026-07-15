@@ -58,6 +58,8 @@ There is a lot packed into that sentence.
 
 Kevin is not showing up to cut people out of the business. He is showing up to make the business easier to operate. He is especially good at one of the hardest transitions in a growing company: the moment when the owner can no longer be the only real salesperson.
 
+[[testimonial: kathleen-crawford]]
+
 That transition is delicate. The owner knows the customer. The owner knows the promises that can and cannot be made. The owner often has years of trust built into every sales conversation. Replacing that with a role, a process, and a new person is not just an org chart change.
 
 It is a trust transfer.
@@ -91,6 +93,8 @@ Kevin is not just building a practice. He is building a bench.
 For business owners, that changes the value of working with someone like him. You are not only getting one leader's expertise. You are getting access to the judgment, relationships, and care that leader has built around them.
 
 For fractional leaders, Kevin's story is a reminder that a full calendar is not the same thing as full impact. At some point, the work becomes bigger than staying busy.
+
+[[testimonial: mary-tettenhorst]]
 
 Kevin is an avid runner. He loves barbecue. He is devoted to his family, especially as his kids get older and move toward leaving the nest. There is something fitting about that. He is building a life where work fits around what matters most, and he is building a professional community that works the same way.
 
