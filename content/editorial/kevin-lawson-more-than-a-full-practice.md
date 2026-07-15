@@ -98,6 +98,8 @@ For fractional leaders, Kevin's story is a reminder that a full calendar is not 
 
 [[testimonial: mary-tettenhorst]]
 
+[[testimonial: dan-keck]]
+
 Kevin is an avid runner. He loves barbecue. He is devoted to his family, especially as his kids get older and move toward leaving the nest. There is something fitting about that. He is building a life where work fits around what matters most, and he is building a professional community that works the same way.
 
 Less extraction. More trust.
