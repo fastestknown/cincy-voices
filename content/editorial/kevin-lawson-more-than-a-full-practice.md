@@ -1,5 +1,5 @@
 ---
-title: "Kevin Lawson Is Building More Than a Full Practice"
+title: "Kevin Lawson: A Full Practice and a Fuller Purpose"
 slug: "kevin-lawson-more-than-a-full-practice"
 dek: "The fractional sales leader is already full of clients. What makes his story different is what he is building around them: systems, trust, and a stronger Cincinnati bench for sales leadership."
 leaderSlug: "kevin-lawson"
@@ -59,6 +59,8 @@ There is a lot packed into that sentence.
 Kevin is not showing up to cut people out of the business. He is showing up to make the business easier to operate. He is especially good at one of the hardest transitions in a growing company: the moment when the owner can no longer be the only real salesperson.
 
 [[testimonial: kathleen-crawford]]
+
+[[testimonial: kevin-rains]]
 
 That transition is delicate. The owner knows the customer. The owner knows the promises that can and cannot be made. The owner often has years of trust built into every sales conversation. Replacing that with a role, a process, and a new person is not just an org chart change.
 
