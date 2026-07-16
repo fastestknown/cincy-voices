@@ -78,6 +78,8 @@ He has a phrase for the way he wants to show up:
 
 That is a good description of strong fractional leadership. The best fractional leaders are not temporary placeholders. They are real leaders who create clarity, transfer capability, and leave the business stronger than they found it.
 
+[[testimonial: kyle-freeman]]
+
 Kevin is doing that with clients. But he is also doing something beyond his own client work.
 
 He is investing in the community around the work.
