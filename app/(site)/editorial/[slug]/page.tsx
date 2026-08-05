@@ -3,9 +3,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import {
-  getAllEditorialArticles,
   getAllEditorialSlugs,
   getEditorialArticleBySlug,
+  getVisibleEditorialArticles,
   renderArticleParagraphs,
 } from '@/lib/editorial';
 import { getTestimonialBySlug, parseTestimonialMarker } from '@/lib/testimonials';
@@ -43,7 +43,9 @@ export default async function EditorialArticlePage({ params }: { params: { slug:
 
   const [leader, articles] = await Promise.all([
     getLeaderBySlug(article.leaderSlug),
-    Promise.resolve(getAllEditorialArticles()),
+    // Visible-only: a hidden draft must not surface as "related" at the
+    // bottom of a published article. That would defeat link-only access.
+    Promise.resolve(getVisibleEditorialArticles()),
   ]);
   const relatedArticles = articles.filter(item => item.slug !== article.slug).slice(0, 2);
   const paragraphs = renderArticleParagraphs(article.body);
