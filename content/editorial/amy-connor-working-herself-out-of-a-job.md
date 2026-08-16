@@ -1,7 +1,7 @@
 ---
 title: "Amy Connor: Working Herself Out of a Job, Nine Years Running"
 slug: "amy-connor-working-herself-out-of-a-job"
-dek: "The fractional CMO built an engagement model designed to graduate clients to independence. Her first client, from 2017, is still with her. What that says about how trust actually works."
+dek: "The fractional CMO built an engagement model designed to graduate clients to independence. One of her earliest clients, from 2017, is still with her. What that says about how trust actually works."
 leaderSlug: "amy-connor"
 leaderName: "Amy Connor"
 leaderRole: "Fractional CMO, Founder of CMO on Loan"
@@ -26,17 +26,17 @@ Not the business itself. Each engagement inside it. She builds a company's marke
 
 She calls it graduating.
 
-Her first client came to her in 2017. They are still working together nine years later.
+One of her earliest clients came to her in 2017. They are still working together nine years later.
 
 I find that contradiction more interesting than almost anything else about her practice, because it is the opposite of how most consulting works. The usual model quietly depends on the client not learning too much. Amy's model depends on the client learning everything, and somehow the relationships outlast the ones built on dependency.
 
 That is worth sitting with.
 
-Amy spent nearly two decades inside two of the most rigorous marketing organizations in the world. She started as an intern at IAMS doing market research, earned her MBA at the University of Dayton, and was absorbed into Procter and Gamble when P&G acquired IAMS in 1999. She worked on Pepto-Bismol, on Metamucil, and on the pre-launch team for Align. In 2010 she moved to Luxottica and worked her way up to VP of Marketing for LensCrafters North America.
+Amy spent nearly two decades inside two of the most rigorous marketing organizations in the world. She started as an intern at Iams doing market research, earned her MBA at the University of Dayton, and transitioned into marketing. After Procter and Gamble acquired Iams in 1999, she worked on Pepto-Bismol, on Metamucil, and on the pre-launch team for Align. In 2010 she moved to Luxottica and worked her way up to VP of Marketing for LensCrafters North America.
 
 Then in 2016 an international relocation came up that she did not want.
 
-She stepped away.
+She stepped away from her corporate track.
 
 What happened next is the part I keep hearing versions of from people who leave corporate well. She did not build a plan and then find clients. Business owners she already knew told her what they needed, and the practice assembled itself around that.
 
@@ -44,7 +44,7 @@ What happened next is the part I keep hearing versions of from people who leave 
 
 That sentence is the entire fractional value proposition, said by a buyer rather than a seller.
 
-Amy now works mostly with mid-market companies, roughly ten to seventy-five million in revenue. These are companies with real complexity and real ambition that will never justify a full-time chief marketing officer, and therefore have never had access to the kind of strategic rigor Amy spent twenty years learning.
+Amy now works mostly with mid-market companies, roughly ten to one hundred million in revenue. These are companies with real complexity and real ambition that will never justify a full-time chief marketing officer, and therefore have never had access to the kind of strategic rigor Amy spent twenty years learning.
 
 She is blunt about what the job actually is.
 
@@ -52,7 +52,7 @@ She is blunt about what the job actually is.
 
 That distinction sounds small and it is not. Delivering marketing means the work leaves with the consultant. Fueling growth means something has to stay behind.
 
-So Amy strips the jargon out. She uses what she calls normal people words, on the theory that a strategy nobody in the building can explain is not a strategy.
+So Amy strips the jargon out. She uses what she calls normal people words, on the principle that a strategy nobody in the building can explain is not a strategy.
 
 "If they don't get it, it actually doesn't matter if I get it."
 
@@ -68,7 +68,7 @@ Mid-market companies are full of things that look inefficient and are actually l
 
 Amy comes in looking for what is worth keeping first.
 
-That instinct also shows up in how she has built the practice itself. Her team is five contractors, all former P&G and Luxottica colleagues, people she has worked beside and whose judgment she already knows. She caps the practice at twelve to fourteen clients. Not because more work is unavailable, but because the model does not survive being stretched.
+That instinct also shows up in how she has built the practice itself. Her team is made up of her former corporate colleagues, people she has worked beside and whose judgment she already knows. She caps the practice at twelve to fourteen clients. Not because more work is unavailable, but because the model does not survive being stretched.
 
 Deliberate scale is rarer than it should be.
 
@@ -78,9 +78,9 @@ Amy runs an internship program called Launching Pad, aimed specifically at colle
 
 She is direct about why.
 
-"Interning changed the trajectory of my life at IAMS and I'm so appreciative of those people."
+"Interning changed the trajectory of my life at Iams and I'm so appreciative of those people."
 
-Her whole career traces back to somebody giving a nineteen-year-old real work. She is now roughly thirty years into paying that back, on her own time, inside a practice she deliberately keeps small.
+Her whole career traces back to somebody giving a twenty-year-old real work. She is now roughly thirty years into paying that back, on her own time, inside a practice she deliberately keeps small.
 
 For business owners, Amy is a specific kind of bet. You are not hiring someone to run marketing for you indefinitely. You are hiring someone to make your company capable of running its own marketing, and then to be the person you call when something changes.
 
