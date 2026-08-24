@@ -11,18 +11,30 @@ interface BrollHeroProps {
 function attachHls(video: HTMLVideoElement, playbackId: string) {
   const src = `https://stream.mux.com/${playbackId}.m3u8`;
 
-  if (video.canPlayType('application/vnd.apple.mpegurl')) {
-    // Safari -- native HLS
-    video.src = src;
-    video.play().catch(() => {});
-  } else if (Hls.isSupported()) {
+  // Order matters. Chrome returns "maybe" from canPlayType for the HLS mime
+  // type, which is truthy, but cannot actually decode HLS natively. Checking
+  // canPlayType first therefore sent every Chrome visitor down the native path,
+  // where readyState stayed 0 and only the poster frame rendered. hls.js was
+  // bundled and never ran. Ask hls.js first, fall back to native for Safari.
+  if (Hls.isSupported()) {
     const hls = new Hls({ startLevel: 1, maxBufferLength: 10 });
     hls.loadSource(src);
     hls.attachMedia(video);
     hls.on(Hls.Events.MANIFEST_PARSED, () => {
       video.play().catch(() => {});
     });
+    // play() can be rejected if it lands before the first frames are decodable,
+    // so try again once the element says it has something to show.
+    video.addEventListener('canplay', () => {
+      if (video.paused) video.play().catch(() => {});
+    }, { once: true });
     return hls;
+  }
+
+  if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    // Safari and iOS play HLS natively.
+    video.src = src;
+    video.play().catch(() => {});
   }
   return null;
 }
