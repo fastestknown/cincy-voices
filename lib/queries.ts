@@ -408,17 +408,31 @@ export async function getLeaderVaultClips(leaderId: string): Promise<VaultSegmen
     }
   });
 
+  // A segment either has its own Mux asset or points at the full session master.
+  // We need the master ids to tell them apart, because offering a download of a
+  // master hands the leader the whole session instead of their clip.
+  const sourceIds = Array.from(new Set(segments.map(s => s.source_id)));
+  const { data: sources } = await supabase
+    .from('cincy_voices_sources')
+    .select('id, mux_master_playback_id')
+    .in('id', sourceIds);
+  const masterIdBySource = new Map(
+    (sources ?? []).map(src => [src.id, src.mux_master_playback_id])
+  );
+
   return segments.map(s => {
     const topic = segmentTopicMap.get(s.id);
     const duration_ms = s.end_time_ms && s.start_time_ms
       ? s.end_time_ms - s.start_time_ms
       : null;
+    const masterId = masterIdBySource.get(s.source_id) ?? null;
     return {
       ...s,
       topic_name: topic?.name ?? null,
       topic_slug: topic?.slug ?? null,
       topic_color: topic?.color ?? null,
       duration_ms,
+      is_own_asset: Boolean(s.mux_playback_id) && s.mux_playback_id !== masterId,
     };
   });
 }

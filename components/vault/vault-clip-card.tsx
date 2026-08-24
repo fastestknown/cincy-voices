@@ -22,7 +22,9 @@ function formatDuration(ms: number | null): string {
 export function VaultClipCard({ segment, leaderSlug, featured = false, downloadsEnabled = false }: VaultClipCardProps) {
   const pullQuote = extractPullQuote(segment.text);
   const clipUrl = `${SITE.url}/vault/${leaderSlug}/clip/${segment.id}`;
-  const downloadUrl = downloadsEnabled && segment.mux_playback_id
+  // Only offer a download when the playback id is this clip's own asset. When it
+  // is the session master, that URL returns the entire recording, not the clip.
+  const downloadUrl = downloadsEnabled && segment.mux_playback_id && segment.is_own_asset
     ? `https://stream.mux.com/${segment.mux_playback_id}/highest.mp4`
     : undefined;
 

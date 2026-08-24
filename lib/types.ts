@@ -91,6 +91,13 @@ export interface VaultSegment extends Segment {
   topic_slug: string | null;
   topic_color: string | null;
   duration_ms: number | null;
+  /**
+   * True when mux_playback_id refers to this clip's own Mux asset rather than
+   * the full session master. Most segments have their own asset; a minority
+   * play as a trim window against the master. Downloads are only safe for the
+   * former, because downloading a master hands over the entire session.
+   */
+  is_own_asset: boolean;
 }
 
 export interface TopicWithStats extends Topic {
