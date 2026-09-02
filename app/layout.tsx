@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Playfair_Display, Inter } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
+import { GoogleAnalytics } from '@/components/analytics/google-analytics';
 import { SITE } from '@/lib/constants';
 import './globals.css';
 
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="font-body min-h-screen flex flex-col bg-cv-vault">
         {children}
         <Analytics />
+        <GoogleAnalytics />
         {/* eslint-disable-next-line @next/next/no-before-interactive-script-outside-document */}
         <script
           defer
