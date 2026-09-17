@@ -1,5 +1,6 @@
 {
   "framework": "nextjs",
+  "crons": [{ "path": "/api/recommendations/deliver", "schedule": "* * * * *" }],
   "headers": [
     {
       "source": "/fonts/(.*)",

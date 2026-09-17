@@ -121,7 +121,7 @@ export function RecommendationProvider({ name, slug, children }: { name: string;
           </div>
           <div hidden aria-hidden="true"><label>Website<input tabIndex={-1} autoComplete="off" value={website} onChange={event => setWebsite(event.target.value)} /></label></div>
           <label className="mt-6 flex items-start gap-3 text-sm leading-6"><input type="checkbox" required className="mt-1 h-5 w-5 shrink-0" checked={consent} onChange={event => setConsent(event.target.checked)} disabled={busy} /><span>{consentText(name)}</span></label>
-          <p className="mt-4 text-xs leading-5 text-cv-muted">Submissions are private until reviewed. We use your email only to follow up about this recommendation. To correct or withdraw permission, contact <a className="underline" href="mailto:ford@workwithmean.ing">ford@workwithmean.ing</a>.</p>
+          <p className="mt-4 text-xs leading-5 text-cv-muted">Submissions are private until reviewed. We use your email to acknowledge receipt and follow up about this recommendation. To correct or withdraw permission, contact <a className="underline" href="mailto:ford@workwithmean.ing">ford@workwithmean.ing</a>.</p>
           {error && <p role="alert" className="mt-4 rounded border border-red-300 bg-red-50 p-3 text-sm text-red-900">{error}</p>}
           <div className="mt-6 flex flex-wrap gap-3"><button className={buttonClass} disabled={busy || !consent}>{busy ? 'Submitting…' : 'Submit for review'}</button><button type="button" disabled={busy} className="rounded-full border border-cv-border px-5 py-3 text-sm" onClick={() => { setConsent(false); setError(''); setStep('questions'); }}>Back to questions</button></div>
         </form>}

@@ -9,7 +9,11 @@ while (true) {
   });
   if (!response.ok) throw Error(`Inbox read failed (${response.status}).`);
   const rows = await response.json();
-  for (const row of rows) console.log(JSON.stringify(row));
+  for (const row of rows) {
+    const deliveries=await fetch(`${url}/cv_recommendation_deliveries?submission_id=eq.${encodeURIComponent(row.id)}`,{headers:{apikey:key,Authorization:`Bearer ${key}`},signal:AbortSignal.timeout(15000)});
+    if(!deliveries.ok) throw Error(`Delivery status read failed (${deliveries.status}).`);
+    console.log(JSON.stringify({...row,deliveries:await deliveries.json()}));
+  }
   if (rows.length < 100) break;
   offset += rows.length;
 }

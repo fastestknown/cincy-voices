@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { validateRecommendation } from '@/lib/recommendations';
 import { SITE } from '@/lib/constants';
+import { dispatchRecommendations } from '@/lib/recommendation-delivery';
 
 export const runtime = 'nodejs';
+export const maxDuration = 120;
 export async function POST(request: NextRequest) {
   const reply = (data: object, status: number) => NextResponse.json(data, { status, headers: { 'Cache-Control': 'no-store' } });
   if (process.env.RECOMMENDATIONS_ENABLED !== 'true') return reply({ error: 'Recommendations are not open yet. Please try again later.' }, 503);
@@ -39,6 +41,8 @@ export async function POST(request: NextRequest) {
       if (failure.message === 'id_conflict') return reply({ error: 'This submission was already received. Please contact ford@workwithmean.ing for corrections.' }, 409);
       return reply({ error: 'We could not save this yet. Your text is still here; please try again.' }, 503);
     }
+    // Storage and queue commit together. Delivery failures must not erase an accepted submission.
+    await dispatchRecommendations(submission.id).catch(() => undefined);
     return reply({ success: true, id: submission.id, status: 'pending' }, 201);
   } catch {
     return reply({ error: 'We could not confirm receipt. Keep this form open and retry; retries will not create duplicates.' }, 503);
