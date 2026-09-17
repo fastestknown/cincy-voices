@@ -1,6 +1,6 @@
 # Recommendation intake
 
-This feature is prepared for Amy Connor and Kevin Lawson's profiles and editorials. It is disabled unless `RECOMMENDATIONS_ENABLED=true` at build and runtime. No migration or feature activation has been applied to production.
+Recommendation intake for Amy Connor and Kevin Lawson's profiles and editorials. It is disabled unless `RECOMMENDATIONS_ENABLED=true` at build and runtime.
 
 ## Visitor flow
 
@@ -20,21 +20,21 @@ Before publication: confirm the contributor identity and firsthand claim, honor 
 
 Each new submission atomically creates three private outbox jobs: a complete copy to `ford@workwithmean.ing`, a receipt/thank-you to the contributor, and a 16-column Google Sheet record. Existing records are not backfilled or emailed by the migration. All publication remains moderated. The sender is `Cincy Voices <ford@workwithmean.ing>`; replies from contributors go to Ford. The older contact-form sender at `notifications@voices.workwithmean.ing` was rejected by Resend as unverified during testing and remains outside this change.
 
-The private destination Sheet is https://docs.google.com/spreadsheets/d/1DEIyofDfuxt0evODucbSA7ogx9f7kZQcX2Pdpxl0Las/edit . Its `Submissions` tab has 10,000 rows and frozen headers. It contains no real submissions yet. Column order comes from `SHEET_HEADERS` in `lib/recommendation-delivery.ts`. Each submission reserves an identity row in the database. Writes use RAW values to prevent formula execution and reuse the same row on retries. Keep the raw tab in its original row order: do not sort, delete, insert, or manually repurpose its rows. Use filter views or a separate analysis copy. A conflicting row is held for operator review rather than overwritten. Increase grid capacity before the sequence reaches 10,000. Review status in the Sheet is the status at intake; the database remains authoritative for later approval or withdrawal. Withdrawals also require correction of the private Sheet copy according to the retained-data policy.
+The private destination is the Google Sheet configured in `RECOMMENDATIONS_SHEET_ID`. Its `Submissions` tab has 10,000 rows and frozen headers. It contains no real submissions yet. Column order comes from `SHEET_HEADERS` in `lib/recommendation-delivery.ts`. Each submission reserves an identity row in the database. Writes use RAW values to prevent formula execution and reuse the same row on retries. Keep the raw tab in its original row order: do not sort, delete, insert, or manually repurpose its rows. Use filter views or a separate analysis copy. A conflicting row is held for operator review rather than overwritten. Increase grid capacity before the sequence reaches 10,000. Review status in the Sheet is the status at intake; the database remains authoritative for later approval or withdrawal. Withdrawals also require correction of the private Sheet copy according to the retained-data policy.
 
 Activation requires these server-only variables:
 
 - `RECOMMENDATIONS_DELIVERY_ENABLED=true`, only after acceptance testing.
 - `RESEND_API_KEY`, the existing sending-only key. Never expose it to the browser.
 - `RECOMMENDATIONS_GOOGLE_OAUTH`, JSON containing `client_id`, `client_secret`, and `refresh_token`. The existing Sheets-only OAuth connection used by Claude Code is configured as a Vercel Production Secret. It belongs to Ford and retains its existing Google account access; the application writes only to the configured Sheet. No new Google scopes or service account were created. As an alternative, `RECOMMENDATIONS_GOOGLE_SERVICE_ACCOUNT` accepts a dedicated service-account JSON credential. OAuth takes precedence when both are present.
-- `RECOMMENDATIONS_SHEET_ID=1DEIyofDfuxt0evODucbSA7ogx9f7kZQcX2Pdpxl0Las`.
+- `RECOMMENDATIONS_SHEET_ID`.
 - `CRON_SECRET`, at least 24 random characters, for the private delivery worker.
 
 The submit route attempts delivery after storage. The authenticated Vercel cron retries every minute, up to three jobs per invocation. Set up Vercel function/cron failure alerting for the owner during activation. Each job has a five-minute lease and an acknowledgement token. Only the current worker can record a receipt. Transient failures use exponential backoff, capped at one hour; 12 attempts or permanent configuration errors require review. Successful email provider IDs and Sheet ranges are stored separately. A provider-accepted email is not proof of inbox delivery or freedom from later bounces. Monitor Resend delivery events for production operations.
 
 Resend idempotency keys last 24 hours. Email jobs older than 23 hours since their first attempt are held, never blindly resent. Reconcile with Resend before resetting an uncertain email job. Provider credentials and error response bodies are not logged. The private worker reports HTTP 503 when new delivery failures or held jobs need attention; the review script includes per-destination status. A failed provider does not cause the form to lose a durably accepted submission or falsely claim that emails/Sheet delivery completed.
 
-Current acceptance evidence: 34 automated tests passed, migrations applied cleanly to a fresh isolated database, and owner/thank-you test messages reached Ford's Gmail inbox for receipt `c592c1c2-4f1a-4fa4-963e-86d69fb7725e`. Gmail IDs: owner `1a0b0c86ec1db4fd`, thank-you `1a0b0c86bbb87fc1`. Re-dispatch processed zero jobs and sent no duplicates. The live Google Sheets adapter wrote all 16 fields for that same synthetic submission into A19:P19, exact typed readback matched, retrying produced one row, and re-dispatch claimed no completed jobs. The synthetic row was cleared and the empty range verified. An initial readback assertion compared formatted TRUE text with boolean true; the test now requests UNFORMATTED_VALUE. Vercel Production Secrets for RECOMMENDATIONS_GOOGLE_OAUTH and RECOMMENDATIONS_SHEET_ID are saved. Production code, database migrations and delivery activation remain pending. No production migration, cron, or feature activation has occurred.
+Acceptance checks include automated validation, outbox concurrency and retry tests, isolated migration verification, live owner/thank-you email receipt, and exact typed Google Sheets write/readback with duplicate and cleanup checks. Production release receipts are retained privately by the operator.
 
 ## Checks
 
