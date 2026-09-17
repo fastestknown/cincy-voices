@@ -18,6 +18,8 @@ import { QuoteMosaic } from '@/components/leader/quote-mosaic';
 import { TopicMap } from '@/components/leader/topic-map';
 import { RelatedLeaders } from '@/components/leader/related-leaders';
 import { ScrollReveal } from '@/components/shared/scroll-reveal';
+import { RecommendationProvider, RecommendationButton } from '@/components/shared/recommendation-form';
+import { RECOMMENDATION_LEADERS } from '@/lib/recommendations';
 
 export const revalidate = 3600;
 
@@ -56,7 +58,8 @@ export default async function LeaderProfilePage({ params }: { params: Promise<{ 
   ]);
   const editorialArticle = getEditorialArticleForLeader(leader.slug);
 
-  return (
+  const recommendationsEnabled = process.env.RECOMMENDATIONS_ENABLED === 'true' && Object.hasOwn(RECOMMENDATION_LEADERS, leader.slug);
+  const content = (
     <>
       {/* Cinematic hero - full-bleed photo left, dossier info right */}
       <ProfileHero
@@ -114,6 +117,7 @@ export default async function LeaderProfilePage({ params }: { params: Promise<{ 
       )}
 
       {/* Quotes mosaic */}
+      {recommendationsEnabled && <div className="max-w-content mx-auto px-4"><RecommendationButton /></div>}
       {quotes.length > 0 && (
         <section className="bg-cv-cream py-10 sm:py-16 px-4 sm:px-6 border-t border-cv-border/50">
           <div className="max-w-content mx-auto">
@@ -174,4 +178,5 @@ export default async function LeaderProfilePage({ params }: { params: Promise<{ 
       )}
     </>
   );
+  return recommendationsEnabled ? <RecommendationProvider name={leader.name} slug={leader.slug}>{content}</RecommendationProvider> : content;
 }

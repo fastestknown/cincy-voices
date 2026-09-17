@@ -13,6 +13,8 @@ import { getLeaderBySlug } from '@/lib/queries';
 import { SITE } from '@/lib/constants';
 import { ScrollReveal } from '@/components/shared/scroll-reveal';
 import { TestimonialCard } from '@/components/shared/testimonial-card';
+import { RecommendationProvider, RecommendationButton } from '@/components/shared/recommendation-form';
+import { RECOMMENDATION_LEADERS } from '@/lib/recommendations';
 
 export const revalidate = 3600;
 
@@ -55,7 +57,8 @@ export default async function EditorialArticlePage({ params }: { params: { slug:
   }).format(new Date(`${article.publishedAt}T12:00:00Z`));
   const companyWebsite = article.companyWebsite?.startsWith('https://') ? article.companyWebsite : null;
 
-  return (
+  const recommendationsEnabled = process.env.RECOMMENDATIONS_ENABLED === 'true' && Object.hasOwn(RECOMMENDATION_LEADERS, article.leaderSlug);
+  const content = (
     <article className="bg-cv-cream min-h-screen">
       <section className="bg-cv-navy text-cv-light-text pt-16">
         <div className="max-w-bleed mx-auto grid lg:grid-cols-[0.9fr_1.1fr] min-h-[72vh]">
@@ -100,6 +103,7 @@ export default async function EditorialArticlePage({ params }: { params: { slug:
       <section className="px-4 sm:px-6 py-12 sm:py-20">
         <div className="max-w-content mx-auto grid gap-10 lg:grid-cols-[minmax(0,1fr)_300px]">
           <div className="max-w-3xl">
+            {recommendationsEnabled && <RecommendationButton />}
             {paragraphs.map((paragraph, index) => {
               const testimonialSlug = parseTestimonialMarker(paragraph);
               const testimonial = testimonialSlug ? getTestimonialBySlug(testimonialSlug) : null;
@@ -108,6 +112,7 @@ export default async function EditorialArticlePage({ params }: { params: { slug:
                 return (
                   <ScrollReveal key={`${paragraph.slice(0, 24)}-${index}`}>
                     <TestimonialCard testimonial={testimonial} />
+                    {recommendationsEnabled && <RecommendationButton compact />}
                   </ScrollReveal>
                 );
               }
@@ -143,6 +148,7 @@ export default async function EditorialArticlePage({ params }: { params: { slug:
                 </div>
               );
             })}
+            {recommendationsEnabled && <RecommendationButton />}
           </div>
 
           <aside className="lg:sticky lg:top-24 h-fit border-t border-cv-border pt-6 lg:border-t-0 lg:border-l lg:pl-8">
@@ -205,4 +211,5 @@ export default async function EditorialArticlePage({ params }: { params: { slug:
       </section>
     </article>
   );
+  return recommendationsEnabled ? <RecommendationProvider name={article.leaderName} slug={article.leaderSlug}>{content}</RecommendationProvider> : content;
 }
