@@ -1,7 +1,7 @@
 ---
-title: "Amy Connor: Working Herself Out of a Job, Nine Years Running"
+title: "Amy Connor: Working Herself Out of a Job, Ten Years Running"
 slug: "amy-connor-working-herself-out-of-a-job"
-dek: "The fractional CMO built an engagement model designed to graduate clients to independence. One of her earliest clients is still with her nine years later. What that says about how trust actually works."
+dek: "CMO-OnLoan marked its tenth anniversary on September 16, 2026. Amy Connor built it to help clients run their own marketing. A decade later, her practice shows how independence and lasting trust can grow together."
 leaderSlug: "amy-connor"
 leaderName: "Amy Connor"
 leaderRole: "Fractional CMO, Founder of CMO-OnLoan"
@@ -20,7 +20,9 @@ topics:
   - Cincinnati fractional leadership
 ---
 
-Amy Connor designed her business to end.
+CMO-OnLoan turned ten on September 16, 2026. Amy Connor built the practice around an idea that still feels unusual: help clients become capable enough to carry the work forward themselves.
+
+In that sense, Amy designed her business to end.
 
 Not the business itself. Each engagement inside it. She builds a company's marketing capability, implements it alongside the team, and then hands it over and steps back. The client keeps the tools. The client keeps the thinking. Amy leaves.
 
