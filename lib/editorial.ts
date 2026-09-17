@@ -8,6 +8,9 @@ export interface EditorialArticle {
   leaderSlug: string;
   leaderName: string;
   leaderRole: string;
+  author?: string;
+  companyName?: string;
+  companyWebsite?: string;
   category: string;
   publishedAt: string;
   readTime: string;
@@ -68,6 +71,9 @@ function parseFrontmatter(fileContent: string): EditorialArticle {
     leaderSlug: fields.get('leaderSlug') ?? '',
     leaderName: fields.get('leaderName') ?? '',
     leaderRole: fields.get('leaderRole') ?? '',
+    author: fields.get('author'),
+    companyName: fields.get('companyName'),
+    companyWebsite: fields.get('companyWebsite'),
     category: fields.get('category') ?? '',
     publishedAt: fields.get('publishedAt') ?? '',
     readTime: fields.get('readTime') ?? '',

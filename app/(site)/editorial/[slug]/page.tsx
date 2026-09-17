@@ -49,6 +49,11 @@ export default async function EditorialArticlePage({ params }: { params: { slug:
   ]);
   const relatedArticles = articles.filter(item => item.slug !== article.slug).slice(0, 2);
   const paragraphs = renderArticleParagraphs(article.body);
+  const pullQuote = article.pullQuotes.find(quote => !paragraphs.includes(`"${quote}"`));
+  const displayDate = new Intl.DateTimeFormat('en-US', {
+    month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC',
+  }).format(new Date(`${article.publishedAt}T12:00:00Z`));
+  const companyWebsite = article.companyWebsite?.startsWith('https://') ? article.companyWebsite : null;
 
   return (
     <article className="bg-cv-cream min-h-screen">
@@ -60,7 +65,7 @@ export default async function EditorialArticlePage({ params }: { params: { slug:
               alt={article.leaderName}
               fill
               sizes="(max-width: 1024px) 100vw, 45vw"
-              className="object-cover"
+              className="object-cover object-top"
               priority
             />
             <div className="absolute inset-0 bg-gradient-to-t from-cv-navy via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-cv-navy" />
@@ -68,11 +73,12 @@ export default async function EditorialArticlePage({ params }: { params: { slug:
 
           <div className="flex flex-col justify-center px-4 sm:px-8 lg:px-16 py-10 sm:py-14 lg:py-20">
             <ScrollReveal>
-              <div className="flex flex-wrap items-center gap-3 text-xs text-cv-light-text/50">
-                <span className="font-mono-label text-cv-gold/70">{article.category}</span>
-                <span>{article.publishedAt}</span>
+              <div className="flex flex-wrap items-center gap-3 text-xs text-cv-light-text/75">
+                <span className="font-mono-label text-cv-gold">{article.category}</span>
+                <time dateTime={article.publishedAt}>{displayDate}</time>
                 <span>{article.readTime}</span>
               </div>
+              {article.author && <p className="mt-4 text-sm text-cv-light-text/80">By {article.author}</p>}
               <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mt-5">
                 {article.title}
               </h1>
@@ -106,15 +112,19 @@ export default async function EditorialArticlePage({ params }: { params: { slug:
                 );
               }
 
+              if (paragraph.startsWith('## ')) {
+                return <h2 key={`${paragraph}-${index}`} className="font-display text-2xl sm:text-3xl font-bold leading-tight text-cv-charcoal mt-12 mb-6">{paragraph.slice(3)}</h2>;
+              }
+
               const isQuote = paragraph.startsWith('"') && paragraph.endsWith('"');
-              const shouldShowPullQuote = index === 10 && article.pullQuotes[0];
+              const shouldShowPullQuote = index === 10 && pullQuote;
 
               return (
                 <div key={`${paragraph.slice(0, 24)}-${index}`}>
                   {shouldShowPullQuote && (
                     <ScrollReveal>
                       <blockquote className="my-10 border-l-2 border-cv-gold pl-5 sm:pl-7 font-display text-2xl sm:text-3xl leading-snug text-cv-charcoal">
-                        &ldquo;{article.pullQuotes[0]}&rdquo;
+                        &ldquo;{pullQuote}&rdquo;
                       </blockquote>
                     </ScrollReveal>
                   )}
@@ -152,8 +162,13 @@ export default async function EditorialArticlePage({ params }: { params: { slug:
                   href={`/leaders/${article.leaderSlug}`}
                   className="inline-flex justify-center rounded-full border border-cv-charcoal/15 px-5 py-2.5 text-sm font-medium text-cv-charcoal transition-colors hover:bg-cv-charcoal hover:text-cv-light-text"
                 >
-                  View leader profile
+                  Watch {article.leaderName.split(' ')[0]}&apos;s conversations
                 </Link>
+                {companyWebsite && article.companyName && (
+                  <a href={companyWebsite} className="inline-flex justify-center rounded-full bg-cv-charcoal px-5 py-2.5 text-sm font-medium text-cv-light-text transition-colors hover:bg-cv-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4">
+                    Visit {article.companyName}
+                  </a>
+                )}
                 <Link
                   href="/editorial"
                   className="inline-flex justify-center rounded-full border border-cv-charcoal/15 px-5 py-2.5 text-sm font-medium text-cv-charcoal transition-colors hover:bg-white"

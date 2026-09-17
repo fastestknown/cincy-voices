@@ -5,6 +5,9 @@ dek: "CMO-OnLoan marked its tenth anniversary on September 16, 2026. Amy Connor 
 leaderSlug: "amy-connor"
 leaderName: "Amy Connor"
 leaderRole: "Fractional CMO, Founder of CMO-OnLoan"
+author: "Ford Knowlton"
+companyName: "CMO-OnLoan"
+companyWebsite: "https://www.cmo-onloan.com/"
 category: "Fractional Leader Spotlight"
 publishedAt: "2026-09-17"
 hidden: "false"
@@ -30,11 +33,13 @@ She calls it graduating.
 
 One of her earliest clients is still working with her nine years later.
 
-I find that contradiction more interesting than almost anything else about her practice, because it is the opposite of how most consulting works. The usual model quietly depends on the client not learning too much. Amy's model depends on the client learning everything, and somehow the relationships outlast the ones built on dependency.
+That is the part I keep coming back to. Amy wants clients to learn enough to do the work themselves. A relationship that continues after that has a different foundation: they know what she brings, and they keep choosing to work together.
 
 That is worth sitting with.
 
-Amy spent nearly two decades inside two of the most rigorous marketing organizations in the world. She started as an intern at Iams doing market research, earned her MBA at the University of Dayton, and transitioned into marketing. After Procter and Gamble acquired Iams in 1999, she worked on Pepto-Bismol, on Metamucil, and on the pre-launch team for Align. In 2010 she moved to Luxottica and worked her way up to VP of Marketing for LensCrafters North America.
+## From corporate marketing to CMO-OnLoan
+
+Amy spent nearly two decades in corporate marketing. She started as an intern at Iams doing market research, earned her MBA at the University of Dayton, and transitioned into marketing. After Procter and Gamble acquired Iams in 1999, she worked on Pepto-Bismol, on Metamucil, and on the pre-launch team for Align. In 2010 she moved to Luxottica and worked her way up to VP of Marketing for LensCrafters North America.
 
 Then in 2016 an international relocation came up that she did not want.
 
@@ -46,7 +51,9 @@ What happened next is the part I keep hearing versions of from people who leave 
 
 That sentence is the entire fractional value proposition, said by a buyer rather than a seller.
 
-Amy now works mostly with mid-market companies, roughly ten to one hundred million in revenue. These are companies with real complexity and real ambition that will never justify a full-time chief marketing officer, and therefore have never had access to the kind of strategic rigor Amy spent twenty years learning.
+## Making marketing understood
+
+Amy now works mostly with mid-market companies, roughly ten to one hundred million in revenue. Her practice gives companies access to experienced marketing leadership when they need that perspective but do not need a full-time chief marketing officer.
 
 She is blunt about what the job actually is.
 
@@ -58,15 +65,15 @@ So Amy strips the jargon out. She uses what she calls normal people words, on th
 
 "If they don't get it, it actually doesn't matter if I get it."
 
-I have thought about that line more than once since. It is a genuinely humbling standard. It puts the burden of clarity entirely on the person being paid, which is where it belongs and is almost never placed.
+I have thought about that line more than once since. It puts the responsibility for clarity on the person bringing the expertise. Can the team explain the strategy and use it when she is not in the room?
 
-There is a second thing she does that I think matters more than it sounds.
+## Keeping what already works
 
 She respects what is already there.
 
 "Don't break something that's older than you, but breathe a little life into it."
 
-Mid-market companies are full of things that look inefficient and are actually load-bearing. A weird approval step that exists because of a lawsuit in 2009. A product line that loses money and holds the biggest customer. Someone arriving from P&G with a clean framework can do real damage in ninety days without ever knowing it.
+An established business has a history that a new adviser cannot understand from a first meeting. Before changing a process, it helps to learn why it exists and what the people using it know.
 
 Amy comes in looking for what is worth keeping first.
 
@@ -74,7 +81,7 @@ That instinct also shows up in how she has built the practice itself. Her team i
 
 Deliberate scale is rarer than it should be.
 
-There is one more thing, and it is the part that made me want to write about her.
+## Giving students their first opportunity
 
 Amy runs an internship program called Launching Pad, aimed specifically at college freshmen and sophomores. Not juniors and seniors, who already have a résumé and a direction. The younger students, who mostly get told to come back in two years.
 
@@ -83,6 +90,8 @@ She is direct about why.
 "Interning changed the trajectory of my life at Iams and I'm so appreciative of those people."
 
 Her whole career traces back to somebody giving a twenty-year-old real work. She is now roughly thirty years into paying that back, on her own time, inside a practice she deliberately keeps small.
+
+## What stays after the work is done
 
 For business owners, Amy is a specific kind of bet. You are not hiring someone to run marketing for you indefinitely. You are hiring someone to make your company capable of running its own marketing, and then to be the person you call when something changes.
 
