@@ -26,7 +26,7 @@ Activation requires these server-only variables:
 
 - `RECOMMENDATIONS_DELIVERY_ENABLED=true`, only after acceptance testing.
 - `RESEND_API_KEY`, the existing sending-only key. Never expose it to the browser.
-- `RECOMMENDATIONS_GOOGLE_SERVICE_ACCOUNT`, JSON containing `client_email` and `private_key`; authorize only this Sheet for that service account, without domain-wide delegation. No account credential has been provisioned by this task.
+- `RECOMMENDATIONS_GOOGLE_OAUTH`, JSON containing `client_id`, `client_secret`, and `refresh_token`. The existing Sheets-only OAuth connection used by Claude Code is configured as a Vercel Production Secret. It belongs to Ford and retains its existing Google account access; the application writes only to the configured Sheet. No new Google scopes or service account were created. As an alternative, `RECOMMENDATIONS_GOOGLE_SERVICE_ACCOUNT` accepts a dedicated service-account JSON credential. OAuth takes precedence when both are present.
 - `RECOMMENDATIONS_SHEET_ID=1DEIyofDfuxt0evODucbSA7ogx9f7kZQcX2Pdpxl0Las`.
 - `CRON_SECRET`, at least 24 random characters, for the private delivery worker.
 
@@ -34,7 +34,7 @@ The submit route attempts delivery after storage. The authenticated Vercel cron 
 
 Resend idempotency keys last 24 hours. Email jobs older than 23 hours since their first attempt are held, never blindly resent. Reconcile with Resend before resetting an uncertain email job. Provider credentials and error response bodies are not logged. The private worker reports HTTP 503 when new delivery failures or held jobs need attention; the review script includes per-destination status. A failed provider does not cause the form to lose a durably accepted submission or falsely claim that emails/Sheet delivery completed.
 
-Current acceptance evidence: 32 automated tests passed, migrations applied cleanly to a fresh isolated database, and owner/thank-you test messages reached Ford's Gmail inbox for receipt `c592c1c2-4f1a-4fa4-963e-86d69fb7725e`. Gmail IDs: owner `1a0b0c86ec1db4fd`, thank-you `1a0b0c86bbb87fc1`. Re-dispatch processed zero jobs and sent no duplicates. Google Sheets adapter behavior is tested with simulated responses; live automatic Sheet delivery is still blocked by missing runtime Google credentials. No production migration, cron, or feature activation has occurred.
+Current acceptance evidence: 34 automated tests passed, migrations applied cleanly to a fresh isolated database, and owner/thank-you test messages reached Ford's Gmail inbox for receipt `c592c1c2-4f1a-4fa4-963e-86d69fb7725e`. Gmail IDs: owner `1a0b0c86ec1db4fd`, thank-you `1a0b0c86bbb87fc1`. Re-dispatch processed zero jobs and sent no duplicates. The live Google Sheets adapter wrote all 16 fields for that same synthetic submission into A19:P19, exact typed readback matched, retrying produced one row, and re-dispatch claimed no completed jobs. The synthetic row was cleared and the empty range verified. An initial readback assertion compared formatted TRUE text with boolean true; the test now requests UNFORMATTED_VALUE. Vercel Production Secrets for RECOMMENDATIONS_GOOGLE_OAUTH and RECOMMENDATIONS_SHEET_ID are saved. Production code, database migrations and delivery activation remain pending. No production migration, cron, or feature activation has occurred.
 
 ## Checks
 

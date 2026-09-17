@@ -20,3 +20,12 @@ test('occupied spreadsheet row fails safely without overwriting another submissi
 test('one failed destination does not prevent the other two receipts being recorded',async()=>{const finished=[];const jobs=[job,{...job,kind:'thank_you'},{...job,kind:'sheet'}];const send=async(u,o)=>{if(u.includes('cv_claim'))return json(jobs);if(u.includes('cv_finish')){finished.push(JSON.parse(o.body));return json(true);}if(u.includes('resend'))return json({id:'provider-1'});return json({},503);};const r=await dispatchRecommendations(null,env,send);assert.equal(r.processed,3);assert.equal(finished.filter(x=>x.p_receipt).length,2);assert.equal(finished.find(x=>x.p_kind==='sheet').p_receipt,null);});
 test('disabled deliveries make no network calls',async()=>assert.deepEqual(await dispatchRecommendations(null,{},async()=>{throw Error('unexpected call');}),{processed:0}));
 test('worker authentication rejects absent, short, and incorrect secrets',()=>{const secret='x'.repeat(32);assert.equal(authorizedWorker(null,secret),false);assert.equal(authorizedWorker('Bearer short','short'),false);assert.equal(authorizedWorker('Bearer '+secret,secret),true);assert.equal(authorizedWorker('Bearer '+'y'.repeat(32),secret),false);});
+test('existing OAuth connection refreshes with Sheets credentials and writes the row',async()=>{
+  let refreshed=false;
+  const oauth={client_id:'test-client',client_secret:'test-secret',refresh_token:'test-refresh'};
+  const send=async(u,o)=>{if(u.includes('oauth2')){assert.equal(o.body.get('grant_type'),'refresh_token');assert.equal(o.body.get('refresh_token'),oauth.refresh_token);refreshed=true;return json({access_token:'test'});}if(o.method==='PUT')return json({updatedData:{values:JSON.parse(o.body).values}});return json({values:[]});};
+  assert.match(await deliver({...job,kind:'sheet'},{...env,RECOMMENDATIONS_GOOGLE_OAUTH:JSON.stringify(oauth)},send),/test-sheet/);assert.equal(refreshed,true);
+});
+test('expired OAuth is held without attempting a Sheet write',async()=>{
+  let calls=0;await assert.rejects(deliver({...job,kind:'sheet'},{...env,RECOMMENDATIONS_GOOGLE_OAUTH:JSON.stringify({client_id:'a',client_secret:'b',refresh_token:'c'})},async()=>{calls++;return json({error:'invalid_grant'},400);}),e=>e.message==='google_auth_400'&&e.hold);assert.equal(calls,1);
+});

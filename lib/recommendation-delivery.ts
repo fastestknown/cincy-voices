@@ -33,6 +33,14 @@ export async function deliveryRpc(name: string, body: object, env: Env = process
   return r.json();
 }
 async function googleToken(env: Env, send: typeof fetch) {
+  if (env.RECOMMENDATIONS_GOOGLE_OAUTH) {
+    const account=JSON.parse(env.RECOMMENDATIONS_GOOGLE_OAUTH);
+    if (![account.client_id,account.client_secret,account.refresh_token].every(x=>typeof x==='string'&&x.length>0)) throw new DeliveryError('google_invalid_config',true);
+    const r=await send('https://oauth2.googleapis.com/token',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({client_id:account.client_id,client_secret:account.client_secret,refresh_token:account.refresh_token,grant_type:'refresh_token'}),signal:AbortSignal.timeout(10000)});
+    if (!r.ok) throw new DeliveryError(`google_auth_${r.status}`,r.status===400||r.status===401||r.status===403);
+    const data=await r.json(); if (!data.access_token) throw new DeliveryError('google_token_missing');
+    return data.access_token as string;
+  }
   if (!env.RECOMMENDATIONS_GOOGLE_SERVICE_ACCOUNT) throw new DeliveryError('google_not_configured',true);
   const account=JSON.parse(env.RECOMMENDATIONS_GOOGLE_SERVICE_ACCOUNT);
   if (typeof account.client_email!=='string'||typeof account.private_key!=='string') throw new DeliveryError('google_invalid_config',true);
