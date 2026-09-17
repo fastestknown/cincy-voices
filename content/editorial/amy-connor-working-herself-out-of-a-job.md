@@ -1,13 +1,13 @@
 ---
 title: "Amy Connor: Working Herself Out of a Job, Nine Years Running"
 slug: "amy-connor-working-herself-out-of-a-job"
-dek: "The fractional CMO built an engagement model designed to graduate clients to independence. One of her earliest clients, from 2017, is still with her. What that says about how trust actually works."
+dek: "The fractional CMO built an engagement model designed to graduate clients to independence. One of her earliest clients is still with her nine years later. What that says about how trust actually works."
 leaderSlug: "amy-connor"
 leaderName: "Amy Connor"
-leaderRole: "Fractional CMO, Founder of CMO on Loan"
+leaderRole: "Fractional CMO, Founder of CMO-OnLoan"
 category: "Fractional Leader Spotlight"
-publishedAt: "2026-08-05"
-hidden: "true"
+publishedAt: "2026-09-17"
+hidden: "false"
 readTime: "5 min"
 heroImage: "/headshots/amy-connor.jpg"
 pullQuotes:
@@ -26,7 +26,7 @@ Not the business itself. Each engagement inside it. She builds a company's marke
 
 She calls it graduating.
 
-One of her earliest clients came to her in 2017. They are still working together nine years later.
+One of her earliest clients is still working with her nine years later.
 
 I find that contradiction more interesting than almost anything else about her practice, because it is the opposite of how most consulting works. The usual model quietly depends on the client not learning too much. Amy's model depends on the client learning everything, and somehow the relationships outlast the ones built on dependency.
 
