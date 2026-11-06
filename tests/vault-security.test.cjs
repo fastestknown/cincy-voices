@@ -11,11 +11,27 @@ function load(file, mocks = {}) {
   const js = ts.transpileModule(fs.readFileSync(path.join(__dirname, '..', file), 'utf8'), {
     compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
   }).outputText;
-  vm.runInNewContext(js, { exports, Buffer, crypto, process, Date, URL, TextEncoder,
+  vm.runInNewContext(js, { exports, Buffer, crypto, process, Date, URL, TextEncoder, fetch: mocks.fetch || fetch,
     require: name => name in mocks ? mocks[name] : require(name) }, { filename: file });
   return exports;
 }
 const response = { json: (body, init = {}) => ({ body, status: init.status || 200, headers: init.headers || {} }) };
+
+test('all privileged credential reads bypass Next Data Cache, even when a caller requests caching', async () => {
+  let options;
+  let seen;
+  process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://synthetic.test';
+  process.env.SUPABASE_SERVICE_ROLE_KEY = 'synthetic-service-key';
+  const access = load('lib/vault-access.ts', {
+    'server-only': {},
+    '@supabase/supabase-js': { createClient: (_url, _key, config) => { options = config; return {}; } },
+    fetch: async (_input, init) => { seen = init; return {}; },
+  });
+  access.getVaultAdmin();
+  await options.global.fetch('https://synthetic.test', { cache: 'force-cache', method: 'GET' });
+  assert.equal(seen.cache, 'no-store');
+  assert.equal(seen.method, 'GET');
+});
 
 test('operator rejects missing, wrong, malformed and URL-only authority; separate credential required', () => {
   const access = load('lib/vault-access.ts', { 'server-only': {}, '@supabase/supabase-js': {} });

@@ -17,5 +17,10 @@ export function getVaultAdmin() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !key) throw new Error('Vault server credentials not configured');
-  return createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
+  return createClient(url, key, {
+    auth: { persistSession: false, autoRefreshToken: false },
+    // Credential revocation must take effect immediately. Supabase's fetches
+    // otherwise participate in Next's server Data Cache across requests/builds.
+    global: { fetch: (input, init) => fetch(input, { ...init, cache: 'no-store' }) },
+  });
 }
