@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { PUBLIC_LEADER_COLUMNS } from './public-leader-columns';
 import type { Leader, Topic, Segment, Quote, LeaderWithTopics, ThreadItemWithContent, TopicWithStats, VaultSegment, VaultSource } from './types';
 
 // Live stream footage doesn't always show people -- exclude from video display
@@ -9,7 +10,7 @@ const LIVE_STREAM_SOURCE_ID = '4a9daf4b-35ff-4529-b72d-7ced6245ffdb';
 export async function getLeadersWithTopics(): Promise<LeaderWithTopics[]> {
   const { data: leaders } = await supabase
     .from('cincy_voices_leaders')
-    .select('*')
+    .select(PUBLIC_LEADER_COLUMNS)
     .order('name');
 
   if (!leaders?.length) return [];
@@ -76,7 +77,7 @@ export async function getTopicsWithStats(): Promise<TopicWithStats[]> {
 export async function getLeaderBySlug(slug: string): Promise<Leader | null> {
   const { data } = await supabase
     .from('cincy_voices_leaders')
-    .select('*')
+    .select(PUBLIC_LEADER_COLUMNS)
     .eq('slug', slug)
     .single();
 
@@ -131,7 +132,7 @@ export async function getRelatedLeaders(leaderId: string): Promise<{ leader: Lea
 
   const { data: leaders } = await supabase
     .from('cincy_voices_leaders')
-    .select('*')
+    .select(PUBLIC_LEADER_COLUMNS)
     .in('id', uniqueLeaderIds);
 
   const { data: sources } = await supabase
@@ -225,7 +226,7 @@ export async function getThreadItems(topicId: string): Promise<ThreadItemWithCon
   const [segments, quotes, leaders] = await Promise.all([
     segmentIds.length ? supabase.from('cincy_voices_segments').select('*').in('id', segmentIds).gte('clip_quality_score', 5).then(r => r.data ?? []) : [],
     quoteIds.length ? supabase.from('cincy_voices_quotes').select('*').in('id', quoteIds).then(r => r.data ?? []) : [],
-    supabase.from('cincy_voices_leaders').select('*').in('id', leaderIds).then(r => r.data ?? []),
+    supabase.from('cincy_voices_leaders').select(PUBLIC_LEADER_COLUMNS).in('id', leaderIds).then(r => r.data ?? []),
   ]);
 
   const segMap = new Map((segments as Segment[]).map(s => [s.id, s]));
@@ -259,7 +260,7 @@ export async function getTopicLeaders(topicId: string): Promise<Leader[]> {
   const uniqueIds = Array.from(new Set(items.map(i => i.leader_id)));
   const { data: leaders } = await supabase
     .from('cincy_voices_leaders')
-    .select('*')
+    .select(PUBLIC_LEADER_COLUMNS)
     .in('id', uniqueIds)
     .order('name');
 

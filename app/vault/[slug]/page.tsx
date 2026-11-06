@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { supabase } from '@/lib/supabase';
+import { getVaultAdmin } from '@/lib/vault-access';
 import { getLeaderBySlug, getLeaderVaultClips, getLeaderSources } from '@/lib/queries';
 import { verifyCookie, signCookie, COOKIE_NAME } from '@/lib/vault-auth';
 import { VaultHeader } from '@/components/vault/vault-header';
@@ -16,14 +16,6 @@ function formatDuration(secs: number | null): string {
   return `${m} min`;
 }
 
-async function validateToken(slug: string, token: string): Promise<boolean> {
-  const { data: leader } = await supabase
-    .from('cincy_voices_leaders')
-    .select('vault_token')
-    .eq('slug', slug)
-    .single();
-  return !!leader && leader.vault_token === token;
-}
 
 export default async function VaultPage({ params, searchParams }: {
   params: Promise<{ slug: string }>;
@@ -32,16 +24,22 @@ export default async function VaultPage({ params, searchParams }: {
   const { slug } = await params;
   const { token } = await searchParams;
 
+  const { data: credentials } = await getVaultAdmin()
+    .from('cincy_voices_leaders')
+    .select('vault_token, visibility')
+    .eq('slug', slug).single();
+  const currentToken = credentials?.visibility === 'public' ? credentials.vault_token : null;
+  if (!currentToken) redirect('/vault/invalid');
   let authorized = false;
 
   // Path 1: token in URL -- validate directly against DB (no redirect needed)
   if (token) {
-    authorized = await validateToken(slug, token);
+    authorized = currentToken === token;
     if (authorized) {
       // Set cookie for future visits (best-effort, may not work on all browsers)
       try {
         const cookieStore = await cookies();
-        const cookieValue = await signCookie(slug);
+        const cookieValue = await signCookie(slug, currentToken);
         cookieStore.set(COOKIE_NAME, cookieValue, {
           httpOnly: true,
           secure: process.env.NODE_ENV === 'production',
@@ -59,7 +57,7 @@ export default async function VaultPage({ params, searchParams }: {
   if (!authorized && !token) {
     const cookieStore = await cookies();
     const rawCookie = cookieStore.get(COOKIE_NAME)?.value;
-    const authorizedSlug = rawCookie ? await verifyCookie(rawCookie) : null;
+    const authorizedSlug = rawCookie ? await verifyCookie(rawCookie, currentToken) : null;
     authorized = authorizedSlug === slug;
   }
 

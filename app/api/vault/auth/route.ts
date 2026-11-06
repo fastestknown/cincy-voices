@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { getVaultAdmin } from '@/lib/vault-access';
 import { signCookie, COOKIE_NAME } from '@/lib/vault-auth';
 
 export async function GET(request: NextRequest) {
@@ -11,20 +11,22 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(new URL('/vault/invalid', request.url));
   }
 
-  const { data: leader } = await supabase
+  const { data: leader } = await getVaultAdmin()
     .from('cincy_voices_leaders')
-    .select('slug, vault_token')
+    .select('slug, vault_token, visibility')
     .eq('slug', slug)
     .single();
 
-  if (!leader || leader.vault_token !== token) {
+  if (!leader || leader.visibility !== 'public' || leader.vault_token !== token) {
     return NextResponse.redirect(new URL('/vault/invalid', request.url));
   }
 
-  const cookieValue = await signCookie(slug);
+  const cookieValue = await signCookie(slug, token);
 
   // In Route Handlers, cookies must be set on the response object directly
   const response = NextResponse.redirect(new URL(`/vault/${slug}`, request.url));
+  response.headers.set('Cache-Control', 'private, no-store');
+  response.headers.set('Referrer-Policy', 'no-referrer');
   response.cookies.set(COOKIE_NAME, cookieValue, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
